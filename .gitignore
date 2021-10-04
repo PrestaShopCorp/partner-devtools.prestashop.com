@@ -1,7 +1,8 @@
+# File system
+.DS_Store
+
 # Database
 mysql/
 
-# Modules
-html/modules/*
-!html/modules/foobar
-!html/modules/ps_accounts
+# Dockercompose local
+docker-compose.local.yml

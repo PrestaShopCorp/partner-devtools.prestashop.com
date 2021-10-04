@@ -1,8 +1,8 @@
 version: '3'
 services:
-  prestashop-rbm-mysql:
+  prestashop_rbm_db:
     platform: linux/amd64
 
-  prestashop-rbm-shop:
+  prestashop_rbm_shop:
     platform: linux/amd64
 
