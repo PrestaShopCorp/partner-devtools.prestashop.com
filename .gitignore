@@ -1,0 +1,7 @@
+# Database
+mysql/
+
+# Modules
+html/modules/*
+!html/modules/foobar
+!html/modules/ps_accounts

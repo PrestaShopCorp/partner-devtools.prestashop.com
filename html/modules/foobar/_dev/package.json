@@ -1,0 +1,17 @@
+{
+    "name": "foobar-vue",
+    "version": "2.0.0",
+    "description": "",
+    "private": "true",
+    "main": "index.js",
+    "dependencies": {
+        "cross-env": "^7.0.3",
+        "lerna": "^4.0.0"
+    },
+    "scripts": {
+        "dev": "lerna run dev --concurrency 1",
+        "build": "lerna run build --concurrency 1"
+    },
+    "author": "",
+    "license": "ISC"
+}

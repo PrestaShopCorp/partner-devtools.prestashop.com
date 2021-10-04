@@ -1,0 +1,43 @@
+version: '3'
+services:
+  prestashop-rbm-mysql:
+    image: mysql:5.7
+    container_name: ps-mysql.local
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=rbm-prestashop
+    ports:
+      - "3307:3306"
+    volumes: 
+      - ./mysql:/var/lib/mysql
+    command: mysqld --default-authentication-plugin=mysql_native_password
+
+  prestashop-rbm-shop:
+    # restart: always
+    image: prestashop/prestashop
+    container_name: ps-rbm.local
+    ports:
+       - 80:80
+    volumes:
+      - ./html/modules:/var/www/html/modules
+    environment:
+      DB_SERVER: "ps-mysql.local"
+      DB_USER: "root"
+      DB_PASSWD: "admin"
+      DB_NAME: "rbm-prestashop"
+      PS_HANDLE_DYNAMIC_DOMAIN: "1"
+      PS_INSTALL_AUTO: "1"
+      PS_DEV_MODE: "1"
+      PS_COUNTRY: "fr"
+      PS_FOLDER_ADMIN: "admin-dev"
+      PS_FOLDER_INSTALL: "install-dev"
+      XDEBUG: "yes"
+      PS_DOMAIN: "prestashop-rbm.local"
+      ADMIN_MAIL: "arnaud.drieux@storecommander.com"
+      ADMIN_PASSWD: "store-commander"
+    depends_on:
+      - prestashop-rbm-mysql
+
+networks:
+  default:
+    name: prestashop-net
