@@ -6,10 +6,9 @@ services:
     networks:
       - prestashop_net
     ports:
-       - 8080:80
-    # volumes:
-      # - ./ps_accounts:/var/www/html/modules/ps_accounts
-      # - ./foobar:/var/www/html/modules/foobar
+      - 8080:80
+    volumes:
+      - ./modules/foobar:/var/www/html/modules/foobar
     environment:
       - DB_SERVER=ps-database.local
       - DB_USER=root
