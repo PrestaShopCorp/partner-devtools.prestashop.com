@@ -165,7 +165,7 @@ Media::addJsDef([
             'versionPs' => _PS_VERSION_,
             'versionModule' => $this->version,
             'moduleName' => $this->name,
-            'accountApi' => $psAccountsService->getAdminAjaxUrl(),
+            'refreshToken' => $psAccountsService->getRefreshToken(),
             'emailSupport' => $this->emailSupport,
             'shop' => [
                 'uuid' => $psAccountsService->getShopUuidV4()
@@ -536,7 +536,7 @@ To display the payment funnel, and other modals, the billing components required
 methods: {
   openBillingModal(type, data) {
     this.modalType = type;
-    this.billingContext = { ...billingContext, ...data };
+    this.billingContext = { ...this.billingContext, ...data };
   },
   closeBillingModal(data) {
     this.modalType = '';
@@ -601,7 +601,7 @@ export default {
   methods: {
     openBillingModal(type, data) {
         this.modalType = type;
-        this.billingContext = { ...billingContext, ...data };
+        this.billingContext = { ...this.billingContext, ...data };
     },
     closeBillingModal(data) {
         this.modalType = '';
@@ -789,7 +789,7 @@ export default {
   methods: {
     openBillingModal(type, data) {
         this.modalType = type;
-        this.billingContext = { ...billingContext, ...data };
+        this.billingContext = { ...this.billingContext, ...data };
     },
     closeBillingModal(data) {
         this.modalType = '';
