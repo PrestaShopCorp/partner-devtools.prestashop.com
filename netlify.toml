@@ -1,0 +1,5 @@
+[build]
+  base = "docs"
+  publish = "/.vuepress/dist"
+  command = "vuepress build ."
+
