@@ -6,9 +6,6 @@ title: Recurring Billing Module
 
 # ![](/assets/images/common/logo-condensed-sm.png) Recurring Billing Module
 
-</Block>
-
-<Block>
 
 A recurring Billing Module is a composition of [PHP](https://www.php.net/) as backend and [Vue 2](https://vuejs.org/) as frontend.
 
@@ -25,11 +22,16 @@ Here is the step to create a RBM :
 
 **First of all, create a basic module following the Prestashop documentation: [https://devdocs.prestashop.com/1.7/modules/creation/](https://devdocs.prestashop.com/1.7/modules/creation/)**
 
-## Backend
+::: warning Compatibility
+RBM is compatible from PS1.6 and PHP 5.6
+::: 
+
 
 </Block>
 
 <Block>
+
+## Backend
 
 ### PsAccount
 
