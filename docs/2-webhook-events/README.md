@@ -51,8 +51,8 @@ All the subscription event data follow this structure
 
 | Value        | Type | Description |
 | ------------ | ---- | ----------- |
-| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=2#customer_attributes) | Customer for which the subscription has changed |
-| subscription | [Subscription](https://apidocs.chargebee.com/docs/api/subscriptions?prod_cat_ver=2#subscription_attributes) | The modified subscription |
+| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=1#customer_attributes) | Customer for which the subscription has changed |
+| subscription | [Subscription](https://apidocs.chargebee.com/docs/api/subscriptions?prod_cat_ver=1#subscription_attributes) | The modified subscription |
 
 
 <Example>
@@ -79,17 +79,24 @@ All the subscription event data follow this structure
       "updated_at": 1517505731
     },
     "subscription": {
-      "items": [{
-        "type": "plan",
-        "item_id": "foobar-advanced",
-        "trial_end": 1517505731,
-        "start_date": 1517505731,
-          "created_at": 1517505731,
-          "updated_at": 1517505731
-      }],
+      "activated_at": 1517505643,
+      "billing_period": 1,
+      "billing_period_unit": "month",
+      "created_at": 1517505643,
+      "currency_code": "USD",
+      "customer_id": "93633bec-6bc8-474d-80df-3be115780ad1",
+      "deleted": false,
+      "id": "__test__KyVnHhSBWkkwI2Tn",
+      "next_billing_at": 1519924843,
+      "object": "subscription",
+      "plan_amount": 895,
+      "plan_free_quantity": 0,
+      "plan_id": "no_trial",
+      "plan_quantity": 1,
+      "plan_unit_price": 895,
+      "started_at": 1517505643,
       "status": "active",
-      "created_at": 1517505731,
-      "updated_at": 1517505731
+      "updated_at": 1517505643
     }
   }
 }
@@ -109,9 +116,9 @@ All the payment event data follow this structure
 
 | Value        | Type | Description |
 | ------------ | ---- | ----------- |
-| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=2#customer_attributes) | Customer for which the subscription has changed |
-| subscription | [Subscription](https://apidocs.chargebee.com/docs/api/subscriptions?prod_cat_ver=2#subscription_attributes) | The modified subscription |
-| subscription | [Transaction](https://apidocs.chargebee.com/docs/api/transactions?prod_cat_ver=2#transaction_attributes) | The payment transaction |
+| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=1#customer_attributes) | Customer for which the subscription has changed |
+| subscription | [Subscription](https://apidocs.chargebee.com/docs/api/subscriptions?prod_cat_ver=1#subscription_attributes) | The modified subscription |
+| subscription | [Transaction](https://apidocs.chargebee.com/docs/api/transactions?prod_cat_ver=1#transaction_attributes) | The payment transaction |
 
 
 
@@ -139,18 +146,24 @@ All the payment event data follow this structure
       "updated_at": 1517505731
     },
     "subscription": {
-      "id": "AzZlpDSZGCgwPNZ5",
-      "items": [{
-        "type": "plan",
-        "item_id": "foobar-advanced",
-        "trial_end": 1517505731,
-        "start_date": 1517505731,
-          "created_at": 1517505731,
-          "updated_at": 1517505731
-      }],
+      "activated_at": 1517505643,
+      "billing_period": 1,
+      "billing_period_unit": "month",
+      "created_at": 1517505643,
+      "currency_code": "USD",
+      "customer_id": "93633bec-6bc8-474d-80df-3be115780ad1",
+      "deleted": false,
+      "id": "__test__KyVnHhSBWkkwI2Tn",
+      "next_billing_at": 1519924843,
+      "object": "subscription",
+      "plan_amount": 895,
+      "plan_free_quantity": 0,
+      "plan_id": "no_trial",
+      "plan_quantity": 1,
+      "plan_unit_price": 895,
+      "started_at": 1517505643,
       "status": "active",
-      "created_at": 1517505731,
-      "updated_at": 1517505731
+      "updated_at": 1517505643
     },
     "transaction": {
       "id": "txn_AzZvc2SdMoKel8tAP",
@@ -205,7 +218,7 @@ All the customer event data follow this structure
 
 | Value        | Type | Description |
 | ------------ | ---- | ----------- |
-| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=2#customer_attributes) | Customer for which the subscription has changed |
+| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=1#customer_attributes) | Customer for which the subscription has changed |
 
 <Example>
 ```json
