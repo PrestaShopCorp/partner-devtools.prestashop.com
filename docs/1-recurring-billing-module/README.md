@@ -705,6 +705,7 @@ Data format: `{state, card, credit_notes, subscription, customer, invoice}` if t
 
 The event hook system allows you to be notified in the front app when a subscription changes. There is 2 types of event:
 
+- `billing_initialized`: Triggered after the BillingCustomer component has been rendered
 - `subscription_updated`: Triggered when a subscription is updated or created
 - `subscription_cancelled`: Triggered when a subscription is cancelled
 
@@ -716,6 +717,13 @@ These event hook are triggered on the Billing API HTTP call return. It may have 
 Here is the receipe to listen to this event hook:
 
 ```html{6}
+    <ps-billing-customer
+        v-if="billingContext.user.email"
+        ref="psBillingCustomerRef"
+        :context="billingContext"
+        :onOpenModal="openBillingModal"
+        :onEventHook="eventHookHandler"
+    />
     <ps-billing-modal
       v-if="modalType !== ''"
       :context="billingContext"
@@ -734,6 +742,10 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
         // ...
         eventHookHandler(type, data) {
             switch(type) {
+                case EVENT_HOOK_TYPE.BILLING_INITIALIZED:
+                    // data structure is: { customer, subscription } 
+                    console.log('Billing initialized', data);
+                    break;
                 case EVENT_HOOK_TYPE.SUBSCRIPTION_UPDATED:
                     // data structure is: { customer, subscription, card } 
                     console.log('Sub updated', data);
@@ -759,6 +771,7 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
         ref="psBillingCustomerRef"
         :context="billingContext"
         :onOpenModal="openBillingModal"
+        :onEventHook="eventHookHandler"
     />
     <ps-billing-modal
       v-if="modalType !== ''"
