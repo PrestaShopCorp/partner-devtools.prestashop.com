@@ -648,7 +648,7 @@ Below is the details of the attributes
 | Attribute | Type | Description |
 | ---------- |------| -------------|
 | moduleName | **string** | Module's name (**required**) |
-| moduleTosUrl | **string** | Url to your ToS (**required**) |
+| moduleTosUrl | **string** | Url to your term of service (**required**) |
 | accountApi | **string** | API to retrieve Prestashop Account (**required**) |
 | emailSupport | **string** | Email to contact support (**required**) |
 | i18n.isoCode | **string** | ISO code (**required**) |
