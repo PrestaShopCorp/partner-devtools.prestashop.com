@@ -99,23 +99,22 @@ class Foobar extends Module
             }
 
             Media::addJsDef([
-                'storePsFoobar' => [
+                'psBillingContext' => [
                     'context' => [
-                        'version_ps' => _PS_VERSION_,
-                        'version_module' => $this->version,
+                        'versionPs' => _PS_VERSION_,
+                        'versionModule' => $this->version,
                         'moduleName' => $this->name,
-                        'refreshToken' => $refreshToken,
-                        'i18n' => [
-                            'isoCode' => $this->getLanguageIsoCode(),
-                        ],
+                        'refreshToken' => $psAccountsService->getRefreshToken(),
+                        'emailSupport' => $this->emailSupport,
                         'shop' => [
-                            'uuid' => $shopUuid,
+                            'uuid' => $psAccountsService->getShopUuidV4()
+                        ],
+                        'i18n' => [
+                            'isoCode' => $this->getLanguageIsoCode()
                         ],
                         'user' => [
-                            'created_from_ip' => $ip_address,
-                            'email' => $email,
-                            'emailIsValidated' => $emailIsValidated,
-                            'emailSupport' => $this->emailSupport,
+                            'createdFromIp' => $ip_address,
+                            'email' => $psAccountsService->getEmail()
                         ]
                     ]
                 ]

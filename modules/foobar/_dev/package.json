@@ -11,7 +11,8 @@
     "scripts": {
         "dev": "lerna run dev --concurrency 1",
         "build": "lerna run build --concurrency 1",
-        "zip-module": "npm update --prefix ./apps/foobarsettings && npm run build-skip-eslint --prefix ./apps/foobarsettings && node zip-module.js"
+        "update": "npm update --prefix ./apps/foobarsettings",
+        "zip-module": "npm run build-skip-eslint --prefix ./apps/foobarsettings && node zip-module"
     },
     "author": "",
     "license": "ISC",
