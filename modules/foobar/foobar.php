@@ -125,6 +125,7 @@ class Foobar extends Module
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,
                         'refreshToken' => $refreshToken,
+                        'emailSupport' => $this->emailSupport,
                         'i18n' => [
                             'isoCode' => $this->getLanguageIsoCode(),
                         ],
@@ -135,7 +136,6 @@ class Foobar extends Module
                             'created_from_ip' => $ip_address,
                             'email' => $email,
                             'emailIsValidated' => $emailIsValidated,
-                            'emailSupport' => $this->emailSupport,
                         ],
                         'moduleTosUrl' => $this->getTosLink()
                     ]
