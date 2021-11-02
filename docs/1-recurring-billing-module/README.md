@@ -721,18 +721,18 @@ Data format: `{state, card, credit_notes, subscription, customer, invoice}` if t
 <Block>
 #### Event hook 
 
-The event hook system allows you to be notified in the front app when a subscription changes. There is 2 types of event:
+The event hook system allows you to be notified in the front app when a subscription changes. There are 3 types of event:
 
-- `billing_initialized`: Triggered after the BillingCustomer component has been rendered
-- `subscription_updated`: Triggered when a subscription is updated or created
-- `subscription_cancelled`: Triggered when a subscription is cancelled
+- `billing:billing_initialized`: Triggered after the BillingCustomer component has been rendered
+- `billing:subscription_updated`: Triggered when a subscription is updated or created
+- `billing:subscription_cancelled`: Triggered when a subscription is cancelled
 
 ::: warning Warning
 These event hook are triggered on the Billing API HTTP call return. It may have some delay for your system to be notified of the subscription update by the webhook system. We advice you to do some [long polling](https://javascript.info/long-polling) until you the subscription update is propagated to your system.
 :::
 
 
-Here is the receipe to listen to this event hook:
+Here is the recipe to listen to this event hook:
 
 ```html{6}
     <ps-billing-customer

@@ -119,10 +119,10 @@ class Foobar extends Module
             }
 
             Media::addJsDef([
-                'storePsFoobar' => [
+                'psBillingContext' => [
                     'context' => [
-                        'version_ps' => _PS_VERSION_,
-                        'version_module' => $this->version,
+                        'versionPs' => _PS_VERSION_,
+                        'versionModule' => $this->version,
                         'moduleName' => $this->name,
                         'refreshToken' => $refreshToken,
                         'i18n' => [
