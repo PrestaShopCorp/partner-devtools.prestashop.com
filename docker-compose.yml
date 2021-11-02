@@ -1,33 +1,5 @@
 version: '3'
 services:
-  prestashop_rbm_shop:
-    image: prestashop/prestashop
-    container_name: ps-rbm.local
-    networks:
-      - prestashop_net
-    ports:
-      - 8080:80
-    volumes:
-      - ./modules/foobar:/var/www/html/modules/foobar
-    environment:
-      - DB_SERVER=ps-database.local
-      - DB_USER=root
-      - DB_PASSWD=admin
-      - DB_NAME=rbm-prestashop
-      - PS_HANDLE_DYNAMIC_DOMAIN=0
-      - PS_INSTALL_AUTO=1
-      - PS_DEV_MODE=0
-      - PS_LANGUAGE=fr
-      - PS_COUNTRY=FR
-      - PS_FOLDER_ADMIN=admin-dev
-      - PS_FOLDER_INSTALL=install-dev
-      - XDEBUG=yes
-      - PS_DOMAIN=localhost:8080
-      - ADMIN_MAIL=demo@prestashop.com
-      - ADMIN_PASSWD=prestashop_demo
-    depends_on:
-      - prestashop_rbm_db
-
   prestashop_rbm_db:
     image: mariadb:10
     container_name: ps-database.local
@@ -42,14 +14,45 @@ services:
       - MARIADB_DATABASE=rbm-prestashop
     command: mysqld --default-authentication-plugin=mysql_native_password
 
-  prestashop_tunnel:
-    image: efrecon/localtunnel
+  prestashop_rbm_shop:
+    image: prestashop/prestashop
+    container_name: ps-rbm.local
     networks:
       - prestashop_net
+    ports:
+      - ${PORT:-8080}:80
+    volumes:
+      - ./modules/foobar:/var/www/html/modules/foobar
+    environment:
+      - DB_SERVER=ps-database.local
+      - DB_USER=root
+      - DB_PASSWD=admin
+      - DB_NAME=rbm-prestashop
+      - PS_HANDLE_DYNAMIC_DOMAIN=0
+      - PS_INSTALL_AUTO=1
+      - PS_DEV_MODE=1
+      - PS_LANGUAGE=${PS_LANGUAGE:-en}
+      - PS_COUNTRY=${PS_COUNTRY:-GB}
+      - PS_ALL_LANGUAGES=${PS_ALL_LANGUAGES:-0}
+      - PS_FOLDER_ADMIN=admin-dev
+      - PS_FOLDER_INSTALL=install-dev
+      - XDEBUG=yes
+      - PS_DOMAIN=${RBM_NAME:-rbm-prestashop}.tunnel.prestashop.net
+      - ADMIN_MAIL=${ADMIN_MAIL:-demo@prestashop.com}
+      - ADMIN_PASSWD=${ADMIN_PASSWD:-prestashop_demo}
+    depends_on:
+      - prestashop_rbm_db
+
+  prestashop_tunnel:
+    container_name: ps-tunnel.local
+    restart: always
+    build:
+      context: "tunnel"
+      dockerfile: Dockerfile
     depends_on:
       - prestashop_rbm_shop
-    command: --local-host prestashop_rbm_shop --port 8080 --subdomain prestashop-rbm-dev
-
+    network_mode: host
+    command: --port ${PORT:-8080} --subdomain ${RBM_NAME:-rbm-prestashop} --host http://tunnel.prestashop.net
 
 networks:
   prestashop_net:
