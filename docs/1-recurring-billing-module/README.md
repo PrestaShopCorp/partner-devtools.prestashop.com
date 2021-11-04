@@ -107,7 +107,7 @@ Recurring Billing Modules require PsAccount to be installed on the shop in order
 First you need to register PsAccount within your module. You should add a `getService` method. Then update the `install()` hook.
 
 ```php
-class Foobar extends Module {
+class Rbm_example extends Module {
   // ...
   public function install()
   {
@@ -192,8 +192,8 @@ You should load the bundle of the front JS app in the `getContent` hook of your 
 
 ```php
 // Update the path to have the proper path
-$this->context->smarty->assign('pathSettingsVendor', $this->getPathUri() . 'views/js/chunk-vendors-<module_name>-settings.' . $this->version . '.js');
-$this->context->smarty->assign('pathSettingsApp', $this->getPathUri() . 'views/js/app-<module_name>-settings.' . $this->version . '.js');
+$this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-<module_name>.' . $this->version . '.js');
+$this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-<module_name>.' . $this->version . '.js');
 ```
 
 <Example>
@@ -208,7 +208,7 @@ use PrestaShop\PsAccountsInstaller\Installer\Exception\ModuleVersionException;
 use PrestaShop\PsAccountsInstaller\Installer\Exception\ModuleNotInstalledException;
 use ContextCore as Context;
 
-class Foobar extends Module
+class Rbm_example extends Module
 {
 
     private $container;
@@ -216,7 +216,7 @@ class Foobar extends Module
 
     public function __construct()
     {
-        $this->name = 'foobar';
+        $this->name = 'rbm_example';
         $this->tab = 'advertising_marketing';
         $this->version = '1.0.0';
         $this->author = 'John Doe';
@@ -230,8 +230,8 @@ class Foobar extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('foobar');
-        $this->description = $this->l('My foobar is foobar.');
+        $this->displayName = $this->l('rbm_example');
+        $this->description = $this->l('My rbm_example is rbm_example.');
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
         $this->template_dir = _PS_MODULE_DIR_ . $this->name . '/views/templates/admin/';
         if ($this->container === null) {
@@ -265,8 +265,8 @@ class Foobar extends Module
             'psaccountsVue' => $facade->getAccountsVueCdn(),
         ]);
 
-        $this->context->smarty->assign('pathSettingsVendor', $this->getPathUri() . 'views/js/chunk-vendors-<module_name>-settings.' . $this->version . '.js');
-        $this->context->smarty->assign('pathSettingsApp', $this->getPathUri() . 'views/js/app-<module_name>-settings.' . $this->version . '.js');
+        $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-<module_name>.' . $this->version . '.js');
+        $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-<module_name>.' . $this->version . '.js');
 
         try {
             $psAccountsService = $facade->getPsAccountsService();
@@ -342,17 +342,17 @@ return $this->context->smarty->fetch($this->template_dir . '<module_name>.tpl');
 
 This file will load the Vue app frontend and the chunk vendor js
 
-> The 2 variables `$pathSettingsVendor` and `$pathSettingsApp` are prepared in the `getContent` hook.
+> The 2 variables `$pathVendor` and `$pathApp` are prepared in the `getContent` hook.
 
 <Example>
 ```html
-<link href="{$pathSettingsVendor|escape:'htmlall':'UTF-8'}" rel=preload as=script>
-<link href="{$pathSettingsApp|escape:'htmlall':'UTF-8'}" rel=preload as=script>
+<link href="{$pathVendor|escape:'htmlall':'UTF-8'}" rel=preload as=script>
+<link href="{$pathApp|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 
 <div id="app"></div>
 
-<script src="{$pathSettingsVendor|escape:'htmlall':'UTF-8'}"></script>
-<script src="{$pathSettingsApp|escape:'htmlall':'UTF-8'}"></script>
+<script src="{$pathVendor|escape:'htmlall':'UTF-8'}"></script>
+<script src="{$pathApp|escape:'htmlall':'UTF-8'}"></script>
 
 ```
 </Example>
@@ -398,7 +398,7 @@ You need to update or create the `vue.config.js` to compile properly your VueJS 
 This is only an example of `vue.config.js`, you may modify this configuration.
 
 ::: warning Chunk path
-These file's names must match with the ones (`$pathSettingsVendor`, `$pathSettingsApp`
+These file's names must match with the ones (`$pathVendor`, `$pathApp`
 ) used in the `getContent` hook and the version of this module php (cf composer.json) and the vue app (cf package.json) must be the same
 :::
 
@@ -418,8 +418,8 @@ module.exports = {
             }),
         ],
         output: {
-            filename: `js/app-<module_name>-settings.${version}.js`,
-            chunkFilename: `js/chunk-vendors-<module_name>-settings.${version}.js`
+            filename: `js/app-<module_name>.${version}.js`,
+            chunkFilename: `js/chunk-vendors-<module_name>.${version}.js`
         }
     },
     chainWebpack: (config) => {
