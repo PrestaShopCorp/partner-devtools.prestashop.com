@@ -11,11 +11,9 @@
   },
   "dependencies": {
     "@prestashopcorp/billing-cdc": "alpha",
-    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.18.1",
-    "lodash": "^4.17.21",
     "prestakit": "^1.2.3",
     "prestashop_accounts_vue_components": "^1.5.6",
     "vue": "^2.6.11",
