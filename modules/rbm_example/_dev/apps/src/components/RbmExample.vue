@@ -2,24 +2,31 @@
   <div class="pt-2">
     <section key="display-module-plan">
       <div class="p-0 m-auto tw-container">
-        <PsAccounts :force-show-plans="true">
+        <PsAccounts>
+          <template v-slot:body>
+              <!-- Put here what you want to show in the ps account container -->
+          </template>
+          <!-- or -->
+          <template v-slot:customBody>
+              <!-- Put here what you want to show in the ps account container -->
+          </template>
         </PsAccounts>
       </div>
 
-      <ps-customer
-        v-if="context.user.email"
+      <ps-billing-customer
+        v-if="billingContext.user.email"
         ref="customer"
-        :context="context"
+        :context="billingContext"
         :onOpenModal="openBillingModal"
         :onEventHook="eventHookHandler"
       />
     </section>
 
-    <modal-container
+    <ps-billing-modal
       v-if="type !== ''"
-      :context="context"
+      :context="billingContext"
       :type="type"
-      :onCloseModal="closeModal"
+      :onCloseModal="closeBillingModal"
       :onEventHook="eventHookHandler"
     />
 
@@ -38,8 +45,8 @@ export default {
   name: 'RbmExample',
   components: {
     PsAccounts,
-    PsCustomer: CustomerComponent.driver('vue', Vue),
-    ModalContainer: ModalContainerComponent.driver('vue', Vue),
+    PsBillingCustomer: CustomerComponent.driver('vue', Vue),
+    PsBillingModal: ModalContainerComponent.driver('vue', Vue),
   },
   provide() {
     return {
@@ -48,7 +55,7 @@ export default {
   },
   data() {
     return {
-      context: {...window.psBillingContext.context, moduleLogo},
+      billingContext: {...window.psBillingContext.context, moduleLogo},
       type: '',
       sub: null
     }
@@ -56,18 +63,16 @@ export default {
   methods: {
     openBillingModal(type, data) {
       this.type = type;
-      this.context = {
-        ...this.context,
+      this.billingContext = {
+        ...this.billingContext,
         ...data
       };
-      console.log('openBillingModal', type, this.context);
     },
-    closeModal(data) {
-      console.log('data', data)
+    closeBillingModal(data) {
       this.type = '';
       this.$refs.customer.parent.updateProps({
-        context: {
-          ...this.context,
+        billingContext: {
+          ...this.billingContext,
           ...data
         },
       });
@@ -87,6 +92,7 @@ export default {
         case EVENT_HOOK_TYPE.SUBSCRIPTION_CANCELLED:
             // data structure is: { customer, subscription }
             console.log('Sub cancelled', data);
+            this.sub = data.subscription;
             break;
         }
     }
