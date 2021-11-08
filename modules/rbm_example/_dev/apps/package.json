@@ -17,8 +17,7 @@
     "prestakit": "^1.2.3",
     "prestashop_accounts_vue_components": "^1.5.6",
     "vue": "^2.6.11",
-    "vue-content-loader": "^0.2.3",
-    "vue-i18n": "^8.26.5"
+    "vue-content-loader": "^0.2.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.12",
@@ -29,20 +28,6 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
   },
   "browserslist": [
     "> 1%",

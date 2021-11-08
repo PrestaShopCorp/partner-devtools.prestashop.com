@@ -1,6 +1,6 @@
 <template>
   <div class="pt-2">
-    <section key="display-module-plan">
+    <section>
       <div class="p-0 m-auto tw-container">
         <PsAccounts></PsAccounts>
       </div>
