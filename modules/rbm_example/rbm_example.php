@@ -12,7 +12,6 @@ class Rbm_example extends Module
 {
 
     private $container;
-    private $psVersionIs17;
     private $emailSupport;
 
     public function __construct()
@@ -23,11 +22,11 @@ class Rbm_example extends Module
         $this->author = 'Prestashop';
         $this->emailSupport = 'support@prestashop.com';
         $this->need_instance = 0;
+
         $this->ps_versions_compliancy = [
             'min' => '1.6',
             'max' => _PS_VERSION_
         ];
-        $this->psVersionIs17 = (bool) version_compare(_PS_VERSION_, '1.7', '>=');
         $this->bootstrap = true;
 
         parent::__construct();
@@ -69,6 +68,26 @@ class Rbm_example extends Module
         return $this->context->language !== null ? $this->context->language->iso_code : 'en';
     }
 
+    /**
+     * Get the Tos URL from the context language, if null, send default link value
+     *
+     * @return string
+     */
+    public function getTosLink()
+    {
+        $iso_lang = $this->getLanguageIsoCode();
+        switch ($iso_lang) {
+            case 'fr':
+                $url = 'https://www.prestashop.com/fr/prestashop-account-cgu';
+                break;
+            default:
+                $url = 'https://www.prestashop.com/en/prestashop-account-terms-conditions';
+                break;
+        }
+
+        return $url;
+    }
+
     public function getContent()
     {
         $facade = $this->getService('ps_accounts.facade');
@@ -101,16 +120,18 @@ class Rbm_example extends Module
                         'moduleName' => $this->name,
                         'refreshToken' => $refreshToken,
                         'emailSupport' => $this->emailSupport,
-                        'shop' => [
-                            'uuid' => $shopUuid
-                        ],
                         'i18n' => [
-                            'isoCode' => $this->getLanguageIsoCode()
+                            'isoCode' => $this->getLanguageIsoCode(),
+                        ],
+                        'shop' => [
+                            'uuid' => $shopUuid,
                         ],
                         'user' => [
-                            'createdFromIp' => $ip_address,
-                            'email' => $psAccountsService->getEmail()
-                        ]
+                            'created_from_ip' => $ip_address,
+                            'email' => $email,
+                            'emailIsValidated' => $emailIsValidated,
+                        ],
+                        'moduleTosUrl' => $this->getTosLink()
                     ]
                 ]
             ]);
