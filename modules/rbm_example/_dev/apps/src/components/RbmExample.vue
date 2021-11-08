@@ -2,15 +2,7 @@
   <div class="pt-2">
     <section key="display-module-plan">
       <div class="p-0 m-auto tw-container">
-        <PsAccounts>
-          <template v-slot:body>
-              <!-- Put here what you want to show in the ps account container -->
-          </template>
-          <!-- or -->
-          <template v-slot:customBody>
-              <!-- Put here what you want to show in the ps account container -->
-          </template>
-        </PsAccounts>
+        <PsAccounts></PsAccounts>
       </div>
 
       <ps-billing-customer

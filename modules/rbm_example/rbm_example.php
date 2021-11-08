@@ -101,9 +101,6 @@ class Rbm_example extends Module
         try {
             $psAccountsService = $facade->getPsAccountsService();
 
-            $shopUuid = $psAccountsService->getShopUuidV4();
-            $refreshToken = $psAccountsService->getRefreshToken();
-
             if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
                 $ip_address = $_SERVER['HTTP_CLIENT_IP'];
             } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) { //whether ip is from proxy
@@ -118,18 +115,17 @@ class Rbm_example extends Module
                         'versionPs' => _PS_VERSION_,
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,
-                        'refreshToken' => $refreshToken,
+                        'refreshToken' => $psAccountsService->getRefreshToken(),
                         'emailSupport' => $this->emailSupport,
-                        'i18n' => [
-                            'isoCode' => $this->getLanguageIsoCode(),
-                        ],
                         'shop' => [
-                            'uuid' => $shopUuid,
+                            'uuid' => $psAccountsService->getShopUuidV4()
+                        ],
+                        'i18n' => [
+                            'isoCode' => $this->getLanguageIsoCode()
                         ],
                         'user' => [
-                            'created_from_ip' => $ip_address,
-                            'email' => $email,
-                            'emailIsValidated' => $emailIsValidated,
+                            'createdFromIp' => $ip_address,
+                            'email' => $psAccountsService->getEmail()
                         ],
                         'moduleTosUrl' => $this->getTosLink()
                     ]

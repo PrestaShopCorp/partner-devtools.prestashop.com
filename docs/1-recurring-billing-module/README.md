@@ -193,8 +193,8 @@ You should load the bundle of the front JS app in the `getContent` hook of your 
 
 ```php
 // Update the path to have the proper path
-$this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-<module_name>.' . $this->version . '.js');
-$this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-<module_name>.' . $this->version . '.js');
+$this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
+$this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
 ```
 
 <Example>
@@ -228,7 +228,6 @@ class Rbm_example extends Module
             'min' => '1.6',
             'max' => _PS_VERSION_
         ];
-        $this->psVersionIs17 = (bool) version_compare(_PS_VERSION_, '1.7', '>=');
         $this->bootstrap = true;
 
         parent::__construct();
@@ -283,11 +282,6 @@ class Rbm_example extends Module
         try {
             $psAccountsService = $facade->getPsAccountsService();
 
-            $shopUuid = $psAccountsService->getShopUuidV4();
-            $email = $psAccountsService->getEmail();
-            $emailIsValidated = $psAccountsService->isEmailValidated();
-            $refreshToken = $psAccountsService->getRefreshToken();
-
             if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
                 $ip_address = $_SERVER['HTTP_CLIENT_IP'];
             } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) { //whether ip is from proxy
@@ -302,10 +296,10 @@ class Rbm_example extends Module
                         'versionPs' => _PS_VERSION_,
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,
-                        'refreshToken' => $refreshToken,
+                        'refreshToken' => $psAccountsService->getRefreshToken(),
                         'emailSupport' => $this->emailSupport,
                         'shop' => [
-                            'uuid' => $shopUuid
+                            'uuid' => $psAccountsService->getShopUuidV4()
                         ],
                         'i18n' => [
                             'isoCode' => $this->getLanguageIsoCode()
@@ -452,8 +446,8 @@ module.exports = {
             }),
         ],
         output: {
-            filename: `js/app-<module_name>.${version}.js`,
-            chunkFilename: `js/chunk-vendors-<module_name>.${version}.js`
+            filename: `js/app-rbm_example.${version}.js`,
+            chunkFilename: `js/chunk-vendors-rbm_example.${version}.js`
         }
     },
     chainWebpack: (config) => {
@@ -612,13 +606,6 @@ methods: {
 <template>
   <div>
     <PsAccounts>
-        <template v-slot:body>
-            <!-- Put here what you want to show in the ps account container -->
-        </template>
-        <!-- or -->
-        <template v-slot:customBody>
-            <!-- Put here what you want to show in the ps account container -->
-        </template>
     </PsAccounts>
     <ps-billing-customer
         v-if="billingContext.user.email"
@@ -868,6 +855,7 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
 <script>
 import Vue from 'vue';
 import { PsAccounts } from "prestashop_accounts_vue_components";
+import moduleLogo from "@/assets/prestashop-logo.png";
 import { CustomerComponent, ModalContainerComponent, EVENT_HOOK_TYPE } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
 
 export default {
