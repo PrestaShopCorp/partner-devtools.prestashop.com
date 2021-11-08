@@ -1,0 +1,37 @@
+{
+  "name": "rbm_examples_ettings",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service build --no-clean --mode development --watch",
+    "dev-skip-eslint": "vue-cli-service build --no-clean --mode development --watch --skip-plugins @vue/cli-plugin-eslint",
+    "build": "vue-cli-service build --no-clean",
+    "build-skip-eslint": "vue-cli-service build --no-clean --skip-plugins @vue/cli-plugin-eslint",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@prestashopcorp/billing-cdc": "alpha",
+    "bootstrap": "^4.6.0",
+    "bootstrap-vue": "^2.21.2",
+    "core-js": "^3.18.1",
+    "prestakit": "^1.2.3",
+    "prestashop_accounts_vue_components": "^1.5.6",
+    "vue": "^2.6.11",
+    "vue-content-loader": "^0.2.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.12",
+    "@vue/cli-plugin-eslint": "^4.5.12",
+    "@vue/cli-service": "^4.5.12",
+    "autoprefixer": "^9.8.7",
+    "babel-eslint": "^10.1.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

@@ -1,6 +1,6 @@
 # Dev tools for RBM
 
-This repo help you to set up your development environement when you start to develop a PrestaShop RBM. You will find an exemple of a simple RBM Module within the folder `foobar`.
+This repo help you to set up your development environement when you start to develop a PrestaShop RBM. You will find an exemple of a simple RBM Module within the folder `rbm_example`.
 
 Once you launch the wholes services through docker-compose you will get an access to a PrestaShop instance configured with all needed module.
 
@@ -42,4 +42,4 @@ Documentation about developping a RBM is available [here](https://billing-docs.n
 
 ## RBM example
 
-See module [README.md](/modules/foobar/README.md)
+See module [README.md](/modules/rbm_example/README.md)
