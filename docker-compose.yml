@@ -1,24 +1,22 @@
-version: '3'
+version: "3.9"
 services:
   prestashop_rbm_db:
-    image: mariadb:10
+    image: mysql:5.7
     container_name: ps-database.local
-    networks:
-      - prestashop_net
     ports:
       - 3307:3306
     volumes: 
       - ./mysql:/var/lib/mysql
     environment:
-      - MARIADB_ROOT_PASSWORD=admin
-      - MARIADB_DATABASE=rbm-prestashop
-    command: mysqld --default-authentication-plugin=mysql_native_password
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=rbm-prestashop
 
   prestashop_rbm_shop:
-    image: prestashop/prestashop
     container_name: ps-rbm.local
-    networks:
-      - prestashop_net
+    image: prestashop-rbm
+    build:
+      context: ""
+      dockerfile: Dockerfile
     ports:
       - ${PORT:-8080}:80
     volumes:
@@ -32,27 +30,33 @@ services:
       - PS_INSTALL_AUTO=1
       - PS_DEV_MODE=1
       - PS_LANGUAGE=${PS_LANGUAGE:-en}
-      - PS_COUNTRY=${PS_COUNTRY:-GB}
+      - PS_COUNTRY=${PS_COUNTRY:-US}
       - PS_ALL_LANGUAGES=${PS_ALL_LANGUAGES:-0}
       - PS_FOLDER_ADMIN=admin-dev
       - PS_FOLDER_INSTALL=install-dev
       - XDEBUG=yes
-      - PS_DOMAIN=${RBM_NAME:-rbm-prestashop}.tunnel.prestashop.net
-      - ADMIN_MAIL=${ADMIN_MAIL:-demo@prestashop.com}
-      - ADMIN_PASSWD=${ADMIN_PASSWD:-prestashop_demo}
+      - PS_DOMAIN=${RBM_NAME}.${TUNNEL_DOMAIN:-tunnel.prestashop.net}
+      - ADMIN_MAIL=${ADMIN_MAIL:-admin@prestashop.com}
+      - ADMIN_PASSWD=${ADMIN_PASSWD:-prestashop}
     depends_on:
       - prestashop_rbm_db
 
   prestashop_tunnel:
     container_name: ps-tunnel.local
     restart: always
+    image: prestashop-tunnel
     build:
       context: "tunnel"
       dockerfile: Dockerfile
+    environment:
+      - PORT=${PORT:-8080}
+      - TUNNEL_DOMAIN=${TUNNEL_DOMAIN:-tunnel.prestashop.net}
     depends_on:
       - prestashop_rbm_shop
     network_mode: host
-    command: --port ${PORT:-8080} --subdomain ${RBM_NAME:-rbm-prestashop} --host http://tunnel.prestashop.net
+
 
 networks:
-  prestashop_net:
+  default:
+    external: true
+    name: prestashop_net

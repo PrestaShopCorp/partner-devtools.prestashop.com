@@ -1,5 +1,8 @@
 FROM mhart/alpine-node
 
+COPY scripts/run.sh /tmp/run.sh
+
+RUN apk add --no-cache --upgrade bash
 RUN npm install -g localtunnel
 
-ENTRYPOINT ["node", "/usr/bin/lt"]
+CMD ["/tmp/run.sh"]

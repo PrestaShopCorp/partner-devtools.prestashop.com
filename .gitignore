@@ -1,5 +1,11 @@
 # File system
 .DS_Store
+.env
+tunnel/.config
+*.backup
+
+# scripts
+test.sh
 
 # Database
 mysql/
