@@ -252,9 +252,7 @@ class Rbm_example extends Module
 
     public function uninstall()
     {
-        if (!parent::uninstall() ||
-            !Configuration::deleteByName('rbm_example')
-        ) {
+        if (!parent::uninstall()) {
             return false;
         }
 

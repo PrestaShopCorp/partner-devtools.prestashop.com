@@ -52,9 +52,7 @@ class Rbm_example extends Module
 
     public function uninstall()
     {
-        if (!parent::uninstall() ||
-            !Configuration::deleteByName('rbm_example')
-        ) {
+        if (!parent::uninstall()) {
             return false;
         }
 
@@ -85,8 +83,6 @@ class Rbm_example extends Module
             $psAccountsService = $facade->getPsAccountsService();
 
             $shopUuid = $psAccountsService->getShopUuidV4();
-            $email = $psAccountsService->getEmail();
-            $emailIsValidated = $psAccountsService->isEmailValidated();
             $refreshToken = $psAccountsService->getRefreshToken();
 
             if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
