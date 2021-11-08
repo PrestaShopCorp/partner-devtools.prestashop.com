@@ -178,7 +178,8 @@ Media::addJsDef([
             'user' => [
                 'createdFromIp' => $ip_address,
                 'email' => $psAccountsService->getEmail()
-            ]
+            ],
+            'moduleTosUrl' => $this->getTosLink()
         ]
     ]
 ]);
@@ -296,7 +297,8 @@ class Foobar extends Module
                         'user' => [
                             'createdFromIp' => $ip_address,
                             'email' => $psAccountsService->getEmail()
-                        ]
+                        ],
+                        'moduleTosUrl' => $this->getTosLink()
                     ]
                 ]
             ]);
@@ -311,6 +313,21 @@ class Foobar extends Module
     public function getLanguageIsoCode()
     {
         return $this->context->language !== null ? $this->context->language->iso_code : 'en';
+    }
+
+    public function getTosLink()
+    {
+        $iso_lang = $this->getLanguageIsoCode();
+        switch ($iso_lang) {
+            case 'fr':
+                $url = 'https://yoururl.ltd/mentions-legales';
+                break;
+            default:
+                $url = 'https://yoururl.ltd/legal-notice';
+                break;
+        }
+
+        return $url;
     }
 
     public function getService($serviceName)
@@ -631,6 +648,7 @@ Below is the details of the attributes
 | Attribute | Type | Description |
 | ---------- |------| -------------|
 | moduleName | **string** | Module's name (**required**) |
+| moduleTosUrl | **string** | Url to your term of service (**required**) |
 | accountApi | **string** | API to retrieve Prestashop Account (**required**) |
 | emailSupport | **string** | Email to contact support (**required**) |
 | i18n.isoCode | **string** | ISO code (**required**) |
