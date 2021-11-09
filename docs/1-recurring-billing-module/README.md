@@ -176,7 +176,7 @@ Media::addJsDef([
                 'isoCode' => $this->getLanguageIsoCode()
             ],
             'user' => [
-                'createdFromIp' => $ip_address,
+                'createdFromIp' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '',
                 'email' => $psAccountsService->getEmail()
             ],
             'moduleTosUrl' => $this->getTosLink()
@@ -282,14 +282,6 @@ class Rbm_example extends Module
         try {
             $psAccountsService = $facade->getPsAccountsService();
 
-            if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-                $ip_address = $_SERVER['HTTP_CLIENT_IP'];
-            } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) { //whether ip is from proxy
-                $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            } else { //whether ip is from remote address
-                $ip_address = $_SERVER['REMOTE_ADDR'];
-            }
-
             Media::addJsDef([
                 'psBillingContext' => [
                     'context' => [
@@ -305,7 +297,7 @@ class Rbm_example extends Module
                             'isoCode' => $this->getLanguageIsoCode()
                         ],
                         'user' => [
-                            'createdFromIp' => $ip_address,
+                            'createdFromIp' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '',
                             'email' => $psAccountsService->getEmail()
                         ],
                         'moduleTosUrl' => $this->getTosLink()
