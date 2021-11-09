@@ -176,7 +176,7 @@ Media::addJsDef([
                 'isoCode' => $this->getLanguageIsoCode()
             ],
             'user' => [
-                'createdFromIp' => $ip_address,
+                'createdFromIp' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '',
                 'email' => $psAccountsService->getEmail()
             ],
             'moduleTosUrl' => $this->getTosLink()
