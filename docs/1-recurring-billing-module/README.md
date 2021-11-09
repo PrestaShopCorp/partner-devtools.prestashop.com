@@ -9,6 +9,8 @@ title: Recurring Billing Module
 
 A recurring Billing Module is a composition of [PHP](https://www.php.net/) as backend and [Vue 2](https://vuejs.org/) as frontend.
 
+**Prerequisite: The shop needs to be using the protocol HTTPS**
+
 ::: tip
 In the future Vue 2 may not be required as the Prestashop Billing Component doesn't require it.
 :::
