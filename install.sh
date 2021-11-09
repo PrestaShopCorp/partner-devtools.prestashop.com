@@ -15,7 +15,11 @@ fi
 
 # Create http tunnel container
 echo -e "Create HTTP tunnel service\n"
-docker-compose up -d --no-deps --build prestashop_tunnel
+if [[ `uname -m` == 'arm64' ]]; then
+  docker-compose -f docker-compose.yml -f docker-compose.arm64.yml up -d --no-deps --build prestashop_tunnel
+else
+  docker-compose up -d --no-deps --build prestashop_tunnel
+fi
 
 echo -e "Checking if HTTP tunnel is available...\n"
 LOCAL_TUNNEL_READY=`docker inspect -f {{.State.Running}} ps-tunnel.local`

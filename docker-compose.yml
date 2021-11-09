@@ -39,6 +39,7 @@ services:
       - ADMIN_MAIL=${ADMIN_MAIL:-admin@prestashop.com}
       - ADMIN_PASSWD=${ADMIN_PASSWD:-prestashop}
     depends_on:
+      - prestashop_tunnel
       - prestashop_rbm_db
 
   prestashop_tunnel:
@@ -51,10 +52,7 @@ services:
     environment:
       - PORT=${PORT:-8080}
       - TUNNEL_DOMAIN=${TUNNEL_DOMAIN:-tunnel.prestashop.net}
-    depends_on:
-      - prestashop_rbm_shop
     network_mode: host
-
 
 networks:
   default:
