@@ -74,6 +74,9 @@ All the subscription event data follow this structure
         "state": "France", 
         "zip": 75001
       },
+      "meta_data": {
+        "shop_url": "https://www.domain.ltd"
+      },
       "deleted": false,
       "created_at": 1517505731,
       "updated_at": 1517505731
