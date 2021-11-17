@@ -20,7 +20,7 @@ services:
     ports:
       - ${PORT:-8080}:80
     volumes:
-      - ./modules/foobar:/var/www/html/modules/foobar
+      - ./modules/rbm_example:/var/www/html/modules/rbm_example
     environment:
       - DB_SERVER=ps-database.local
       - DB_USER=root

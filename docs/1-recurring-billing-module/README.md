@@ -60,12 +60,12 @@ The 2 dependencies `php` and `symfony/http-foundation` are used for resolving co
 <Example>
 ```json{13,14}
 {
-    "name": "foo/bar",
+    "name": "prestashop/rbm_example",
     "type": "library",
     "authors": [
         {
-            "name": "John Doe",
-            "email": "john.doe@prestashop.com"
+            "name": "Prestashop",
+            "email": "support@prestashop.com"
         }
     ],
     "require": {
@@ -107,7 +107,7 @@ Recurring Billing Modules require PsAccount to be installed on the shop in order
 First you need to register PsAccount within your module. You should add a `getService` method. Then update the `install()` hook.
 
 ```php
-class Foobar extends Module {
+class Rbm_example extends Module {
   // ...
   public function install()
   {
@@ -176,9 +176,10 @@ Media::addJsDef([
                 'isoCode' => $this->getLanguageIsoCode()
             ],
             'user' => [
-                'createdFromIp' => $ip_address,
+                'createdFromIp' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '',
                 'email' => $psAccountsService->getEmail()
-            ]
+            ],
+            'moduleTosUrl' => $this->getTosLink()
         ]
     ]
 ]);
@@ -192,8 +193,8 @@ You should load the bundle of the front JS app in the `getContent` hook of your 
 
 ```php
 // Update the path to have the proper path
-$this->context->smarty->assign('pathSettingsVendor', $this->getPathUri() . 'views/js/chunk-vendors-<module_name>-settings.' . $this->version . '.js');
-$this->context->smarty->assign('pathSettingsApp', $this->getPathUri() . 'views/js/app-<module_name>-settings.' . $this->version . '.js');
+$this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
+$this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
 ```
 
 <Example>
@@ -208,19 +209,20 @@ use PrestaShop\PsAccountsInstaller\Installer\Exception\ModuleVersionException;
 use PrestaShop\PsAccountsInstaller\Installer\Exception\ModuleNotInstalledException;
 use ContextCore as Context;
 
-class Foobar extends Module
+class Rbm_example extends Module
 {
 
     private $container;
+    private $psVersionIs17;
     private $emailSupport;
 
     public function __construct()
     {
-        $this->name = 'foobar';
+        $this->name = 'rbm_example';
         $this->tab = 'advertising_marketing';
         $this->version = '1.0.0';
-        $this->author = 'John Doe';
-        $this->emailSupport = 'john.doe@prestashop.com';
+        $this->author = 'Prestashop';
+        $this->emailSupport = 'support@prestashop.com';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = [
             'min' => '1.6',
@@ -230,10 +232,13 @@ class Foobar extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('foobar');
-        $this->description = $this->l('My foobar is foobar.');
-        $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
+        $this->displayName = $this->l('rbm_example');
+        $this->description = $this->l('This is a RBM example module.');
+
+        $this->confirmUninstall = $this->l('Are you sure to uninstall this module?');
+
         $this->template_dir = _PS_MODULE_DIR_ . $this->name . '/views/templates/admin/';
+
         if ($this->container === null) {
             $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer($this->name, $this->getLocalPath());
         }
@@ -247,13 +252,21 @@ class Foobar extends Module
 
     public function uninstall()
     {
-        if (!parent::uninstall() ||
-            !Configuration::deleteByName($this->name)
-        ) {
+        if (!parent::uninstall()) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Get the isoCode from the context language, if null, send 'en' as default value
+     *
+     * @return string
+     */
+    public function getLanguageIsoCode()
+    {
+        return $this->context->language !== null ? $this->context->language->iso_code : 'en';
     }
 
     public function getContent()
@@ -262,22 +275,12 @@ class Foobar extends Module
         Media::addJsDef([
             'contextPsAccounts' => $facade->getPsAccountsPresenter()
                 ->present($this->name),
-            'psaccountsVue' => $facade->getAccountsVueCdn(),
         ]);
 
-        $this->context->smarty->assign('pathSettingsVendor', $this->getPathUri() . 'views/js/chunk-vendors-<module_name>-settings.' . $this->version . '.js');
-        $this->context->smarty->assign('pathSettingsApp', $this->getPathUri() . 'views/js/app-<module_name>-settings.' . $this->version . '.js');
-
+        $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
+        $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
         try {
             $psAccountsService = $facade->getPsAccountsService();
-
-            if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-                $ip_address = $_SERVER['HTTP_CLIENT_IP'];
-            } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) { //whether ip is from proxy
-                $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            } else { //whether ip is from remote address
-                $ip_address = $_SERVER['REMOTE_ADDR'];
-            }
 
             Media::addJsDef([
                 'psBillingContext' => [
@@ -285,7 +288,7 @@ class Foobar extends Module
                         'versionPs' => _PS_VERSION_,
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,
-                        'accountApi' => $psAccountsService->getAdminAjaxUrl(),
+                        'refreshToken' => $psAccountsService->getRefreshToken(),
                         'emailSupport' => $this->emailSupport,
                         'shop' => [
                             'uuid' => $psAccountsService->getShopUuidV4()
@@ -294,23 +297,39 @@ class Foobar extends Module
                             'isoCode' => $this->getLanguageIsoCode()
                         ],
                         'user' => [
-                            'createdFromIp' => $ip_address,
+                            'createdFromIp' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '',
                             'email' => $psAccountsService->getEmail()
-                        ]
+                        ],
+                        'moduleTosUrl' => $this->getTosLink()
                     ]
                 ]
             ]);
+
         } catch (ModuleNotInstalledException $e) {
+
             // You handle exception here
+
         } catch (ModuleVersionException $e) {
+
             // You handle exception here
         }
-        return $this->context->smarty->fetch($this->template_dir . '<module_name>.tpl');
+
+        return $this->context->smarty->fetch($this->template_dir . 'rbm_example.tpl');
     }
 
-    public function getLanguageIsoCode()
+    public function getTosLink()
     {
-        return $this->context->language !== null ? $this->context->language->iso_code : 'en';
+        $iso_lang = $this->getLanguageIsoCode();
+        switch ($iso_lang) {
+            case 'fr':
+                $url = 'https://yoururl.ltd/mentions-legales';
+                break;
+            default:
+                $url = 'https://yoururl.ltd/legal-notice';
+                break;
+        }
+
+        return $url;
     }
 
     public function getService($serviceName)
@@ -321,6 +340,7 @@ class Foobar extends Module
                 $this->getLocalPath()
             );
         }
+
         return $this->container->getService($serviceName);
     }
 }
@@ -332,7 +352,7 @@ class Foobar extends Module
 
 <Block>
 
-#### Module settings template
+#### Module template
 
 Create the global vue app template in `views/templates/admin/<module_name>.tpl`. The name should match the name defined in `<module_name>.php` by this line:
 
@@ -342,17 +362,17 @@ return $this->context->smarty->fetch($this->template_dir . '<module_name>.tpl');
 
 This file will load the Vue app frontend and the chunk vendor js
 
-> The 2 variables `$pathSettingsVendor` and `$pathSettingsApp` are prepared in the `getContent` hook.
+> The 2 variables `$pathVendor` and `$pathApp` are prepared in the `getContent` hook.
 
 <Example>
 ```html
-<link href="{$pathSettingsVendor|escape:'htmlall':'UTF-8'}" rel=preload as=script>
-<link href="{$pathSettingsApp|escape:'htmlall':'UTF-8'}" rel=preload as=script>
+<link href="{$pathVendor|escape:'htmlall':'UTF-8'}" rel=preload as=script>
+<link href="{$pathApp|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 
 <div id="app"></div>
 
-<script src="{$pathSettingsVendor|escape:'htmlall':'UTF-8'}"></script>
-<script src="{$pathSettingsApp|escape:'htmlall':'UTF-8'}"></script>
+<script src="{$pathVendor|escape:'htmlall':'UTF-8'}"></script>
+<script src="{$pathApp|escape:'htmlall':'UTF-8'}"></script>
 
 ```
 </Example>
@@ -370,19 +390,19 @@ Javascript and Vue knowledge are prerequisite (cf [https://vuejs.org/v2/guide/](
 
 ### Getting started
 
-Create a `_dev/apps` folder in your module. This folder will contain the different VueJS app contained in your module. You can have only one app.
+Create a `_dev` folder in your module. This folder will contain the different VueJS app contained in your module. You can have only one app.
 
-Go to this folder then create a [VueJS project](https://cli.vuejs.org/guide/creating-a-project.html#vue-create). 
+Go to this folder then create a [VueJS project](https://cli.vuejs.org/guide/creating-a-project.html#vue-create).
 
 ::: tip
-We advise you to name this app `settings`, to separate the settings part from the rest of your module.
+Feel free to organize your application in your own way
 :::
 
 <Example>
 ```bash
 # Create the Vue app
-cd _dev/apps
-vue create settings
+cd _dev
+vue create <app's name>
 ```
 
 </Example>
@@ -398,7 +418,7 @@ You need to update or create the `vue.config.js` to compile properly your VueJS 
 This is only an example of `vue.config.js`, you may modify this configuration.
 
 ::: warning Chunk path
-These file's names must match with the ones (`$pathSettingsVendor`, `$pathSettingsApp`
+These file's names must match with the ones (`$pathVendor`, `$pathApp`
 ) used in the `getContent` hook and the version of this module php (cf composer.json) and the vue app (cf package.json) must be the same
 :::
 
@@ -418,8 +438,8 @@ module.exports = {
             }),
         ],
         output: {
-            filename: `js/app-<module_name>-settings.${version}.js`,
-            chunkFilename: `js/chunk-vendors-<module_name>-settings.${version}.js`
+            filename: `js/app-rbm_example.${version}.js`,
+            chunkFilename: `js/chunk-vendors-rbm_example.${version}.js`
         }
     },
     chainWebpack: (config) => {
@@ -434,7 +454,7 @@ module.exports = {
     runtimeCompiler: true,
     productionSourceMap: false,
     filenameHashing: false,
-    outputDir: "../../../views/", // Outputs in module views folder
+    outputDir: "../../views/", // Outputs in module views folder
     assetsDir: "",
     publicPath: "../modules/<module_name>/views/",
 };
@@ -517,18 +537,20 @@ Use `PsBillingCustomer`, `PsBillingModal` in the template
       :type="modalType"
       :onCloseModal="closeBillingModal"
     />
+    <div v-if="sub && sub.id">Rbm example content</div>
   </div>
 </template>
 ```
 
-The `context` should be retrieved from `window.psBillingContext` and injected inside the template.
+The `context` should be retrieved from `window.psBillingContext.context` and injected inside the template.
 
 ```js
 data() {
-  return {
-    billingContext: window.psBillingContext,
-    modalType: '',
-  }
+    return {
+        billingContext: {...window.psBillingContext.context, moduleLogo},
+        modalType: '',
+        sub: null
+    }
 },
 ```
 
@@ -536,19 +558,38 @@ To display the payment funnel, and other modals, the billing components required
 
 ```js
 methods: {
-  openBillingModal(type, data) {
-    this.modalType = type;
-    this.billingContext = { ...this.billingContext, ...data };
-  },
-  closeBillingModal(data) {
-    this.modalType = '';
-    this.$refs.psBillingCustomerRef.parent.updateProps({
-        context: {
-            ...this.context,
-            ...data
+    openBillingModal(type, data) {
+        this.modalType = type;
+        this.billingContext = { ...this.billingContext, ...data };
+    },
+    closeBillingModal(data) {
+        this.modalType = '';
+        this.$refs.psBillingCustomerRef.parent.updateProps({
+            context: {
+                ...this.billingContext,
+                ...data
+            }
+        });
+    },
+    eventHookHandler(type, data) {
+        switch(type) {
+            case EVENT_HOOK_TYPE.BILLING_INITIALIZED:
+                // data structure is: { customer, subscription }
+                console.log('Billing initialized', data);
+                this.sub = data.subscription;
+                break;
+            case EVENT_HOOK_TYPE.SUBSCRIPTION_UPDATED:
+                // data structure is: { customer, subscription, card }
+                console.log('Sub updated', data);
+                this.sub = data.subscription;
+                break;
+            case EVENT_HOOK_TYPE.SUBSCRIPTION_CANCELLED:
+                // data structure is: { customer, subscription }
+                console.log('Sub cancelled', data);
+                this.sub = data.subscription;
+                break;
         }
-    });
-  }
+    }
 }
 ```
 
@@ -557,15 +598,6 @@ methods: {
 <template>
   <div>
     <PsAccounts>
-        <template v-slot:customBody>
-            <template v-slot:body>
-            <!-- Put here what you want to show in the ps account container -->
-            </template>
-            <!-- or -->
-            <template v-slot:customBody>
-                <!-- Put here what you want to show in the ps account container -->
-            </template>
-        </template>
     </PsAccounts>
     <ps-billing-customer
         v-if="billingContext.user.email"
@@ -579,6 +611,7 @@ methods: {
       :type="modalType"
       :onCloseModal="closeBillingModal"
     />
+    <div v-if="sub && sub.id">Rbm example content</div>
   </div>
 </template>
 ```
@@ -586,6 +619,7 @@ methods: {
 <script>
 import Vue from 'vue';
 import { PsAccounts } from "prestashop_accounts_vue_components";
+import moduleLogo from "@/assets/prestashop-logo.png";
 import { CustomerComponent, ModalContainerComponent } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
 
 export default {
@@ -596,8 +630,14 @@ export default {
   },
   data() {
     return {
-      billingContext: window.psBillingContext,
+      billingContext: {...window.psBillingContext.context, moduleLogo},
       modalType: '',
+      sub: null,
+    }
+  },
+  provide() {
+    return {
+      emailSupport: window.psBillingContext.context.user.emailSupport
     }
   },
   methods: {
@@ -609,11 +649,30 @@ export default {
         this.modalType = '';
         this.$refs.psBillingCustomerRef.parent.updateProps({
             context: {
-                ...this.context,
+                ...this.billingContext,
                 ...data
             }
         });
-    }
+    },
+    eventHookHandler(type, data) {
+        switch(type) {
+            case EVENT_HOOK_TYPE.BILLING_INITIALIZED:
+                // data structure is: { customer, subscription }
+                console.log('Billing initialized', data);
+                this.sub = data.subscription;
+                break;
+            case EVENT_HOOK_TYPE.SUBSCRIPTION_UPDATED:
+                // data structure is: { customer, subscription, card }
+                console.log('Sub updated', data);
+                this.sub = data.subscription;
+                break;
+            case EVENT_HOOK_TYPE.SUBSCRIPTION_CANCELLED:
+                // data structure is: { customer, subscription }
+                console.log('Sub cancelled', data);
+                this.sub = data.subscription;
+                break;
+        }
+    },
   }
 }
 </script>
@@ -631,6 +690,7 @@ Below is the details of the attributes
 | Attribute | Type | Description |
 | ---------- |------| -------------|
 | moduleName | **string** | Module's name (**required**) |
+| moduleTosUrl | **string** | Url to your term of service (**required**) |
 | accountApi | **string** | API to retrieve Prestashop Account (**required**) |
 | emailSupport | **string** | Email to contact support (**required**) |
 | i18n.isoCode | **string** | ISO code (**required**) |
@@ -705,7 +765,7 @@ Data format: `{state, card, credit_notes, subscription, customer, invoice}` if t
 
 The event hook system allows you to be notified in the front app when a subscription changes. There are 3 types of event:
 
-- `billing:billing_initialized`: Triggered after the BillingCustomer component has been rendered
+- `billing:billing_initialized`: Triggered after the PsBillingCustomer component has been rendered
 - `billing:subscription_updated`: Triggered when a subscription is updated or created
 - `billing:subscription_cancelled`: Triggered when a subscription is cancelled
 
@@ -787,6 +847,7 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
 <script>
 import Vue from 'vue';
 import { PsAccounts } from "prestashop_accounts_vue_components";
+import moduleLogo from "@/assets/prestashop-logo.png";
 import { CustomerComponent, ModalContainerComponent, EVENT_HOOK_TYPE } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
 
 export default {
@@ -797,7 +858,7 @@ export default {
   },
   data() {
     return {
-      billingContext: window.psBillingContext,
+      billingContext: {...window.psBillingContext.context, moduleLogo},
       modalType: '',
     }
   },
@@ -817,6 +878,9 @@ export default {
     },
     eventHookHandler(type, data) {
         switch(type) {
+            case EVENT_HOOK_TYPE.BILLING_INITIALIZED:
+                // Do what you want to do when ps-billing-customer is initialized
+                break;
             case EVENT_HOOK_TYPE.SUBSCRIPTION_UPDATED:
                 // Do what you want to do on sub update
                 break;
@@ -838,12 +902,12 @@ export default {
 <Block>
 #### Pass data through PsBilling
 
-The `CustomerComponent` allow you to `emit` an event to initialize the billing customer in a specific state. **The most common use case for this emitter is when you have a free plan and want your customer to subscribe immediately to this free plan.**
+The `PsBillingCustomer` component allows you to `emit` an event to initialize the billing customer in a specific state. **The most common use case for this emitter is when you have a free plan and want your customer to subscribe immediately to this free plan.**
 
-To achieve this, first of all, you need to create a ref to the `CustomerComponent`, which allow you to use some method from this component.
+To achieve this, first of all, you need to create a ref to the `PsBillingCustomer` component, which allow you to use some method from this component.
 
 ```html{2}
-<PsBillingCustomer
+<ps-billing-customer
     ref="psBillingCustomerRef"
     :context="billingContext"
     :onOpenModal="openBillingModal"

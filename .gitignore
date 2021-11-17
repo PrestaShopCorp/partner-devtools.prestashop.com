@@ -12,3 +12,5 @@ mysql/
 
 # Dockercompose local
 docker-compose.local.yml
+
+.vscode/
