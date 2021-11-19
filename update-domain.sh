@@ -2,6 +2,12 @@
 
 source ./scripts/utils/index.sh
 
+# Manage sed options on f*** on MacOS Darwin (M1)
+SED_OPTIONS=""
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  SED_OPTIONS=".bak"
+fi
+
 # setting up env file
 ENV_FILE=.env
 RBM_NAME=$(read_var RBM_NAME $ENV_FILE)
@@ -10,7 +16,10 @@ SUBDOMAIN_NAME=`docker logs ps-tunnel.local 2>/dev/null | awk -F '/' '{print $3}
 
 if [[ "$RBM_NAME" != "$SUBDOMAIN_NAME" ]]; then
   echo -e "Update env file\n"
-  sed -r -i "s|(RBM_NAME=).*|RBM_NAME=${SUBDOMAIN_NAME}|" $ENV_FILE
+  sed -i $SED_OPTIONS -E "s|(RBM_NAME=).*|RBM_NAME=${SUBDOMAIN_NAME}|g" $ENV_FILE
+  if [ -s "${ENV_FILE}${SED_OPTIONS}" ]; then
+    rm -f "${ENV_FILE}${SED_OPTIONS}"
+  fi
 fi
 
 if ! command -v winpty &> /dev/null

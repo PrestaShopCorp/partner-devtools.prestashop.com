@@ -14,3 +14,6 @@ mysql/
 docker-compose.local.yml
 
 .vscode/
+
+# Remove created .env.bak on macos
+.env.bak

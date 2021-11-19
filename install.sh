@@ -3,6 +3,12 @@
 # Load utilities
 source ./scripts/utils/index.sh
 
+# Manage sed options on f*** on MacOS Darwin (M1)
+SED_OPTIONS=""
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  SED_OPTIONS=".bak"
+fi
+
 # Create a network for containers to communicate
 NETWORK_NAME=prestashop_net
 if [ -z $(docker network ls --filter name=^${NETWORK_NAME}$ --format="{{ .Name }}") ] ; then
@@ -33,14 +39,19 @@ echo -e "HTTP tunnel is available, let's continue !\n"
 
 # Setting up env file
 echo -e "Setting up env file\n"
+
 ENV_FILE=.env
 SUBDOMAIN_NAME=`docker logs ps-tunnel.local 2>/dev/null | awk -F '/' '{print $3}' | awk -F"." '{print $1}' | awk 'END{print}' | tr -d "[:space:]"`
 if [ ! -s "$ENV_FILE" ]; then
   echo -e "Create env file\n"
   cp .env.example $ENV_FILE
 fi
-sed -r -i "s|(RBM_NAME=).*|RBM_NAME=${SUBDOMAIN_NAME}|" $ENV_FILE
 
+sed -i $SED_OPTIONS -E "s|(RBM_NAME=).*|RBM_NAME=${SUBDOMAIN_NAME}|g" $ENV_FILE
+
+if [ -s "${ENV_FILE}${SED_OPTIONS}" ]; then
+  rm -f "${ENV_FILE}${SED_OPTIONS}"
+fi
 
 # Handle restart to avoid new subdomain
 TUNNEL_FILE=tunnel/.config
