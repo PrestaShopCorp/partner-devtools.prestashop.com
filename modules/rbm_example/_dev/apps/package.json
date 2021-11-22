@@ -15,7 +15,7 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.18.1",
     "prestakit": "^1.2.3",
-    "prestashop_accounts_vue_components": "^1.5.6",
+    "prestashop_accounts_vue_components": "^3.0.1",
     "vue": "^2.6.11",
     "vue-content-loader": "^0.2.3"
   },
