@@ -23,9 +23,7 @@ Here is the step to create a RBM :
 **First of all, create a basic module following the Prestashop documentation: [https://devdocs.prestashop.com/1.7/modules/creation/](https://devdocs.prestashop.com/1.7/modules/creation/)**
 
 ::: warning Compatibility
-RBM is compatible from PS1.6.1.x and PHP 5.6
-::: 
-
+RBM is compatible from PrestaShop 1.6.1.x and PHP 5.6
 
 </Block>
 
