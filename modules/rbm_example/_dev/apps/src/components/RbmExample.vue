@@ -29,14 +29,22 @@
 
 <script>
 import Vue from 'vue';
-import {PsAccounts} from "prestashop_accounts_vue_components";
 import moduleLogo from "@/assets/prestashop-logo.png";
 import { CustomerComponent, ModalContainerComponent, EVENT_HOOK_TYPE } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
 
 export default {
   name: 'RbmExample',
   components: {
-    PsAccounts,
+    PsAccounts: async () => {
+      let psAccounts = window?.psaccountsVue?.PsAccounts;
+      console.log('psAccounts 1', psAccounts);
+      if (!psAccounts) {
+        psAccounts = require('prestashop_accounts_vue_components').PsAccounts;
+        console.log('psAccounts 2', psAccounts);
+      }
+      console.log('psAccounts 3', psAccounts);
+      return psAccounts;
+    },
     PsBillingCustomer: CustomerComponent.driver('vue', Vue),
     PsBillingModal: ModalContainerComponent.driver('vue', Vue),
   },

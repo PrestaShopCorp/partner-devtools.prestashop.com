@@ -90,17 +90,19 @@ class Rbm_example extends Module
 
     public function getContent()
     {
-        $facade = $this->getService('ps_accounts.facade');
-        Media::addJsDef([
-            'contextPsAccounts' => $facade->getPsAccountsPresenter()
-                ->present($this->name),
-        ]);
-
-        $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
-        $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
         try {
-            $psAccountsService = $facade->getPsAccountsService();
+            // Account part
+            $accountFacade = $this->getService('ps_accounts.facade');
+            $psAccountsService = $accountFacade->getPsAccountsService();
+            Media::addJsDef([
+                'contextPsAccounts' => $accountFacade->getPsAccountsPresenter()
+                    ->present($this->name),
+            ]);
 
+            // Retrieve the proper version for https://github.com/PrestaShopCorp/prestashop_accounts_vue_components
+            $this->context->smarty->assign('urlAccountsVueCdn', $psAccountsService->getAccountsVueCdn());
+    
+            // Billing part
             Media::addJsDef([
                 'psBillingContext' => [
                     'context' => [
@@ -123,6 +125,9 @@ class Rbm_example extends Module
                     ]
                 ]
             ]);
+
+            $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
+            $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
 
         } catch (ModuleNotInstalledException $e) {
 
