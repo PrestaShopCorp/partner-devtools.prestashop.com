@@ -24,8 +24,6 @@ Here is the step to create a RBM :
 
 ::: warning Compatibility
 RBM is compatible from PrestaShop 1.6.1.x and PHP 5.6
-:::
-
 
 </Block>
 
