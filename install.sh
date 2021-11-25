@@ -48,8 +48,7 @@ if [ ! -s "$ENV_FILE" ]; then
 fi
 
 sed -i $SED_OPTIONS -E "s|(RBM_NAME=).*|RBM_NAME=${SUBDOMAIN_NAME}|g" $ENV_FILE
-
-if [ -s "${ENV_FILE}${SED_OPTIONS}" ]; then
+if [[ "$OSTYPE" == "darwin"* ]]; then
   rm -f "${ENV_FILE}${SED_OPTIONS}"
 fi
 
