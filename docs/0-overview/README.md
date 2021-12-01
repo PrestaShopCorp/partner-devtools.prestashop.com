@@ -5,15 +5,15 @@ title: Overview
 
 # ![](/assets/images/common/logo-condensed-sm.png) Overview
 
-Recurring Billing Modules allow Tech Partners and Sellers to create SaaS modules integrated within the PrestaShop ecosystem with a simple and unified onboarding for Merchants.
+Prestashop Partner Modules allow Tech Partners and Sellers to create SaaS modules integrated within the PrestaShop ecosystem with a simple and unified onboarding for Merchants.
 
 Subscriptions are managed and billed by the PrestaShop Billing system which pays back the module creator through an automatic monthly payment.
 
 ![RBM Schema](/assets/images/0-overview/schema.png)
 
-## Building a RBM
+## Building a Partner Module
 
-The creation of a Recurring Billing Module requires to interract with PsAccount and PsBilling.
+The creation of a Partner Module requires to interact with PsAccount. To add recurring billing to your module, you should also use PsBilling.
 
 ![RBM fully initialized](/assets/images/0-overview/rbm_fully_initialized.png)
 
