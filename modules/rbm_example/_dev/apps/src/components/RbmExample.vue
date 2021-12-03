@@ -22,27 +22,30 @@
       :onEventHook="eventHookHandler"
     />
 
-    <div v-if="sub && sub.id">Rbm example content</div>
-
+    <div v-if="sub && sub.id">
+      Display your configuration, only if customer have an subscription
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import moduleLogo from "@/assets/prestashop-logo.png";
-import { CustomerComponent, ModalContainerComponent, EVENT_HOOK_TYPE } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
+import {
+  CustomerComponent,
+  ModalContainerComponent,
+  EVENT_HOOK_TYPE
+} from "@prestashopcorp/billing-cdc/dist/bundle.umd";
 
 export default {
   name: 'RbmExample',
   components: {
     PsAccounts: async () => {
       let psAccounts = window?.psaccountsVue?.PsAccounts;
-      console.log('psAccounts 1', psAccounts);
       if (!psAccounts) {
+        console.log('Fallback to Account Vue component', data);
         psAccounts = require('prestashop_accounts_vue_components').PsAccounts;
-        console.log('psAccounts 2', psAccounts);
       }
-      console.log('psAccounts 3', psAccounts);
       return psAccounts;
     },
     PsBillingCustomer: CustomerComponent.driver('vue', Vue),
@@ -86,12 +89,12 @@ export default {
             break;
         case EVENT_HOOK_TYPE.SUBSCRIPTION_UPDATED:
             // data structure is: { customer, subscription, card }
-            console.log('Sub updated', data);
+            console.log('Subscription updated', data);
             this.sub = data.subscription;
             break;
         case EVENT_HOOK_TYPE.SUBSCRIPTION_CANCELLED:
             // data structure is: { customer, subscription }
-            console.log('Sub cancelled', data);
+            console.log('Subscription cancelled', data);
             this.sub = data.subscription;
             break;
         }
