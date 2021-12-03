@@ -23,7 +23,7 @@
     />
 
     <div v-if="sub && sub.id">
-      Display your configuration, only if customer have an subscription
+      Display your configuration, only if customer have a subscription
     </div>
   </div>
 </template>
@@ -43,7 +43,7 @@ export default {
     PsAccounts: async () => {
       let psAccounts = window?.psaccountsVue?.PsAccounts;
       if (!psAccounts) {
-        console.log('Fallback to Account Vue component', data);
+        console.log('Fallback to Account Vue component');
         psAccounts = require('prestashop_accounts_vue_components').PsAccounts;
       }
       return psAccounts;

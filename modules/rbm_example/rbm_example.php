@@ -107,10 +107,10 @@ class Rbm_example extends Module
 
         try {
             // Account
-            $accountFacade = $this->getService('ps_accounts.facade');
-            $accountsService = $accountFacade->getPsAccountsService();
+            $accountsFacade = $this->getService('ps_accounts.facade');
+            $accountsService = $accountsFacade->getPsAccountsService();
             Media::addJsDef([
-                'contextPsAccounts' => $accountFacade->getPsAccountsPresenter()
+                'contextPsAccounts' => $accountsFacade->getPsAccountsPresenter()
                     ->present($this->name),
             ]);
 
