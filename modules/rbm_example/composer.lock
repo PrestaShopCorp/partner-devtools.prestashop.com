@@ -111,16 +111,16 @@
         },
         {
             "name": "prestashop/module-lib-service-container",
-            "version": "1.3.1",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PrestaShopCorp/module-lib-service-container.git",
-                "reference": "8a64bd83c71fdb077fbd05fbf2677b16ec2d8e53"
+                "reference": "96f4f551b96cffb1f78462cd4722f0d2b057abda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PrestaShopCorp/module-lib-service-container/zipball/8a64bd83c71fdb077fbd05fbf2677b16ec2d8e53",
-                "reference": "8a64bd83c71fdb077fbd05fbf2677b16ec2d8e53",
+                "url": "https://api.github.com/repos/PrestaShopCorp/module-lib-service-container/zipball/96f4f551b96cffb1f78462cd4722f0d2b057abda",
+                "reference": "96f4f551b96cffb1f78462cd4722f0d2b057abda",
                 "shasum": ""
             },
             "require": {
@@ -159,22 +159,22 @@
             ],
             "support": {
                 "issues": "https://github.com/PrestaShopCorp/module-lib-service-container/issues",
-                "source": "https://github.com/PrestaShopCorp/module-lib-service-container/tree/1.3.1"
+                "source": "https://github.com/PrestaShopCorp/module-lib-service-container/tree/1.4.0"
             },
-            "time": "2020-10-21T08:35:58+00:00"
+            "time": "2021-06-01T15:21:20+00:00"
         },
         {
             "name": "prestashop/prestashop-accounts-installer",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PrestaShopCorp/prestashop-accounts-installer.git",
-                "reference": "10a92b7987d0fc0a8d40bd8c606605d382917db8"
+                "reference": "f038af2408968d1045330b32aa1fed65fcaf4c9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PrestaShopCorp/prestashop-accounts-installer/zipball/10a92b7987d0fc0a8d40bd8c606605d382917db8",
-                "reference": "10a92b7987d0fc0a8d40bd8c606605d382917db8",
+                "url": "https://api.github.com/repos/PrestaShopCorp/prestashop-accounts-installer/zipball/f038af2408968d1045330b32aa1fed65fcaf4c9b",
+                "reference": "f038af2408968d1045330b32aa1fed65fcaf4c9b",
                 "shasum": ""
             },
             "require": {
@@ -199,9 +199,9 @@
             "description": "Utility package to install `ps_accounts` module or present data to trigger manual install from psx configuration page.",
             "support": {
                 "issues": "https://github.com/PrestaShopCorp/prestashop-accounts-installer/issues",
-                "source": "https://github.com/PrestaShopCorp/prestashop-accounts-installer/tree/v1.0.0"
+                "source": "https://github.com/PrestaShopCorp/prestashop-accounts-installer/tree/v1.0.1"
             },
-            "time": "2021-04-22T11:57:18+00:00"
+            "time": "2021-07-23T15:40:36+00:00"
         },
         {
             "name": "psr/cache",
@@ -773,72 +773,6 @@
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
-            "name": "symfony/http-foundation",
-            "version": "v3.4.47",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "b9885fcce6fe494201da4f70a9309770e9d13dc8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/b9885fcce6fe494201da4f70a9309770e9d13dc8",
-                "reference": "b9885fcce6fe494201da4f70a9309770e9d13dc8",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.5.9|>=7.0.8",
-                "symfony/polyfill-mbstring": "~1.1",
-                "symfony/polyfill-php70": "~1.6"
-            },
-            "require-dev": {
-                "symfony/expression-language": "~2.8|~3.0|~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\HttpFoundation\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony HttpFoundation Component",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v3.4.47"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-10-24T10:57:07+00:00"
-        },
-        {
             "name": "symfony/polyfill-apcu",
             "version": "v1.19.0",
             "source": {
@@ -977,86 +911,6 @@
             ],
             "support": {
                 "source": "https://github.com/symfony/polyfill-ctype/tree/v1.19.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-10-23T09:01:57+00:00"
-        },
-        {
-            "name": "symfony/polyfill-mbstring",
-            "version": "v1.19.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "b5f7b932ee6fa802fc792eabd77c4c88084517ce"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/b5f7b932ee6fa802fc792eabd77c4c88084517ce",
-                "reference": "b5f7b932ee6fa802fc792eabd77c4c88084517ce",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "suggest": {
-                "ext-mbstring": "For best performance"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.19-dev"
-                },
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Mbstring\\": ""
-                },
-                "files": [
-                    "bootstrap.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for the Mbstring extension",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "mbstring",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.19.0"
             },
             "funding": [
                 {
