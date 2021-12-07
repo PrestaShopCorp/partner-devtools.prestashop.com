@@ -11,8 +11,8 @@
         "update": "npm update --prefix ./apps",
         "zip-module": "npm run build-skip-eslint --prefix ./apps && node zip-module"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "support@prestashop.com",
+    "license": "AFL-3.0",
     "devDependencies": {
         "archiver": "^5.3.0",
         "cpy-cli": "^3.1.1"
