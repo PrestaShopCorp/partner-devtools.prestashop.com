@@ -12,12 +12,11 @@ For every merchant who has linked the ps account, an `ownerUuid`, an `ownerEmail
 
 `shopUuid`: the identifier of the Prestashop's shop
 
-:::danger
+There are 2 distinct cases when updating the `ownerEmail`:
 
-The `ownerUuid` is based on the `ownerEmail`, it means that if the `ownerEmail` has changed, the `ownerUuid` will also be changed.
+1. Changing email with the **same owner**: the `ownerEmail` is changed but the **`ownerUuid` stays the same**.
 
-:::
-
+2. Changing email with a **different owner**: the shop's ownership is changed, for example: merchant A sells his/her shop to merchant B. If that's the case case, the `ownerUuid` is based on the `ownerEmail`, it means that if the `ownerEmail` has been changed, the **`ownerUuid` will also be changed**.
 
 # ![](/assets/images/common/logo-condensed-sm.png) About Billing
 
