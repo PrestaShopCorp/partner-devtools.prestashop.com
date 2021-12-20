@@ -216,6 +216,7 @@ All the payment event data follow this structure
 
 * `customer.created`: Triggered when a customer is created, which happens only one time for a shop. You can't expect to receive this event for your RBM.
 * `customer.updated`: Triggered when a customer is updated
+* `customer-billing-address.updated`: Triggered when a customer billing address is updated
 
 All the customer event data follow this structure
 
