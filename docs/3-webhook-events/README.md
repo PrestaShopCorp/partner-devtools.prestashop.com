@@ -66,12 +66,12 @@ All the subscription event data follow this structure
       "email": "john.doe@mail.com",
       "billing_address": {
         "city": "Paris",
-        "country": "FR" (ISO 3166-1 - alpah-2),
+        "country": "FR" (ISO 3166-1 - alpha-2),
         "first_name": "John",
         "last_name": "Doe",
         "line1": "1 rue de Rivoli",
         "line2": "Bâtiment A",
-        "state": "France", 
+        "state": "France",
         "zip": 75001
       },
       "meta_data": {
@@ -136,12 +136,12 @@ All the payment event data follow this structure
       "email": "john.doe@mail.com",
       "billing_address": {
         "city": "Paris",
-        "country": "FR" (ISO 3166-1 - alpah-2),
+        "country": "FR" (ISO 3166-1 - alpha-2),
         "first_name": "John",
         "last_name": "Doe",
         "line1": "1 rue de Rivoli",
         "line2": "Bâtiment A",
-        "state": "France", 
+        "state": "France",
         "zip": 75001
       },
       "deleted": false,
@@ -216,6 +216,45 @@ All the payment event data follow this structure
 
 * `customer.created`: Triggered when a customer is created, which happens only one time for a shop. You can't expect to receive this event for your RBM.
 * `customer.updated`: Triggered when a customer is updated
+
+All the customer event data follow this structure
+
+| Value        | Type | Description |
+| ------------ | ---- | ----------- |
+| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=1#customer_attributes) | Customer whose the billing address has been changed |
+
+<Example>
+```json
+{
+  "eventType": "customer-billing-address.created",
+  "data": {
+    "customer": {
+      "ps_shop_id": "93633bec-6bc8-474d-80df-3be115780ad1",
+      "email": "john.doe@mail.com",
+      "billing_address": {
+        "city": "Paris",
+        "country": "FR" (ISO 3166-1 - alpha-2),
+        "first_name": "John",
+        "last_name": "Doe",
+        "line1": "1 rue de Rivoli",
+        "line2": "Bâtiment A",
+        "state": "France",
+        "zip": 75001
+      },
+      "deleted": false,
+      "created_at": 1517505731,
+      "updated_at": 1517505731
+    }
+  }
+}
+```
+</Example>
+
+</Block>
+
+<Block>
+### Customer billing address
+
 * `customer-billing-address.updated`: Triggered when a customer billing address is updated
 
 All the customer event data follow this structure
@@ -227,14 +266,14 @@ All the customer event data follow this structure
 <Example>
 ```json
 {
-  "eventType": "customer.created",
+  "eventType": "customer-billing-address.created",
   "data": {
     "customer": {
       "ps_shop_id": "93633bec-6bc8-474d-80df-3be115780ad1",
       "email": "john.doe@mail.com",
       "billing_address": {
         "city": "Paris",
-        "country": "FR" (ISO 3166-1 - alpah-2),
+        "country": "FR" (ISO 3166-1 - alpha-2),
         "first_name": "John",
         "last_name": "Doe",
         "line1": "1 rue de Rivoli",
