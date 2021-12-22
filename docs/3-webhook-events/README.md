@@ -261,32 +261,33 @@ All the customer event data follow this structure
 
 | Value        | Type | Description |
 | ------------ | ---- | ----------- |
-| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=1#customer_attributes) | Customer for which the subscription has changed |
+| shopId     | string | The shopId |
+| chargebeeCustomerId     | string | The chargebee customer id |
+| billingAddress | [BillingAddress](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=1#customer_billing_address) | The billing address of the customer
+| vatNumber     | string | The VAT value |
+| module_id     | string | The module's name |
 
 <Example>
 ```json
 {
-  "eventType": "customer-billing-address.created",
-  "data": {
-    "customer": {
-      "ps_shop_id": "93633bec-6bc8-474d-80df-3be115780ad1",
-      "email": "john.doe@mail.com",
-      "billing_address": {
-        "city": "Paris",
-        "country": "FR" (ISO 3166-1 - alpha-2),
-        "first_name": "John",
-        "last_name": "Doe",
-        "line1": "1 rue de Rivoli",
-        "line2": "Bâtiment A",
-        "state": "France",
-        "zip": 75001
-      },
-      "deleted": false,
-      "created_at": 1517505731,
-      "updated_at": 1517505731
-    }
-  }
-}
+  "eventType": "customer-billing-address.updated",
+  "data": {
+    "shopId": "7gftdLqMnSbtbuxhEwgafJkEMas1",
+    "chargebeeCustomerId": "16CW0USXyu9Mu1xQF",
+    "billingAddress": {
+      "first_name": "David",
+      "last_name": "BOUTON",
+      "company": "LA FABRIQUE D ALIZE",
+      "line1": "17 Impasse Alain Bombard",
+      "city": "La roche sur yon",
+      "country": "FR",
+      "zip": "85000",
+      "validation_status": "not_validated",
+      "object": "billing_address"
+    },
+    "vatNumber": "95834084824",
+    "module_id": "storecommanderps"
+  },
 ```
 </Example>
 
