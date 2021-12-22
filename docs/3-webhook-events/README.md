@@ -66,12 +66,12 @@ All the subscription event data follow this structure
       "email": "john.doe@mail.com",
       "billing_address": {
         "city": "Paris",
-        "country": "FR" (ISO 3166-1 - alpah-2),
+        "country": "FR" (ISO 3166-1 - alpha-2),
         "first_name": "John",
         "last_name": "Doe",
         "line1": "1 rue de Rivoli",
         "line2": "Bâtiment A",
-        "state": "France", 
+        "state": "France",
         "zip": 75001
       },
       "meta_data": {
@@ -136,12 +136,12 @@ All the payment event data follow this structure
       "email": "john.doe@mail.com",
       "billing_address": {
         "city": "Paris",
-        "country": "FR" (ISO 3166-1 - alpah-2),
+        "country": "FR" (ISO 3166-1 - alpha-2),
         "first_name": "John",
         "last_name": "Doe",
         "line1": "1 rue de Rivoli",
         "line2": "Bâtiment A",
-        "state": "France", 
+        "state": "France",
         "zip": 75001
       },
       "deleted": false,
@@ -221,19 +221,19 @@ All the customer event data follow this structure
 
 | Value        | Type | Description |
 | ------------ | ---- | ----------- |
-| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=1#customer_attributes) | Customer for which the subscription has changed |
+| customer     | [Customer](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=1#customer_attributes) | Customer whose the billing address has been changed |
 
 <Example>
 ```json
 {
-  "eventType": "customer.created",
+  "eventType": "customer-billing-address.created",
   "data": {
     "customer": {
       "ps_shop_id": "93633bec-6bc8-474d-80df-3be115780ad1",
       "email": "john.doe@mail.com",
       "billing_address": {
         "city": "Paris",
-        "country": "FR" (ISO 3166-1 - alpah-2),
+        "country": "FR" (ISO 3166-1 - alpha-2),
         "first_name": "John",
         "last_name": "Doe",
         "line1": "1 rue de Rivoli",
@@ -247,6 +247,47 @@ All the customer event data follow this structure
     }
   }
 }
+```
+</Example>
+
+</Block>
+
+<Block>
+### Customer billing address
+
+* `customer-billing-address.updated`: Triggered when a customer billing address is updated
+
+All the customer event data follow this structure
+
+| Value        | Type | Description |
+| ------------ | ---- | ----------- |
+| shopId     | string | The shopId |
+| chargebeeCustomerId     | string | The chargebee customer id |
+| billingAddress | [BillingAddress](https://apidocs.chargebee.com/docs/api/customers?prod_cat_ver=1#customer_billing_address) | The billing address of the customer
+| vatNumber     | string | The VAT value |
+| module_id     | string | The module's name |
+
+<Example>
+```json
+{
+  "eventType": "customer-billing-address.updated",
+  "data": {
+    "shopId": "shopId",
+    "chargebeeCustomerId": "chargebeeCustomerId",
+    "billingAddress": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "company": "company",
+      "line1": "12 rue ABC",
+      "city": "Paris",
+      "country": "FR",
+      "zip": "85000",
+      "validation_status": "not_validated",
+      "object": "billing_address"
+    },
+    "vatNumber": "95834084824",
+    "module_id": "storecommanderps"
+  },
 ```
 </Example>
 
