@@ -272,14 +272,14 @@ All the customer event data follow this structure
 {
   "eventType": "customer-billing-address.updated",
   "data": {
-    "shopId": "7gftdLqMnSbtbuxhEwgafJkEMas1",
-    "chargebeeCustomerId": "16CW0USXyu9Mu1xQF",
+    "shopId": "shopId",
+    "chargebeeCustomerId": "chargebeeCustomerId",
     "billingAddress": {
-      "first_name": "David",
-      "last_name": "BOUTON",
-      "company": "LA FABRIQUE D ALIZE",
-      "line1": "17 Impasse Alain Bombard",
-      "city": "La roche sur yon",
+      "first_name": "John",
+      "last_name": "Doe",
+      "company": "company",
+      "line1": "12 rue ABC",
+      "city": "Paris",
       "country": "FR",
       "zip": "85000",
       "validation_status": "not_validated",
