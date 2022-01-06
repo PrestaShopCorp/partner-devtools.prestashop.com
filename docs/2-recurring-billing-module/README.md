@@ -466,6 +466,10 @@ module.exports = {
 yarn add @prestashopcorp/billing-cdc prestashop_accounts_vue_components
 ```
 
+::: danger Developpement version
+During developement you should install the preprod version of billing CDC : `yarn add @prestashopcorp/billing-cdc@preprod`. This is temporary as we will create a sandbox mode in production.
+:::
+
 </Block>
 
 <Block>

@@ -1014,10 +1014,10 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@prestashopcorp/billing-cdc@alpha":
-  version "0.0.13-integration"
-  resolved "https://registry.yarnpkg.com/@prestashopcorp/billing-cdc/-/billing-cdc-0.0.13-integration.tgz#253112c3a4999e33f8df8ae9a5afaf2c53f2aa4c"
-  integrity sha512-9zSrr7IyvkiygzfmLVKp4GjPiD6v3hSlCe/uOx3uOR3dOHY4T45dh0OyQwaaNDqvos8jyO0Pk4ZLQ+RtHvA0cg==
+"@prestashopcorp/billing-cdc@^0.0.13-preprod":
+  version "0.0.13-preprod"
+  resolved "https://registry.yarnpkg.com/@prestashopcorp/billing-cdc/-/billing-cdc-0.0.13-preprod.tgz#d2e18bbbd89559b5263b7569b2d5f2329bb3897a"
+  integrity sha512-313zIbbrXRdLCwJ7VmPo25syXTmb51gBVR4wic8kzUzBwnc+nNQAmx0D+Pap3Obv/6pHGnXLguhKvm+KZFnkWg==
   dependencies:
     belter "^1.0.173"
     jsx-pragmatic "^2.0.20"
@@ -2121,7 +2121,6 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-
 bootstrap-vue@^2.11.0:
   version "2.21.2"
   resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.21.2.tgz#ec38f66c3a2205becccddb6158a991d96509ed0b"
@@ -2871,7 +2870,6 @@ core-js@^3.6.4, core-js@^3.6.5:
   version "3.19.2"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.19.2.tgz#ae216d7f4f7e924d9a2e3ff1e4b1940220f9157b"
   integrity sha512-ciYCResnLIATSsXuXnIOH4CbdfgV+H1Ltg16hJFN7/v6OxqnFr/IFGeLacaZ+fHLAm0TBbXwNK9/DNBzBUrO/g==
-
 
 core-util-is@1.0.2:
   version "1.0.2"
@@ -6902,7 +6900,6 @@ prestakit@1.2.3, prestakit@^1.2.1:
     open-sans-fonts "^1.6.2"
     select2 "^4.0.5"
     select2-bootstrap-theme "0.1.0-beta.10"
-
 
 prestashop_accounts_vue_components@latest:
   version "3.0.1"
