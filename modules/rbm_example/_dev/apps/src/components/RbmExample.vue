@@ -74,7 +74,7 @@ export default {
     closeBillingModal(data) {
       this.type = '';
       this.$refs.customer.parent.updateProps({
-        billingContext: {
+        context: {
           ...this.billingContext,
           ...data
         },
