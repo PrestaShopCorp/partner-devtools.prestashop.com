@@ -557,7 +557,7 @@ All the customer event data follow this structure
 
 </Block>
 
-## Security
+## Authorization
 
 An Authorization header will be sent to the merchant's API to ensure security.
 
@@ -569,3 +569,5 @@ An Authorization header will be sent to the merchant's API to ensure security.
 }
 ```
 A common use case is that the merchant will verify this token for each incoming webhook request to make sure that they are from the Prestashop Webhook API.
+
+Please send your token to the following email: squad-offre@prestashop.com
