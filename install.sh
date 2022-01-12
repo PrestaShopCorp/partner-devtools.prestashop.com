@@ -22,9 +22,9 @@ fi
 # Create http tunnel container
 echo -e "Create HTTP tunnel service\n"
 if [[ `uname -m` == 'arm64' ]]; then
-  docker-compose -f docker-compose.yml -f docker-compose.arm64.yml up -d --no-deps --build prestashop_tunnel
+  docker-compose -f docker-compose.yml -f docker-compose.arm64.yml up -d --no-deps --force-recreate --build prestashop_tunnel
 else
-  docker-compose up -d --no-deps --build prestashop_tunnel
+  docker-compose up -d --no-deps --force-recreate --build prestashop_tunnel
 fi
 
 echo -e "Checking if HTTP tunnel is available...\n"
@@ -51,18 +51,23 @@ sed -i $SED_OPTIONS -E "s|(RBM_NAME=).*|RBM_NAME=${SUBDOMAIN_NAME}|g" $ENV_FILE
 if [[ "$OSTYPE" == "darwin"* ]]; then
   rm -f "${ENV_FILE}${SED_OPTIONS}"
 fi
+RBM_NAME=$(read_var RBM_NAME $ENV_FILE)
 
 # Handle restart to avoid new subdomain
 TUNNEL_FILE=tunnel/.config
 if [ ! -s "$TUNNEL_FILE" ]; then
   echo -e "Handle restart to avoid new subdomain\n"
-  echo $SUBDOMAIN_NAME > tunnel/.config
+  echo $SUBDOMAIN_NAME > $TUNNEL_FILE
 fi
-docker cp tunnel/.config ps-tunnel.local:/tmp/.config
+cat $TUNNEL_FILE
+docker logs ps-tunnel.local
+
+docker cp $TUNNEL_FILE ps-tunnel.local:/tmp/.config
 
 
 # Create MySQL and PrestaShop service
 echo -e "Create MySQL & PrestaShop service\n"
+echo "${RBM_NAME} - ${SUBDOMAIN_NAME} ---- \n"
 if [[ `uname -m` == 'arm64' ]]; then
   docker-compose -f docker-compose.yml -f docker-compose.arm64.yml up -d --no-deps --build prestashop_rbm_db prestashop_rbm_shop
 else
@@ -71,6 +76,10 @@ fi
 
 echo -e "\nChecking if PrestaShop is available...\n"
 LOCAL_PORT=$(read_var PORT $ENV_FILE)
+if [ -z $LOCAL_PORT ] ; then
+  LOCAL_PORT=`docker port ps-rbm.local 80 | awk -F ':' '{print $2}' | tr -d "[:space:]"`
+fi
+
 PRESTASHOP_READY=`curl -s -o /dev/null -w "%{http_code}" localhost:$LOCAL_PORT`
 until (("$PRESTASHOP_READY"=="302"))
 do

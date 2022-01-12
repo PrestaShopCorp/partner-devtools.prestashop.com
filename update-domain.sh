@@ -24,6 +24,9 @@ if [[ "$RBM_NAME" != "$SUBDOMAIN_NAME" ]]; then
   echo -e "Handle restart to avoid new subdomain\n"
   echo $SUBDOMAIN_NAME > tunnel/.config
   docker cp tunnel/.config ps-tunnel.local:/tmp/.config
+
+  # Read update file
+  RBM_NAME=$(read_var RBM_NAME $ENV_FILE)
 fi
 
 if ! command -v winpty &> /dev/null
