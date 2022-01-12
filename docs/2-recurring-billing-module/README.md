@@ -23,9 +23,8 @@ Here is the step to create a RBM :
 **First of all, create a basic module following the Prestashop documentation: [https://devdocs.prestashop.com/1.7/modules/creation/](https://devdocs.prestashop.com/1.7/modules/creation/)**
 
 ::: warning Compatibility
-RBM is compatible from PS1.6 and PHP 5.6
-::: 
-
+RBM is compatible from PrestaShop 1.6.1.x and PHP 5.6
+:::
 
 </Block>
 
@@ -466,6 +465,10 @@ module.exports = {
 ```bash
 yarn add @prestashopcorp/billing-cdc prestashop_accounts_vue_components
 ```
+
+::: danger Developpement version
+During developement you should install the preprod version of billing CDC : `yarn add @prestashopcorp/billing-cdc@preprod`. This is temporary as we will create a sandbox mode in production.
+:::
 
 </Block>
 

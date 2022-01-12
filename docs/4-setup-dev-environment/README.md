@@ -18,7 +18,7 @@ For more information about localhost.run, CF the [official doc](http://localhost
 
 **Step 2**: on the left menu, go to the `Configure section` -> `Shop parameters` -> `Traffic & SEO`, then in the `Set shop url` section on the right section, fill in the new domain name in the 2 textboxes `Shop domain`, `SSL domain`, then, save the settings.
 
-![Change domain name](/assets/images/3-setup-dev-environment/change_domain_name.png)
+![Change domain name](/assets/images/4-setup-dev-environment/change_domain_name.png)
 
 ## Install the ps_account_integration module
 
