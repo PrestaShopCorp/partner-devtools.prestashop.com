@@ -24,6 +24,8 @@
 
     <div v-if="sub && sub.id">
       Display your configuration, only if customer have a subscription
+
+      <ps-subscription-quantity-test :context="context" />
     </div>
   </div>
 </template>
@@ -32,6 +34,7 @@
 import Vue from 'vue';
 import moduleLogo from "@/assets/prestashop-logo.png";
 import {
+  SubscriptionQuantityTestComponent,
   CustomerComponent,
   ModalContainerComponent,
   EVENT_HOOK_TYPE
@@ -50,6 +53,7 @@ export default {
     },
     PsBillingCustomer: CustomerComponent.driver('vue', Vue),
     PsBillingModal: ModalContainerComponent.driver('vue', Vue),
+    PsSubscriptionQuantityTest: SubscriptionQuantityTestComponent.driver('vue', Vue),
   },
   provide() {
     return {
