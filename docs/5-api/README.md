@@ -21,8 +21,6 @@ If this is not specified in the routes requiring Auth header, `403 Forbidden` wi
 
 </Block>
 
-
-
 <Block>
 
 ## Update subscription quantity
@@ -35,7 +33,7 @@ If this is not specified in the routes requiring Auth header, `403 Forbidden` wi
 
 **Permissions required**: None
 
-**Payload example**
+**Payload constraints**: [UpdateQuantityDTO](#updatequantitydto)
 
 ```js
 {
@@ -43,12 +41,6 @@ If this is not specified in the routes requiring Auth header, `403 Forbidden` wi
   "quantity": 10
 }
 ```
-
-| Param        | Type  | Description |
-| ------------ | ----- | ----------- |
-| action | **enumerated string** | `UPDATE`: add into or remove from the current quantity, `SET`: replace the current quantity by the new quantity (**required**) |
-| quantity | **number** | The quantity of the subscription (**required**) |
-
 
 ### Success response
 
@@ -92,3 +84,12 @@ If this is not specified in the routes requiring Auth header, `403 Forbidden` wi
 
 
 </Block>
+
+## Entities
+
+### UpdateQuantityDTO
+
+| Param        | Type  | Description |
+| ------------ | ----- | ----------- |
+| action | **enumerated string** | `UPDATE`: add into or remove from the current quantity, `SET`: replace the current quantity by the new quantity (**required**) |
+| quantity | **number** | The quantity of the subscription (**required**) |
