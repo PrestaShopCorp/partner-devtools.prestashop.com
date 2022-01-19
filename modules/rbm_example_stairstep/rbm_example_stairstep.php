@@ -26,8 +26,8 @@ class Rbm_example_stairstep extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('RBM example');
-        $this->description = $this->l('This is a RBM example module.');
+        $this->displayName = $this->l('RBM example stairstep');
+        $this->description = $this->l('This is a RBM example stairstep module.');
 
         $this->confirmUninstall = $this->l('Are you sure to uninstall this module?');
 

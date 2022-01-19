@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <rbm-example />
+    <rbm-example-stairstep />
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
     RbmExampleStairstep
   },
   setup() {
-    console.log('rbm example initialized');
+    console.log('rbm example stairstep initialized');
   }
 }
 </script>
