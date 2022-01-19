@@ -17,6 +17,7 @@ An authorization token will be required to interact with the Billing API
 
 `Authorization: <token>`
 
+If this is not specified in the routes requiring Auth header, `403 Forbidden` will be returned
 
 </Block>
 
@@ -33,15 +34,6 @@ An authorization token will be required to interact with the Billing API
 **Auth required**: yes
 
 **Permissions required**: None
-
-**Payload constraints**
-
-```js
-{
-  "action": "[UPDATE or SET]"
-  "quantity": "[quantity needs to be updated]"
-}
-```
 
 **Payload example**
 
