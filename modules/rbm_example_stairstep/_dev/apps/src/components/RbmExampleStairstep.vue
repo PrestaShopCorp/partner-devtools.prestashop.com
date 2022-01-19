@@ -25,7 +25,7 @@
     <div v-if="sub && sub.id">
       Display your configuration, only if customer have a subscription
 
-      <ps-subscription-quantity-test :context="context" />
+      <ps-subscription-quantity-test :context="billingContext" />
     </div>
   </div>
 </template>
