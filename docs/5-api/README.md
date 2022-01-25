@@ -48,7 +48,6 @@ If this is not specified in the routes requiring Auth header, `403 Forbidden` wi
 
 ```json
 {
-   "amount":20000,
    "item_type":"plan",
    "quantity":11,
    "unit_price":1818,
