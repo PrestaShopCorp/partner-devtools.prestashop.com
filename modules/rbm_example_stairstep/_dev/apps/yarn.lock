@@ -1014,10 +1014,10 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@prestashopcorp/billing-cdc@^0.0.13-preprod":
-  version "0.0.13-preprod"
-  resolved "https://registry.yarnpkg.com/@prestashopcorp/billing-cdc/-/billing-cdc-0.0.13-preprod.tgz#d2e18bbbd89559b5263b7569b2d5f2329bb3897a"
-  integrity sha512-313zIbbrXRdLCwJ7VmPo25syXTmb51gBVR4wic8kzUzBwnc+nNQAmx0D+Pap3Obv/6pHGnXLguhKvm+KZFnkWg==
+"@prestashopcorp/billing-cdc@^0.0.14-preprod":
+  version "0.0.14-preprod"
+  resolved "https://registry.yarnpkg.com/@prestashopcorp/billing-cdc/-/billing-cdc-0.0.14-preprod.tgz#4f45d2d2e3301627ed3dea777b9cf9204a6a8442"
+  integrity sha512-5xZGYBCHTZjzaKuYeYLMU901DvIXCVzwou3jIsGDt2aIBTmlPF9KOpDFLmSn9GqKvUQTRc3w8CY1od+6yfpbAQ==
   dependencies:
     belter "^1.0.173"
     jsx-pragmatic "^2.0.20"
@@ -5864,9 +5864,9 @@ no-case@^2.2.0:
     lower-case "^1.1.1"
 
 node-fetch@^2.6.1:
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.6.tgz#1751a7c01834e8e1697758732e9efb6eeadfaf89"
-  integrity sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA==
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
 
