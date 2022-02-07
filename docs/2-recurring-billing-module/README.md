@@ -230,7 +230,9 @@ private $container;
 
         $this->confirmUninstall = $this->l('Are you sure to uninstall this module?');
 
-        $this->template_dir = _PS_MODULE_DIR_ . $this->name . '/views/templates/admin/';
+        $this->uri_path = Tools::substr($this->context->link->getBaseLink(null, null, true), 0, -1);
+        $this->images_dir = $this->uri_path.$this->getPathUri() . 'views/img/';
+        $this->template_dir = $this->getLocalPath(). 'views/templates/admin/';
 
         if ($this->container === null) {
             $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer(
@@ -323,6 +325,9 @@ private $container;
                         'versionPs' => _PS_VERSION_,
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,
+                        'displayName' => $this->displayName,
+                        'partnerLogo' => $this->images_dir.'partnerLogo.png',
+                        'moduleLogo' => $this->uri_path.$this->getPathUri().'logo.png',
                         'refreshToken' => $accountsService->getRefreshToken(),
                         'emailSupport' => $this->emailSupport,
                         'shop' => [
@@ -586,7 +591,7 @@ The `context` should be retrieved from `window.psBillingContext.context` and inj
 ```js
 data() {
     return {
-        billingContext: {...window.psBillingContext.context, moduleLogo},
+        billingContext: { ...window.psBillingContext.context },
         modalType: '',
         sub: null
     }
@@ -658,7 +663,7 @@ methods: {
 ```html
 <script>
   import Vue from "vue";
-  import moduleLogo from "@/assets/prestashop-logo.png";
+
   import {
     CustomerComponent,
     ModalContainerComponent,
@@ -681,7 +686,7 @@ methods: {
     },
     data() {
       return {
-        billingContext: { ...window.psBillingContext.context, moduleLogo },
+        billingContext: { ...window.psBillingContext.context },
         modalType: "",
         sub: null,
       };
@@ -741,6 +746,9 @@ Below is the details of the attributes
 | Attribute          | Type       | Description                                       |
 | ------------------ | ---------- | ------------------------------------------------- |
 | moduleName         | **string** | Module's name (**required**)                      |
+| displayName        | **string** | Module's display name (**required**)              |
+| moduleLogo         | **string** | Module's logo (**required**)                      |
+| partnerLogo        | **string** | Your logo image  (**required**)                   |
 | moduleTosUrl       | **string** | Url to your term of service (**required**)        |
 | accountApi         | **string** | API to retrieve Prestashop Account (**required**) |
 | emailSupport       | **string** | Email to contact support (**required**)           |
@@ -749,8 +757,8 @@ Below is the details of the attributes
 | shop.domain        | **string** | Merchant site's domain name (**required**)        |
 | user.createdFromIp | **string** | Merchant site's ip address (**required**)         |
 | user.email         | **string** | Merchant's email (**required**)                   |
-| versionModule      | **string** | Module's version                                  |
-| versionPs          | **string** | Prestashop's version                              |
+| versionModule      | **string** | Module's version (**required**)                   |
+| versionPs          | **string** | Prestashop's version (**required**)               |
 
 </Block>
 
@@ -898,7 +906,6 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
 ```html
 <script>
   import Vue from 'vue';
-  import moduleLogo from "@/assets/prestashop-logo.png";
   import { CustomerComponent, ModalContainerComponent, EVENT_HOOK_TYPE } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
 
   export default {
@@ -918,7 +925,7 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
     },
     data() {
       return {
-        billingContext: {...window.psBillingContext.context, moduleLogo},
+        billingContext: { ...window.psBillingContext.context },
         modalType: '',
       }
     },
