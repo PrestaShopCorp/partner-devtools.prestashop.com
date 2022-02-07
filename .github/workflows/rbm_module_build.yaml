@@ -6,6 +6,7 @@ on:
       - OFF-318/feature/rbm_ci
     paths:
       - 'modules/**'
+      # - '.github/**'
 jobs:
   echo:
     runs-on: ubuntu-latest

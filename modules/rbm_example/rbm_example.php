@@ -42,7 +42,7 @@ class Rbm_example extends Module
     }
 
     /**
-     * Retrieve service
+     * Retrieve service.
      *
      * @param string $serviceName
      *
