@@ -19,5 +19,5 @@ jobs:
         run: composer install --no-dev
       - name: Install js dependencies
         working-directory: ./modules/rbm_example/_dev/apps
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
