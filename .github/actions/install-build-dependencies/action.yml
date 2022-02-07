@@ -12,15 +12,18 @@ runs:
   steps:
     - name: Install php dependencies
       working-directory: ${{inputs.module_path}}
+      shell: bash
       run: composer install --no-dev
     - name: Install js dependencies
       working-directory: ${{inputs.module_path}}/_dev/apps
+      shell: bash
       run: |
         yarn install --frozen-lockfile
         yarn add @prestashopcorp/billing-cdc@${{inputs.env_name}}
         yarn build-skip-eslint
     - name: Clean-up project
       working-directory: ${{inputs.module_path}}
+      shell: bash
       run: |
         rm -f composer.*
         rm -f .gitignore
