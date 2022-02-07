@@ -11,17 +11,20 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      module_path: ./modules/rbm_example
+      module_path_apps: ${{env.module_path}}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.0.0
       - name: Install composer dependencies
-        working-directory: ./modules/rbm_example
+        working-directory:  ${{env.module_path}}
         run: composer install --no-dev
       - name: Install js dependencies
-        working-directory: ./modules/rbm_example/_dev/apps
+        working-directory:  ${{env.module_path_apps}}
         run: yarn install --frozen-lockfile
       - name: Clean-up project
-        working-directory: ./modules/rbm_example
+        working-directory:  ${{env.module_path}}
         run: |
           rm -f composer.*
           rm -f .gitignore
