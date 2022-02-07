@@ -7,6 +7,7 @@ on:
     paths:
       - 'modules/**'
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-    - run: echo "Hello world"
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello world"
