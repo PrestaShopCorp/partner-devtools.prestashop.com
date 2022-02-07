@@ -59,7 +59,9 @@ jobs:
           name: rbm_example_dependencies_${{env.env_name}}
       - name: Zip
         run: |
-          zip -r rbm_example.zip . -x '*.git*' '*config/config.yml.*'
+          mkdir rbm_example
+          cp -a . rbm_example
+          zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
       - name: Release
         uses: actions/upload-release-asset@v1.0.1
         env:
