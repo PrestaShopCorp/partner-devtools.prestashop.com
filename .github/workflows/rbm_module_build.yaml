@@ -17,7 +17,7 @@ jobs:
       - name: Install composer dependencies
         working-directory: ./modules/rbm_example
         run: composer install --no-dev
-      - name: Install js dependencies
-        working-directory: ./modules/rbm_example/_dev/apps
-        run: yarn install
+      # - name: Install js dependencies
+      #   working-directory: ./modules/rbm_example/_dev/apps
+      #   run: yarn install
 
