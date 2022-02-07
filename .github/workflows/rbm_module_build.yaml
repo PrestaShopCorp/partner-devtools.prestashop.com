@@ -56,9 +56,8 @@ jobs:
         with:
           name: rbm_example_dependencies_${{env.env_name}}
       - name: Zip
-        working-directory: ../
         run: |
           pwd
           ls
-          zip -r rbm_example_module_${{env.env_name}}.zip rbm_example_dependencies_${{env.env_name}}
+          zip -r rbm_example_module_${{env.env_name}}.zip .
           ls
