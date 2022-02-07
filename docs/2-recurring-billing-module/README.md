@@ -6,7 +6,6 @@ title: Recurring Billing Module
 
 # ![](/assets/images/common/logo-condensed-sm.png) Recurring Billing Module
 
-
 A recurring Billing Module is a composition of [PHP](https://www.php.net/) as backend and [Vue 2](https://vuejs.org/) as frontend.
 
 ::: tip
@@ -32,12 +31,11 @@ RBM is compatible from PrestaShop 1.6.1.x and PHP 5.6
 
 ## Backend
 
-### PsAccount
-
+::: warning PsAccount
 The PsAccount module is a pre-requisite for every RBM module, it provides an SSO allowing to link the addons market's accounts to the ones in the prestashop core
+:::
 
 </Block>
-
 
 <Block>
 
@@ -105,29 +103,24 @@ Recurring Billing Modules require PsAccount to be installed on the shop in order
 
 First you need to register PsAccount within your module. You should add a `getService` method. Then update the `install()` hook.
 
+It will allow your module to automatically install PsAccount when not available, and let you use PsAccountService.
+
 ```php
 class Rbm_example extends Module {
-  // ...
-  public function install()
-  {
-      // Load PS Account utility
-      return parent::install() &&
-          $this->getService('ps_accounts.installer')->install();
-  }
+    // ...
+    public function install()
+    {
+        // Load PS Account utility
+        return parent::install() && $this->getService('ps_accounts.installer')->install();
+    }
 
-  // ...
+    // ...
 
-  public function getService($serviceName)
-  {
-      if ($this->container === null) {
-          $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer(
-              $this->name,
-              $this->getLocalPath()
-          );
-      }
+    public function getService($serviceName)
+    {
+        return $this->container->getService($serviceName);
+    }
 
-      return $this->container->getService($serviceName);
-  }
 }
 ```
 
@@ -137,19 +130,25 @@ class Rbm_example extends Module {
 
 PsAccount needs to get some information to work. Theses information are provided by injecting a `context`.
 
-In order to inject the `context` you should update `getContent` hook. This will inject  `contextPsAccounts` within the browser `window` object (`window.contextPsAccounts`).
+In order to inject the `context` you should update `getContent` hook. This will inject `contextPsAccounts` within the browser `window` object (`window.contextPsAccounts`).
+
+Account service is also responsible to return the proper URL for the PsAccount front component, [which is loaded via CDN](#use-psaccount-with-a-cdn).
 
 ::: warning PsAccount official doc
 We will add a link to the official PsAccount documentation in the near future.
 :::
 
 ```php
-// Load context for PsAccount
-$facade = $this->getService('ps_accounts.facade');
+// Account
+$accountsFacade = $this->getService('ps_accounts.facade');
+$accountsService = $accountsFacade->getPsAccountsService();
 Media::addJsDef([
-    'contextPsAccounts' => $facade->getPsAccountsPresenter()
+    'contextPsAccounts' => $accountsFacade->getPsAccountsPresenter()
         ->present($this->name),
 ]);
+
+// Retrieve Account CDN
+$this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
 ```
 
 #### PsBilling
@@ -204,15 +203,9 @@ if (!defined('_PS_VERSION_'))
 
 require 'vendor/autoload.php';
 
-use PrestaShop\PsAccountsInstaller\Installer\Exception\ModuleVersionException;
-use PrestaShop\PsAccountsInstaller\Installer\Exception\ModuleNotInstalledException;
-use ContextCore as Context;
-
 class Rbm_example extends Module
 {
-
-    private $container;
-    private $psVersionIs17;
+private $container;
     private $emailSupport;
 
     public function __construct()
@@ -223,15 +216,16 @@ class Rbm_example extends Module
         $this->author = 'Prestashop';
         $this->emailSupport = 'support@prestashop.com';
         $this->need_instance = 0;
+
         $this->ps_versions_compliancy = [
-            'min' => '1.6',
+            'min' => '1.6.1.0',
             'max' => _PS_VERSION_
         ];
         $this->bootstrap = true;
 
         parent::__construct();
 
-        $this->displayName = $this->l('rbm_example');
+        $this->displayName = $this->l('RBM example');
         $this->description = $this->l('This is a RBM example module.');
 
         $this->confirmUninstall = $this->l('Are you sure to uninstall this module?');
@@ -239,8 +233,23 @@ class Rbm_example extends Module
         $this->template_dir = _PS_MODULE_DIR_ . $this->name . '/views/templates/admin/';
 
         if ($this->container === null) {
-            $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer($this->name, $this->getLocalPath());
+            $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer(
+                $this->name,
+                $this->getLocalPath()
+            );
         }
+    }
+
+    /**
+     * Retrieve service
+     *
+     * @param string $serviceName
+     *
+     * @return mixed
+     */
+    public function getService($serviceName)
+    {
+        return $this->container->getService($serviceName);
     }
 
     public function install()
@@ -268,83 +277,80 @@ class Rbm_example extends Module
         return $this->context->language !== null ? $this->context->language->iso_code : 'en';
     }
 
-    public function getContent()
-    {
-        $facade = $this->getService('ps_accounts.facade');
-        Media::addJsDef([
-            'contextPsAccounts' => $facade->getPsAccountsPresenter()
-                ->present($this->name),
-        ]);
-
-        $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
-        $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
-        try {
-            $psAccountsService = $facade->getPsAccountsService();
-
-            Media::addJsDef([
-                'psBillingContext' => [
-                    'context' => [
-                        'versionPs' => _PS_VERSION_,
-                        'versionModule' => $this->version,
-                        'moduleName' => $this->name,
-                        'refreshToken' => $psAccountsService->getRefreshToken(),
-                        'emailSupport' => $this->emailSupport,
-                        'shop' => [
-                            'uuid' => $psAccountsService->getShopUuidV4()
-                        ],
-                        'i18n' => [
-                            'isoCode' => $this->getLanguageIsoCode()
-                        ],
-                        'user' => [
-                            'createdFromIp' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '',
-                            'email' => $psAccountsService->getEmail()
-                        ],
-                        'moduleTosUrl' => $this->getTosLink()
-                    ]
-                ]
-            ]);
-
-        } catch (ModuleNotInstalledException $e) {
-
-            // You handle exception here
-
-        } catch (ModuleVersionException $e) {
-
-            // You handle exception here
-        }
-
-        return $this->context->smarty->fetch($this->template_dir . 'rbm_example.tpl');
-    }
-
+    /**
+     * Get the Tos URL from the context language, if null, send default link value
+     *
+     * @return string
+     */
     public function getTosLink()
     {
         $iso_lang = $this->getLanguageIsoCode();
         switch ($iso_lang) {
             case 'fr':
-                $url = 'https://yoururl.ltd/mentions-legales';
+                $url = 'https://www.prestashop.com/fr/prestashop-account-cgu';
                 break;
             default:
-                $url = 'https://yoururl.ltd/legal-notice';
+                $url = 'https://www.prestashop.com/en/prestashop-account-terms-conditions';
                 break;
         }
 
         return $url;
     }
 
-    public function getService($serviceName)
+    public function getContent()
     {
-        if ($this->container === null) {
-            $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer(
-                $this->name,
-                $this->getLocalPath()
-            );
-        }
+        // TODO: allow to download module with preprod env
+        // Allow to auto-install Account
+        $accountsInstaller = $this->getService('ps_accounts.installer');
+        $accountsInstaller->install();
 
-        return $this->container->getService($serviceName);
+        try {
+            // Account
+            $accountsFacade = $this->getService('ps_accounts.facade');
+            $accountsService = $accountsFacade->getPsAccountsService();
+            Media::addJsDef([
+                'contextPsAccounts' => $accountsFacade->getPsAccountsPresenter()
+                    ->present($this->name),
+            ]);
+
+            // Retrieve Account CDN
+            $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
+
+            // Billing
+            Media::addJsDef([
+                'psBillingContext' => [
+                    'context' => [
+                        'versionPs' => _PS_VERSION_,
+                        'versionModule' => $this->version,
+                        'moduleName' => $this->name,
+                        'refreshToken' => $accountsService->getRefreshToken(),
+                        'emailSupport' => $this->emailSupport,
+                        'shop' => [
+                            'uuid' => $accountsService->getShopUuid()
+                        ],
+                        'i18n' => [
+                            'isoCode' => $this->getLanguageIsoCode()
+                        ],
+                        'user' => [
+                            'createdFromIp' => Tools::getRemoteAddr(),
+                            'email' => $accountsService->getEmail()
+                        ],
+                        'moduleTosUrl' => $this->getTosLink()
+                    ]
+                ]
+            ]);
+            $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
+            $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
+        } catch (Exception $e) {
+            $this->context->controller->errors[] = $e->getMessage();
+            return '';
+        }
+        return $this->context->smarty->fetch($this->template_dir . 'rbm_example.tpl');
     }
+
 }
 
-```
+````
 </Example>
 
 </Block>
@@ -357,23 +363,25 @@ Create the global vue app template in `views/templates/admin/<module_name>.tpl`.
 
 ```php
 return $this->context->smarty->fetch($this->template_dir . '<module_name>.tpl');
-```
+````
 
 This file will load the Vue app frontend and the chunk vendor js
 
-> The 2 variables `$pathVendor` and `$pathApp` are prepared in the `getContent` hook.
+> The 3 variables `$urlAccountsVueCdn`, `$pathVendor` and `$pathApp` are prepared in the `getContent` hook.
 
 <Example>
 ```html
 <link href="{$pathVendor|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 <link href="{$pathApp|escape:'htmlall':'UTF-8'}" rel=preload as=script>
+<link href="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 
 <div id="app"></div>
 
 <script src="{$pathVendor|escape:'htmlall':'UTF-8'}"></script>
 <script src="{$pathApp|escape:'htmlall':'UTF-8'}"></script>
+<script src="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" type="text/javascript"></script>
 
-```
+````
 </Example>
 
 </Block>
@@ -402,7 +410,7 @@ Feel free to organize your application in your own way
 # Create the Vue app
 cd _dev
 vue create <app's name>
-```
+````
 
 </Example>
 
@@ -463,7 +471,13 @@ module.exports = {
 #### Add required dependencies
 
 ```bash
-yarn add @prestashopcorp/billing-cdc prestashop_accounts_vue_components
+yarn add @prestashopcorp/billing-cdc
+```
+
+Optional see [PsAccount component fallback](#psaccount-component-fallback)
+
+```bash
+yarn add prestashop_accounts_vue_components
 ```
 
 ::: danger Developpement version
@@ -478,27 +492,49 @@ During developement you should install the preprod version of billing CDC : `yar
 
 Create a component or use the App.vue component and add `PsAccount` inside the template.
 
+The `PsAccount` front component is loaded by the CDN in the stamry template.
+
+::: warning Use the CDN
+CDN is the proper way to implement a recurring billing module, you should not use only the npm dependency
+:::
+
 ```html
 # Minimalistic Vue template
 <template>
   <div>
-    <PsAccounts>
-    </PsAccounts>
+    <PsAccounts> </PsAccounts>
   </div>
 </template>
 ```
 
 ```js
 <script>
-import { PsAccounts } from "prestashop_accounts_vue_components";
-
 export default {
     components: {
-        PsAccounts,
+        PsAccounts: async () => {
+            // CDN will normally inject a psaccountsVue within the window object
+            let psAccounts = window?.psaccountsVue?.PsAccounts;
+
+            // This is a fallback if CDN isn't available
+            if (!psAccounts) {
+                psAccounts = require('prestashop_accounts_vue_components').PsAccounts;
+            }
+            return psAccounts;
+        },
     },
 }
 </script>
 ```
+
+#### PsAccount component fallback
+
+```js
+if (!psAccounts) {
+  psAccounts = require("prestashop_accounts_vue_components").PsAccounts;
+}
+```
+
+This is a fallback in case the CDN doesn't work properly. If you want to do this, you should also add prestashop_accounts_vue_components in your dependencies: `npm install prestashop_accounts_vue_components` OR `yarn add prestashop_accounts_vue_components`.
 
 ### Use PsBilling
 
@@ -526,13 +562,13 @@ Use `PsBillingCustomer`, `PsBillingModal` in the template
 <template>
   <div>
     <PsAccounts>
-        ...
+      ...
     </PsAccounts>
     <ps-billing-customer
-        v-if="billingContext.user.email"
-        ref="psBillingCustomerRef"
-        :context="billingContext"
-        :onOpenModal="openBillingModal"
+      v-if="billingContext.user.email"
+      ref="psBillingCustomerRef"
+      :context="billingContext"
+      :onOpenModal="openBillingModal"
     />
     <ps-billing-modal
       v-if="modalType !== ''"
@@ -618,69 +654,81 @@ methods: {
   </div>
 </template>
 ```
-```js
-<script>
-import Vue from 'vue';
-import { PsAccounts } from "prestashop_accounts_vue_components";
-import moduleLogo from "@/assets/prestashop-logo.png";
-import { CustomerComponent, ModalContainerComponent } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
 
-export default {
-  components: {
-    PsAccounts,
-    PsBillingCustomer: CustomerComponent.driver('vue', Vue),
-    PsBillingModal: ModalContainerComponent.driver('vue', Vue),
-  },
-  data() {
-    return {
-      billingContext: {...window.psBillingContext.context, moduleLogo},
-      modalType: '',
-      sub: null,
-    }
-  },
-  provide() {
-    return {
-      emailSupport: window.psBillingContext.context.user.emailSupport
-    }
-  },
-  methods: {
-    openBillingModal(type, data) {
+```html
+<script>
+  import Vue from "vue";
+  import moduleLogo from "@/assets/prestashop-logo.png";
+  import {
+    CustomerComponent,
+    ModalContainerComponent,
+  } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
+
+  export default {
+    components: {
+      PsAccounts: async () => {
+        // CDN will normally inject a psaccountsVue within the window object
+        let psAccounts = window?.psaccountsVue?.PsAccounts;
+
+        // This is a fallback if CDN isn't available
+        if (!psAccounts) {
+          psAccounts = require("prestashop_accounts_vue_components").PsAccounts;
+        }
+        return psAccounts;
+      },
+      PsBillingCustomer: CustomerComponent.driver("vue", Vue),
+      PsBillingModal: ModalContainerComponent.driver("vue", Vue),
+    },
+    data() {
+      return {
+        billingContext: { ...window.psBillingContext.context, moduleLogo },
+        modalType: "",
+        sub: null,
+      };
+    },
+    provide() {
+      return {
+        emailSupport: window.psBillingContext.context.user.emailSupport,
+      };
+    },
+    methods: {
+      openBillingModal(type, data) {
         this.modalType = type;
         this.billingContext = { ...this.billingContext, ...data };
-    },
-    closeBillingModal(data) {
-        this.modalType = '';
+      },
+      closeBillingModal(data) {
+        this.modalType = "";
         this.$refs.psBillingCustomerRef.parent.updateProps({
-            context: {
-                ...this.billingContext,
-                ...data
-            }
+          context: {
+            ...this.billingContext,
+            ...data,
+          },
         });
-    },
-    eventHookHandler(type, data) {
-        switch(type) {
-            case EVENT_HOOK_TYPE.BILLING_INITIALIZED:
-                // data structure is: { customer, subscription }
-                console.log('Billing initialized', data);
-                this.sub = data.subscription;
-                break;
-            case EVENT_HOOK_TYPE.SUBSCRIPTION_UPDATED:
-                // data structure is: { customer, subscription, card }
-                console.log('Sub updated', data);
-                this.sub = data.subscription;
-                break;
-            case EVENT_HOOK_TYPE.SUBSCRIPTION_CANCELLED:
-                // data structure is: { customer, subscription }
-                console.log('Sub cancelled', data);
-                this.sub = data.subscription;
-                break;
+      },
+      eventHookHandler(type, data) {
+        switch (type) {
+          case EVENT_HOOK_TYPE.BILLING_INITIALIZED:
+            // data structure is: { customer, subscription }
+            console.log("Billing initialized", data);
+            this.sub = data.subscription;
+            break;
+          case EVENT_HOOK_TYPE.SUBSCRIPTION_UPDATED:
+            // data structure is: { customer, subscription, card }
+            console.log("Sub updated", data);
+            this.sub = data.subscription;
+            break;
+          case EVENT_HOOK_TYPE.SUBSCRIPTION_CANCELLED:
+            // data structure is: { customer, subscription }
+            console.log("Sub cancelled", data);
+            this.sub = data.subscription;
+            break;
         }
+      },
     },
-  }
-}
+  };
 </script>
-
 ```
+
 </Example>
 
 </Block>
@@ -690,25 +738,26 @@ export default {
 
 Below is the details of the attributes
 
-| Attribute | Type | Description |
-| ---------- |------| -------------|
-| moduleName | **string** | Module's name (**required**) |
-| moduleTosUrl | **string** | Url to your term of service (**required**) |
-| accountApi | **string** | API to retrieve Prestashop Account (**required**) |
-| emailSupport | **string** | Email to contact support (**required**) |
-| i18n.isoCode | **string** | ISO code (**required**) |
-| shop.uuid | **string** | Merchant shop's uuid (**required**) |
-| shop.domain | **string** | Merchant site's domain name (**required**) |
-| user.createdFromIp | **string** | Merchant site's ip address (**required**) |
-| user.email | **string** | Merchant's email (**required**) |
-| versionModule | **string** | Module's version |
-| versionPs | **string** | Prestashop's version |
+| Attribute          | Type       | Description                                       |
+| ------------------ | ---------- | ------------------------------------------------- |
+| moduleName         | **string** | Module's name (**required**)                      |
+| moduleTosUrl       | **string** | Url to your term of service (**required**)        |
+| accountApi         | **string** | API to retrieve Prestashop Account (**required**) |
+| emailSupport       | **string** | Email to contact support (**required**)           |
+| i18n.isoCode       | **string** | ISO code (**required**)                           |
+| shop.uuid          | **string** | Merchant shop's uuid (**required**)               |
+| shop.domain        | **string** | Merchant site's domain name (**required**)        |
+| user.createdFromIp | **string** | Merchant site's ip address (**required**)         |
+| user.email         | **string** | Merchant's email (**required**)                   |
+| versionModule      | **string** | Module's version                                  |
+| versionPs          | **string** | Prestashop's version                              |
 
 </Block>
 
 <Block>
 
 #### Modal detail
+
 There are 5 types of modal:
 
 **1. AddressModal**
@@ -764,7 +813,7 @@ Data format: `{state, card, credit_notes, subscription, customer, invoice}` if t
 </Block>
 
 <Block>
-#### Event hook 
+#### Event hook
 
 The event hook system allows you to be notified in the front app when a subscription changes. There are 3 types of event:
 
@@ -776,24 +825,23 @@ The event hook system allows you to be notified in the front app when a subscrip
 These event hook are triggered on the Billing API HTTP call return. It may have some delay for your system to be notified of the subscription update by the webhook system. We advice you to do some [long polling](https://javascript.info/long-polling) until you the subscription update is propagated to your system.
 :::
 
-
 Here is the recipe to listen to this event hook:
 
 ```html{6}
-    <ps-billing-customer
-        v-if="billingContext.user.email"
-        ref="psBillingCustomerRef"
-        :context="billingContext"
-        :onOpenModal="openBillingModal"
-        :onEventHook="eventHookHandler"
-    />
-    <ps-billing-modal
-      v-if="modalType !== ''"
-      :context="billingContext"
-      :type="modalType"
-      :onCloseModal="closeBillingModal"
-      :onEventHook="eventHookHandler"
-    />
+<ps-billing-customer
+  v-if="billingContext.user.email"
+  ref="psBillingCustomerRef"
+  :context="billingContext"
+  :onOpenModal="openBillingModal"
+  :onEventHook="eventHookHandler"
+/>
+<ps-billing-modal
+  v-if="modalType !== ''"
+  :context="billingContext"
+  :type="modalType"
+  :onCloseModal="closeBillingModal"
+  :onEventHook="eventHookHandler"
+/>
 ```
 
 ```js
@@ -806,15 +854,15 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
         eventHookHandler(type, data) {
             switch(type) {
                 case EVENT_HOOK_TYPE.BILLING_INITIALIZED:
-                    // data structure is: { customer, subscription } 
+                    // data structure is: { customer, subscription }
                     console.log('Billing initialized', data);
                     break;
                 case EVENT_HOOK_TYPE.SUBSCRIPTION_UPDATED:
-                    // data structure is: { customer, subscription, card } 
+                    // data structure is: { customer, subscription, card }
                     console.log('Sub updated', data);
                     break;
                 case EVENT_HOOK_TYPE.SUBSCRIPTION_CANCELLED:
-                    // data structure is: { customer, subscription } 
+                    // data structure is: { customer, subscription }
                     console.log('Sub cancelled', data);
                     break;
                 }
@@ -846,31 +894,40 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
   </div>
 </template>
 ```
-```js
-<script>
-import Vue from 'vue';
-import { PsAccounts } from "prestashop_accounts_vue_components";
-import moduleLogo from "@/assets/prestashop-logo.png";
-import { CustomerComponent, ModalContainerComponent, EVENT_HOOK_TYPE } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
 
-export default {
-  components: {
-    PsAccounts,
-    PsBillingCustomer: CustomerComponent.driver('vue', Vue),
-    PsBillingModal: ModalContainerComponent.driver('vue', Vue),
-  },
-  data() {
-    return {
-      billingContext: {...window.psBillingContext.context, moduleLogo},
-      modalType: '',
-    }
-  },
-  methods: {
-    openBillingModal(type, data) {
+```html
+<script>
+  import Vue from 'vue';
+  import moduleLogo from "@/assets/prestashop-logo.png";
+  import { CustomerComponent, ModalContainerComponent, EVENT_HOOK_TYPE } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
+
+  export default {
+    components: {
+      PsAccounts: async () => {
+        // CDN will normally inject a psaccountsVue within the window object
+        let psAccounts = window?.psaccountsVue?.PsAccounts;
+
+        // This is a fallback if CDN isn't available
+        if (!psAccounts) {
+            psAccounts = require("prestashop_accounts_vue_components").PsAccounts;
+        }
+        return psAccounts;
+      },
+      PsBillingCustomer: CustomerComponent.driver('vue', Vue),
+      PsBillingModal: ModalContainerComponent.driver('vue', Vue),
+    },
+    data() {
+      return {
+        billingContext: {...window.psBillingContext.context, moduleLogo},
+        modalType: '',
+      }
+    },
+    methods: {
+      openBillingModal(type, data) {
         this.modalType = type;
         this.billingContext = { ...this.billingContext, ...data };
-    },
-    closeBillingModal(data) {
+      },
+      closeBillingModal(data) {
         this.modalType = '';
         this.$refs.psBillingCustomerRef.parent.updateProps({
             context: {
@@ -878,8 +935,8 @@ export default {
                 ...data
             }
         });
-    },
-    eventHookHandler(type, data) {
+      },
+      eventHookHandler(type, data) {
         switch(type) {
             case EVENT_HOOK_TYPE.BILLING_INITIALIZED:
                 // Do what you want to do when ps-billing-customer is initialized
@@ -892,12 +949,12 @@ export default {
                 break;
             }
         }
+      }
     }
   }
-}
 </script>
-
 ```
+
 </Example>
 
 </Block>
@@ -911,9 +968,9 @@ To achieve this, first of all, you need to create a ref to the `PsBillingCustome
 
 ```html{2}
 <ps-billing-customer
-    ref="psBillingCustomerRef"
-    :context="billingContext"
-    :onOpenModal="openBillingModal"
+  ref="psBillingCustomerRef"
+  :context="billingContext"
+  :onOpenModal="openBillingModal"
 />
 ```
 
@@ -921,17 +978,17 @@ Then in the `created` hook, you call the `emit` function from `CustomerComponent
 
 ```js{4}
 export default {
-    // ...
-    created() {
-        this.$refs.psBillingCustomerRef.emit('init:billing', {
-            'CREATE_SUBSCRIPTION': {
-                // This is the id of your free plan
-                planId: 'default-free'
-            }
-        });
-    }
-    // ...
-}
+  // ...
+  created() {
+    this.$refs.psBillingCustomerRef.emit("init:billing", {
+      CREATE_SUBSCRIPTION: {
+        // This is the id of your free plan
+        planId: "default-free",
+      },
+    });
+  },
+  // ...
+};
 ```
 
 </Block>
