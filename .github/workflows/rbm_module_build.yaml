@@ -21,7 +21,7 @@ jobs:
         run: composer install --no-dev
       - name: Install js dependencies
         working-directory: ${{env.module_path}}/_dev/apps
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile && yarn build-skip-eslint
       - name: Clean-up project
         working-directory: ${{env.module_path}}
         run: |
