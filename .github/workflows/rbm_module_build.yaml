@@ -18,7 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.0.0
-      - uses: './.github/actions/install_build_dependencies'
+      - name: Install and build dependencies
+        uses: ./.github/actions/install_build_dependencies
         with:
           module_path: ${{env.module_path}}
           env_name: ${{env.env_name}}
