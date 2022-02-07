@@ -1,12 +1,14 @@
 name: Build module RBM
 on:
-  push:
-    branches:
-      - main
-      - OFF-318/feature/rbm_ci # remove when merging onto main
-    paths:
-      - 'modules/**'
-      - '.github/**'
+  # push:
+  #   branches:
+  #     - main
+  #     - OFF-318/feature/rbm_ci # remove when merging onto main
+  #   paths:
+  #     - 'modules/**'
+  #     - '.github/**'
+  release:
+    types: [released, prereleased]
 env:
   module_path: ./modules/rbm_example
 jobs:
@@ -57,7 +59,13 @@ jobs:
           name: rbm_example_dependencies_${{env.env_name}}
       - name: Zip
         run: |
-          pwd
-          ls
           zip -r rbm_example_module_${{env.env_name}}.zip .
-          ls
+      - name: Release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./rbm_example_module_${{env.env_name}}.zip
+          asset_name: rbm_example_module_${{env.env_name}}.zip
+          asset_content_type: application/zip
