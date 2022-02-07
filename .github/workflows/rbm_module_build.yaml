@@ -20,4 +20,12 @@ jobs:
       - name: Install js dependencies
         working-directory: ./modules/rbm_example/_dev/apps
         run: yarn install --frozen-lockfile
+      - name: Clean-up project
+        working-directory: ./modules/rbm_example
+        run: |
+          rm -f composer.*
+          rm -f .gitignore
+          rm -rf _dev
+          ls
+        # uses: PrestaShopCorp/github-action-clean-before-deploy@v1.0
 
