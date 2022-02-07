@@ -29,7 +29,8 @@ jobs:
           rm -f .gitignore
           rm -f config.xml
           rm -rf _dev
-      - uses: actions/upload-artifact@v2
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
         with:
           name: rbm_example_module
           path: ./modules/rbm_example
