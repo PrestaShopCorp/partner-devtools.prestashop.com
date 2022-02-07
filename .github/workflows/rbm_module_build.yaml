@@ -38,7 +38,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: rbm_example_dependencies
-      - name: Build integration module
+      - name: Build ${{env.env_name}} module
         working-directory: ${{env.module_path}}/_dev/apps
         run: yarn add @prestashopcorp/billing-cdc@${{env.env_name}} && yarn build-skip-eslint
       - name: Clean-up project
@@ -54,7 +54,7 @@ jobs:
           name: rbm_example_module_${{env.env_name}}
           path: ${{env.module_path}}
   build_prestabulle1:
-    name: Build integration
+    name: Build prestabulle1
     needs: install_dependencies
     runs-on: ubuntu-latest
     env:
@@ -64,7 +64,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: rbm_example_dependencies
-      - name: Build integration module
+      - name: Build ${{env.env_name}} module
         working-directory: ${{env.module_path}}/_dev/apps
         run: yarn add @prestashopcorp/billing-cdc@${{env.env_name}} && yarn build-skip-eslint
       - name: Clean-up project
