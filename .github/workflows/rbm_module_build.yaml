@@ -59,13 +59,13 @@ jobs:
           name: rbm_example_dependencies_${{env.env_name}}
       - name: Zip
         run: |
-          zip -r rbm_example_module_${{env.env_name}}.zip . -x '*.git*' '*config/config.yml.*'
+          zip -r rbm_example.zip . -x '*.git*' '*config/config.yml.*'
       - name: Release
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./rbm_example_module_${{env.env_name}}.zip
+          asset_path: ./rbm_example.zip
           asset_name: rbm_example_module_${{env.env_name}}.zip
           asset_content_type: application/zip
