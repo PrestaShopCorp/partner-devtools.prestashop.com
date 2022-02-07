@@ -1,0 +1,12 @@
+name: Build module RBM
+on:
+  push:
+    branches:
+      - main
+      - OFF-318/feature/rbm_ci
+    paths:
+      - 'modules/**'
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - run: echo "Hello world"
