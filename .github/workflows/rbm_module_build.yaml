@@ -7,21 +7,40 @@ on:
     paths:
       - 'modules/**'
       - '.github/**'
+env:
+  module_path: ./modules/rbm_example
 jobs:
-  build:
-    name: Build
+  install_dependencies:
+    name: Install php and js dependencies
     runs-on: ubuntu-latest
-    env:
-      module_path: ./modules/rbm_example
     steps:
       - name: Checkout
         uses: actions/checkout@v2.0.0
-      - name: Install composer dependencies
+      - name: Install php dependencies
         working-directory: ${{env.module_path}}
         run: composer install --no-dev
       - name: Install js dependencies
         working-directory: ${{env.module_path}}/_dev/apps
-        run: yarn install --frozen-lockfile && yarn build-skip-eslint
+        run: yarn install --frozen-lockfile
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: rbm_example_dependencies
+          path: ./modules/rbm_example
+  build_integration:
+    name: Build integration
+    needs: install_dependencies
+    runs-on: ubuntu-latest
+    env:
+      env_name: integration
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: rbm_example_dependencies
+      - name: Build integration module
+        working-directory: ${{env.module_path}}/_dev/apps
+        run: yarn add @prestashopcorp/billing-cdc@${{env.env_name}} && yarn build-skip-eslint
       - name: Clean-up project
         working-directory: ${{env.module_path}}
         run: |
@@ -32,14 +51,40 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: rbm_example_module
-          path: ./modules/rbm_example
-  zip:
-    name: Zip
+          name: rbm_example_module_${{env.env_name}}
+          path: ${{env.module_path}}
+  build_prestabulle1:
+    name: Build integration
+    needs: install_dependencies
     runs-on: ubuntu-latest
-    needs: build
+    env:
+      env_name: prestabulle1
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
-          name: rbm_example_module
+          name: rbm_example_dependencies
+      - name: Build integration module
+        working-directory: ${{env.module_path}}/_dev/apps
+        run: yarn add @prestashopcorp/billing-cdc@${{env.env_name}} && yarn build-skip-eslint
+      - name: Clean-up project
+        working-directory: ${{env.module_path}}
+        run: |
+          rm -f composer.*
+          rm -f .gitignore
+          rm -f config.xml
+          rm -rf _dev
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: rbm_example_module_${{env.env_name}}
+          path: ${{env.module_path}}
+  # zip:
+  #   name: Zip
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - name: Download artifact
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: rbm_example_module
