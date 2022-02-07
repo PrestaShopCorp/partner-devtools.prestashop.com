@@ -1,0 +1,28 @@
+name: Install and build dependencies
+description: Install php and js dependencies
+inputs:
+  env_name:
+    required: true
+    description: Environment name such as integration, prestabulle1, etc.
+  module_path:
+    required: true
+    description: Path of module
+runs:
+  using: composite
+  steps:
+    - name: Install php dependencies
+      working-directory: ${{inputs.module_path}}
+      run: composer install --no-dev
+    - name: Install js dependencies
+      working-directory: ${{inputs.module_path}}/_dev/apps
+      run: |
+        yarn install --frozen-lockfile
+        yarn add @prestashopcorp/billing-cdc@${{inputs.env_name}}
+        yarn build-skip-eslint
+    - name: Clean-up project
+      working-directory: ${{inputs.module_path}}
+      run: |
+        rm -f composer.*
+        rm -f .gitignore
+        rm -f config.xml
+        rm -rf _dev
