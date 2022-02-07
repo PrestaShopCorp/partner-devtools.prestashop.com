@@ -3,12 +3,18 @@ on:
   push:
     branches:
       - main
-      - OFF-318/feature/rbm_ci
+      - OFF-318/feature/rbm_ci # remove when merging onto main
     paths:
       - 'modules/**'
-      # - '.github/**'
+      - '.github'
 jobs:
-  echo:
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello world"
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+      - name: Install composer dependencies
+        working-directory: ./modules/rbm_example
+        run: composer install --no-dev
+
