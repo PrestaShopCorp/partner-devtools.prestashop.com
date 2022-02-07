@@ -60,7 +60,7 @@ jobs:
       - name: Zip
         run: |
           mkdir rbm_example
-          cp -a . rbm_example
+          rsync -Rr . rbm_example
           zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
       - name: Release
         uses: actions/upload-release-asset@v1.0.1
