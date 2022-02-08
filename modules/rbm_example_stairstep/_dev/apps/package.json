@@ -1,0 +1,37 @@
+{
+  "name": "rbm_example_stairstep",
+  "version": "1.0.0",
+  "private": true,
+  "author": "support@prestashop.com",
+  "license": "AFL-3.0",
+  "scripts": {
+    "dev": "vue-cli-service build --no-clean --mode development --watch",
+    "dev-skip-eslint": "vue-cli-service build --no-clean --mode development --watch --skip-plugins @vue/cli-plugin-eslint",
+    "build": "vue-cli-service build --no-clean",
+    "build-skip-eslint": "vue-cli-service build --no-clean --skip-plugins @vue/cli-plugin-eslint",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@prestashopcorp/billing-cdc": "^0.0.14-preprod",
+    "core-js": "3.19.1 ",
+    "prestakit": "1.2.3",
+    "prestashop_accounts_vue_components": "latest",
+    "vue": "2.6.14",
+    "vue-content-loader": "2.0.0 "
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "4.5.15",
+    "@vue/cli-plugin-eslint": "4.5.15",
+    "@vue/cli-service": "4.5.15",
+    "autoprefixer": "10.4.0",
+    "babel-eslint": "10.1.0",
+    "node-sass": "6.0.1",
+    "sass-loader": "^10",
+    "vue-template-compiler": "2.6.14"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

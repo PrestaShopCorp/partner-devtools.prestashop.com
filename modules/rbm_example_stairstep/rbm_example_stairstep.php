@@ -4,14 +4,14 @@ if (!defined('_PS_VERSION_'))
 
 require 'vendor/autoload.php';
 
-class Rbm_example extends Module
+class Rbm_example_stairstep extends Module
 {
     private $container;
     private $emailSupport;
 
     public function __construct()
     {
-        $this->name = 'rbm_example';
+        $this->name = 'rbm_example_stairstep';
         $this->tab = 'advertising_marketing';
         $this->version = '1.0.0';
         $this->author = 'Prestashop';
@@ -26,8 +26,8 @@ class Rbm_example extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('RBM example');
-        $this->description = $this->l('This is a RBM example module.');
+        $this->displayName = $this->l('RBM example stairstep');
+        $this->description = $this->l('This is a RBM example stairstep module.');
 
         $this->confirmUninstall = $this->l('Are you sure to uninstall this module?');
 
@@ -145,12 +145,12 @@ class Rbm_example extends Module
                     ]
                 ]
             ]);
-            $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
-            $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
+            $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example_stairstep.' . $this->version . '.js');
+            $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example_stairstep.' . $this->version . '.js');
         } catch (Exception $e) {
             $this->context->controller->errors[] = $e->getMessage();
             return '';
         }
-        return $this->context->smarty->fetch($this->template_dir . 'rbm_example.tpl');
+        return $this->context->smarty->fetch($this->template_dir . 'rbm_example_stairstep.tpl');
     }
 }

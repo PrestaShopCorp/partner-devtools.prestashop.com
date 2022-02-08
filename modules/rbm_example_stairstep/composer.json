@@ -1,5 +1,5 @@
 {
-    "name": "prestashop/rbm_example",
+    "name": "prestashop/rbm_example_stairstep",
     "description": "",
     "config": {
         "preferred-install": "dist",
@@ -19,7 +19,7 @@
     },
     "autoload": {
         "classmap": [
-            "rbm_example.php"
+            "rbm_example_stairstep.php"
         ]
     },
     "author": "PrestaShop",

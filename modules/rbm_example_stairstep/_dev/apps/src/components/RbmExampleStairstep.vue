@@ -24,6 +24,8 @@
 
     <div v-if="sub && sub.id">
       Display your configuration, only if customer have a subscription
+
+      <ps-subscription-quantity-test :context="billingContext" />
     </div>
   </div>
 </template>
@@ -32,13 +34,14 @@
 import Vue from 'vue';
 
 import {
+  SubscriptionQuantityTestComponent,
   CustomerComponent,
   ModalContainerComponent,
   EVENT_HOOK_TYPE
 } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
 
 export default {
-  name: 'RbmExample',
+  name: 'RbmExampleStairstep',
   components: {
     PsAccounts: async () => {
       let psAccounts = window?.psaccountsVue?.PsAccounts;
@@ -50,6 +53,7 @@ export default {
     },
     PsBillingCustomer: CustomerComponent.driver('vue', Vue),
     PsBillingModal: ModalContainerComponent.driver('vue', Vue),
+    PsSubscriptionQuantityTest: SubscriptionQuantityTestComponent.driver('vue', Vue),
   },
   provide() {
     return {
