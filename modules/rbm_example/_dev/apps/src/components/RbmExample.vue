@@ -30,7 +30,7 @@
 
 <script>
 import Vue from 'vue';
-import moduleLogo from "@/assets/prestashop-logo.png";
+
 import {
   CustomerComponent,
   ModalContainerComponent,
@@ -58,7 +58,7 @@ export default {
   },
   data() {
     return {
-      billingContext: {...window.psBillingContext.context, moduleLogo},
+      billingContext: {...window.psBillingContext.context},
       type: '',
       sub: null
     }

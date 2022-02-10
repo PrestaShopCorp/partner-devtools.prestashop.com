@@ -31,7 +31,9 @@ class Rbm_example extends Module
 
         $this->confirmUninstall = $this->l('Are you sure to uninstall this module?');
 
-        $this->template_dir = _PS_MODULE_DIR_ . $this->name . '/views/templates/admin/';
+        $this->uri_path = Tools::substr($this->context->link->getBaseLink(null, null, true), 0, -1);
+        $this->images_dir = $this->uri_path.$this->getPathUri() . 'views/img/';
+        $this->template_dir = $this->getLocalPath(). 'views/templates/admin/';
 
         if ($this->container === null) {
             $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer(
@@ -124,6 +126,9 @@ class Rbm_example extends Module
                         'versionPs' => _PS_VERSION_,
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,
+                        'displayName' => $this->displayName,
+                        'partnerLogo' => $this->images_dir.'partnerLogo.png',
+                        'moduleLogo' => $this->uri_path.$this->getPathUri().'logo.png',
                         'refreshToken' => $accountsService->getRefreshToken(),
                         'emailSupport' => $this->emailSupport,
                         'shop' => [
