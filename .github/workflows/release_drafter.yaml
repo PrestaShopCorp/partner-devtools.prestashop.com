@@ -4,9 +4,11 @@ on:
     branches:
       - main
       - OFF-318/feature/rbm_ci # remove when merging onto main
-
+    paths:
+      - 'modules/**'
+      - '.github/**'
 jobs:
-  update_release_draft:
+  release_draft:
     name: Add or update release draft
     runs-on: ubuntu-latest
     steps:
