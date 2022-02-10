@@ -8,7 +8,7 @@ on:
   #     - 'modules/**'
   #     - '.github/**'
   release:
-    types: [released, prereleased]
+    types: [published, released]
 env:
   module_path: ./modules/rbm_example
 jobs:
