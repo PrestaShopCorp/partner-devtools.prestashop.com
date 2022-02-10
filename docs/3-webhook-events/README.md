@@ -53,6 +53,12 @@ If a status is **officially** changed, the `subscription.status-updated` event w
 
 If a subscription is changed, the `subscription.updated` event will be sent but in some cases, the status hasn't yet been changed. That's why the `subscription.status-updated` event comes in handy in these exceptional cases.
 
+:::warning
+
+In order to track the subscription status changes, use `subscription.status-updated` instead, do not use `subscription.updated`
+
+:::
+
 All the subscription event data follow this structure
 
 | Value        | Type | Description |
