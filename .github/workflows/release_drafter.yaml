@@ -1,0 +1,16 @@
+name: Add a release draft
+on:
+  push:
+    branches:
+      - main
+      - OFF-318/feature/rbm_ci # remove when merging onto main
+
+jobs:
+  update_release_draft:
+    name: Add or update release draft
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release draft
+        uses: toolmantim/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
