@@ -102,7 +102,6 @@ class Rbm_example extends Module
 
     public function getContent()
     {
-        // TODO: allow to download module with preprod env
         // Allow to auto-install Account
         $accountsInstaller = $this->getService('ps_accounts.installer');
         $accountsInstaller->install();
@@ -123,6 +122,7 @@ class Rbm_example extends Module
             Media::addJsDef([
                 'psBillingContext' => [
                     'context' => [
+                        'isSandbox' => TRUE,
                         'versionPs' => _PS_VERSION_,
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,
