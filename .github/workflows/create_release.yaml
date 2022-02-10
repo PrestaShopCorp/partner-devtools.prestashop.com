@@ -2,7 +2,7 @@ name: Add a release draft
 on:
   push:
     branches:
-      - main
+      # - main
       - OFF-318/feature/rbm_ci # remove when merging onto main
 jobs:
   create_release:
