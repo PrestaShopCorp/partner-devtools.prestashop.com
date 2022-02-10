@@ -8,9 +8,10 @@ on:
       - 'modules/**'
       - '.github/**'
 jobs:
-  release_draft:
+  create_release:
     name: Add or update release draft
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     steps:
       - name: Release draft
         uses: toolmantim/release-drafter@v5
