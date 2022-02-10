@@ -3,7 +3,7 @@ on:
   push:
     branches:
       # - main
-      - OFF-318/feature/rbm_ci # remove when merging onto main
+      - OFF-318/feature/rbm_ci # remove when merging onto main.
 jobs:
   create_release:
     name: Create release
