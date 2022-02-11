@@ -1,12 +1,5 @@
 name: Build module RBM
 on:
-  # push:
-  #   branches:
-  #     - main
-  #     - OFF-318/feature/rbm_ci # remove when merging onto main
-  #   paths:
-  #     - 'modules/**'
-  #     - '.github/**'
   release:
     types: [released]
 env:
@@ -34,6 +27,23 @@ jobs:
     runs-on: ubuntu-latest
     env:
       env_name: preprod
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+      - uses: ./.github/actions/install-build-dependencies
+        with:
+          module_path: ${{env.module_path}}
+          env_name: ${{env.env_name}}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: rbm_example_dependencies_${{env.env_name}}
+          path: ${{env.module_path}}
+  install_build_integration:
+    name: Install and build integration dependencies
+    runs-on: ubuntu-latest
+    env:
+      env_name: integration
     steps:
       - name: Checkout
         uses: actions/checkout@v2.0.0
@@ -80,6 +90,40 @@ jobs:
         with:
           name: rbm_example_dependencies_${{env.env_name}}
           path: ${{env.module_path}}
+  install_build_prestabulle3:
+    name: Install and build prestabulle3 dependencies
+    runs-on: ubuntu-latest
+    env:
+      env_name: prestabulle3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+      - uses: ./.github/actions/install-build-dependencies
+        with:
+          module_path: ${{env.module_path}}
+          env_name: ${{env.env_name}}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: rbm_example_dependencies_${{env.env_name}}
+          path: ${{env.module_path}}
+  
+    name: Install and build prestabulle9 dependencies
+    runs-on: ubuntu-latest
+    env:
+      env_name: prestabulle9
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+      - uses: ./.github/actions/install-build-dependencies
+        with:
+          module_path: ${{env.module_path}}
+          env_name: ${{env.env_name}}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: rbm_example_dependencies_${{env.env_name}}
+          path: ${{env.module_path}}
   publish_release_prod:
     name: Publish and release production
     runs-on: ubuntu-latest
@@ -110,6 +154,30 @@ jobs:
     needs: install_build_preprod
     env:
       env_name: preprod
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: rbm_example_dependencies_${{env.env_name}}
+      - name: Zip
+        run: |
+          rsync -Rr . rbm_example
+          zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
+      - name: Release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./rbm_example.zip
+          asset_name: rbm_example_module_${{env.env_name}}.zip
+          asset_content_type: application/zip
+  publish_release_integration:
+    name: Publish and release integration
+    runs-on: ubuntu-latest
+    needs: install_build_integration
+    env:
+      env_name: integration
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v2
@@ -176,4 +244,51 @@ jobs:
           asset_path: ./rbm_example.zip
           asset_name: rbm_example_module_${{env.env_name}}.zip
           asset_content_type: application/zip
-
+  publish_release_prestabulle3:
+    name: Publish and release prestabulle3
+    runs-on: ubuntu-latest
+    needs: install_build_prestabulle3
+    env:
+      env_name: prestabulle3
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: rbm_example_dependencies_${{env.env_name}}
+      - name: Zip
+        run: |
+          rsync -Rr . rbm_example
+          zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
+      - name: Release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./rbm_example.zip
+          asset_name: rbm_example_module_${{env.env_name}}.zip
+          asset_content_type: application/zip
+ 
+    name: Publish and release prestabulle9
+    runs-on: ubuntu-latest
+    needs: install_build_prestabulle9
+    env:
+      env_name: prestabulle9
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: rbm_example_dependencies_${{env.env_name}}
+      - name: Zip
+        run: |
+          rsync -Rr . rbm_example
+          zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
+      - name: Release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./rbm_example.zip
+          asset_name: rbm_example_module_${{env.env_name}}.zip
+          asset_content_type: application/zip
