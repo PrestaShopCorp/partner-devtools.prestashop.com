@@ -8,7 +8,6 @@ runs:
   using: composite
   steps:
     - name: Create zip file
-      working-directory: ${{inputs.module_path}}
       shell: bash
       run: |
         rsync -Rr . rbm_example
