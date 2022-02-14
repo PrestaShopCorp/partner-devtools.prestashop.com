@@ -323,8 +323,9 @@ jobs:
       #     zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
       - name: Checkout
         uses: actions/checkout@v2.0.0
-      - name: Zip
-        uses: ./.github/actions/zip
+      - uses: ./.github/actions/zip
+        with:
+          module_path: ${{env.module_path}}
       - name: Release
         uses: actions/upload-release-asset@v1.0.1
         env:
