@@ -209,6 +209,7 @@ jobs:
         with:
           name: rbm_example_dependencies_${{env.env_name}}
           path: ${{env.module_path}}
+  # Publish and release
   publish_release_prod:
     name: Publish and release production
     runs-on: ubuntu-latest
@@ -220,10 +221,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: rbm_example_dependencies_${{env.env_name}}
-      - name: Zip
-        run: |
-          rsync -Rr . rbm_example
-          zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
+      # - name: Zip
+      #   run: |
+      #     rsync -Rr . rbm_example
+      #     zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
+      - uses: ./.github/actions/zip
       - name: Release
         uses: actions/upload-release-asset@v1.0.1
         env:
@@ -316,10 +318,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: rbm_example_dependencies_${{env.env_name}}
-      - name: Zip
-        run: |
-          rsync -Rr . rbm_example
-          zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
+      # - name: Zip
+      #   run: |
+      #     rsync -Rr . rbm_example
+      #     zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
+      - uses: ./.github/actions/zip
       - name: Release
         uses: actions/upload-release-asset@v1.0.1
         env:

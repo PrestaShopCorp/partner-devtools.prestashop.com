@@ -1,5 +1,5 @@
 name: Install and build dependencies
-description: Install php and js dependencies
+description: Install and compile php js dependencies
 inputs:
   env_name:
     required: true

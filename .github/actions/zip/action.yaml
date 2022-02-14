@@ -1,0 +1,10 @@
+name: Zip
+description: Compress the RBM module
+runs:
+  using: composite
+  steps:
+    - name: Create zip file
+      shell: bash
+      run: |
+        rsync -Rr . rbm_example
+        zip -r rbm_example.zip rbm_example -x '*.git*' '*config/config.yml.*'
