@@ -122,7 +122,7 @@ class Rbm_example extends Module
             Media::addJsDef([
                 'psBillingContext' => [
                     'context' => [
-                        'isSandbox' => TRUE,
+                        'isSandbox' => true,
                         'versionPs' => _PS_VERSION_,
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,

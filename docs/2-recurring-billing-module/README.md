@@ -166,7 +166,7 @@ During your development you should use the sandbox mode which allow you to use t
 Media::addJsDef([
     'psBillingContext' => [
         'context' => [
-            'isSandbox' => TRUE,
+            'isSandbox' => true,
             'versionPs' => _PS_VERSION_,
             'versionModule' => $this->version,
             'moduleName' => $this->name,
@@ -326,7 +326,7 @@ private $container;
             Media::addJsDef([
                 'psBillingContext' => [
                     'context' => [
-                        'isSandbox' => TRUE,
+                        'isSandbox' => true,
                         'versionPs' => _PS_VERSION_,
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,
