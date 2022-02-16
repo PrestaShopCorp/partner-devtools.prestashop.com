@@ -11,5 +11,3 @@ change-template: '- #$NUMBER: $TITLE by @$AUTHOR'
 template: |
   # Changes
   $CHANGES
-filter-by-commitish: true
-commitish: OFF-318/feature/rbm_ci
