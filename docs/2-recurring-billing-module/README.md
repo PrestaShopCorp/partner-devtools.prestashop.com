@@ -157,11 +157,16 @@ $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccount
 
 It is necessary to inject the `psBillingContext` into the global variable `window.psBillingContext` in order to initialize `PsBilling` related components
 
+:::warning Sandbox mode
+During your development you should use the sandbox mode which allow you to use test card. You can use `4111 1111 1111 1111` as test card, or [see the official Chargebee documentation](https://www.chargebee.com/docs/2.0/chargebee-test-gateway.html#test-card-numbers)
+:::
+
 ```php
 // Load context for PsBilling
 Media::addJsDef([
     'psBillingContext' => [
         'context' => [
+            'isSandbox' => true,
             'versionPs' => _PS_VERSION_,
             'versionModule' => $this->version,
             'moduleName' => $this->name,
@@ -301,7 +306,6 @@ private $container;
 
     public function getContent()
     {
-        // TODO: allow to download module with preprod env
         // Allow to auto-install Account
         $accountsInstaller = $this->getService('ps_accounts.installer');
         $accountsInstaller->install();
@@ -322,6 +326,7 @@ private $container;
             Media::addJsDef([
                 'psBillingContext' => [
                     'context' => [
+                        'isSandbox' => true,
                         'versionPs' => _PS_VERSION_,
                         'versionModule' => $this->version,
                         'moduleName' => $this->name,
@@ -484,10 +489,6 @@ Optional see [PsAccount component fallback](#psaccount-component-fallback)
 ```bash
 yarn add prestashop_accounts_vue_components
 ```
-
-::: danger Developpement version
-During developement you should install the preprod version of billing CDC : `yarn add @prestashopcorp/billing-cdc@preprod`. This is temporary as we will create a sandbox mode in production.
-:::
 
 </Block>
 
@@ -748,7 +749,7 @@ Below is the details of the attributes
 | moduleName         | **string** | Module's name (**required**)                      |
 | displayName        | **string** | Module's display name (**required**)              |
 | moduleLogo         | **string** | Module's logo (**required**)                      |
-| partnerLogo        | **string** | Your logo image  (**required**)                   |
+| partnerLogo        | **string** | Your logo image (**required**)                    |
 | moduleTosUrl       | **string** | Url to your term of service (**required**)        |
 | accountApi         | **string** | API to retrieve Prestashop Account (**required**) |
 | emailSupport       | **string** | Email to contact support (**required**)           |

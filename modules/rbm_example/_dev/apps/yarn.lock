@@ -1014,10 +1014,10 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@prestashopcorp/billing-cdc@^0.0.13-preprod":
-  version "0.0.13-preprod"
-  resolved "https://registry.yarnpkg.com/@prestashopcorp/billing-cdc/-/billing-cdc-0.0.13-preprod.tgz#d2e18bbbd89559b5263b7569b2d5f2329bb3897a"
-  integrity sha512-313zIbbrXRdLCwJ7VmPo25syXTmb51gBVR4wic8kzUzBwnc+nNQAmx0D+Pap3Obv/6pHGnXLguhKvm+KZFnkWg==
+"@prestashopcorp/billing-cdc@^0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@prestashopcorp/billing-cdc/-/billing-cdc-0.0.16.tgz#3610d84a5649bee9ac09d6f63c239a4d6aa4c42a"
+  integrity sha512-WNsQo6N/HYct5Ub999cr4rgkuokuCu7POPxgBsqN+QsIB/ZRofvQRvbJ4+AFsKF2TVU3h3KSShIfNq1zu3FHzw==
   dependencies:
     belter "^1.0.173"
     jsx-pragmatic "^2.0.20"
