@@ -134,8 +134,8 @@ In order to inject the `context` you should update `getContent` hook. This will 
 
 Account service is also responsible to return the proper URL for the PsAccount front component, [which is loaded via CDN](#use-psaccount-with-a-cdn).
 
-::: warning PsAccount official doc
-We will add a link to the official PsAccount documentation in the near future.
+::: warning PsAccount component doc
+For a custom VueJS implementation, check [PsAccount vue component documentation](https://storybook-accounts.distribution.prestashop.net/)
 :::
 
 ```php
@@ -496,51 +496,23 @@ yarn add prestashop_accounts_vue_components
 
 ### Use PsAccount
 
-Create a component or use the App.vue component and add `PsAccount` inside the template.
-
-The `PsAccount` front component is loaded by the CDN in the stamry template.
+The `PsAccount` front component is loaded by the CDN in the smarty template.
 
 ::: warning Use the CDN
-CDN is the proper way to implement a recurring billing module, you should not use only the npm dependency
+CDN is the proper way to implement a recurring billing module, you should use only the npm dependency as a fallback in case the CDN doesn't work properly
 :::
 
 ```html
-# Minimalistic Vue template
-<template>
-  <div>
-    <PsAccounts> </PsAccounts>
-  </div>
-</template>
+<prestashop-accounts>
+    // your module template goes here
+</prestashop-accounts>
 ```
 
 ```js
 <script>
-export default {
-    components: {
-        PsAccounts: async () => {
-            // CDN will normally inject a psaccountsVue within the window object
-            let psAccounts = window?.psaccountsVue?.PsAccounts;
-
-            // This is a fallback if CDN isn't available
-            if (!psAccounts) {
-                psAccounts = require('prestashop_accounts_vue_components').PsAccounts;
-            }
-            return psAccounts;
-        },
-    },
-}
+    window.psaccountsVue.init();
 </script>
 ```
-
-#### PsAccount component fallback
-
-```js
-if (!psAccounts) {
-  psAccounts = require("prestashop_accounts_vue_components").PsAccounts;
-}
-```
-
-This is a fallback in case the CDN doesn't work properly. If you want to do this, you should also add prestashop_accounts_vue_components in your dependencies: `npm install prestashop_accounts_vue_components` OR `yarn add prestashop_accounts_vue_components`.
 
 ### Use PsBilling
 
@@ -567,9 +539,9 @@ Use `PsBillingCustomer`, `PsBillingModal` in the template
 ```html
 <template>
   <div>
-    <PsAccounts>
+    <prestashop-accounts>
       ...
-    </PsAccounts>
+    </prestashop-accounts>
     <ps-billing-customer
       v-if="billingContext.user.email"
       ref="psBillingCustomerRef"
@@ -642,8 +614,8 @@ methods: {
 ```html
 <template>
   <div>
-    <PsAccounts>
-    </PsAccounts>
+    <prestashop-accounts>
+    </prestashop-accounts>
     <ps-billing-customer
         v-if="billingContext.user.email"
         ref="psBillingCustomerRef"
@@ -672,16 +644,6 @@ methods: {
 
   export default {
     components: {
-      PsAccounts: async () => {
-        // CDN will normally inject a psaccountsVue within the window object
-        let psAccounts = window?.psaccountsVue?.PsAccounts;
-
-        // This is a fallback if CDN isn't available
-        if (!psAccounts) {
-          psAccounts = require("prestashop_accounts_vue_components").PsAccounts;
-        }
-        return psAccounts;
-      },
       PsBillingCustomer: CustomerComponent.driver("vue", Vue),
       PsBillingModal: ModalContainerComponent.driver("vue", Vue),
     },
@@ -731,6 +693,9 @@ methods: {
         }
       },
     },
+    mounted() {
+      window.psaccountsVue.init();
+    }
   };
 </script>
 ```
