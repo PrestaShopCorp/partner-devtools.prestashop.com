@@ -510,7 +510,7 @@ CDN is the proper way to implement a recurring billing module, you should use on
 
 ```js
 <script>
-    window.psaccountsVue.init();
+    window?.psaccountsVue?.init() || require('prestashop_accounts_vue_components').init();
 </script>
 ```
 
@@ -694,7 +694,7 @@ methods: {
       },
     },
     mounted() {
-      window.psaccountsVue.init();
+      window?.psaccountsVue?.init() || require('prestashop_accounts_vue_components').init();
     }
   };
 </script>
