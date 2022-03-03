@@ -12,7 +12,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@prestashopcorp/billing-cdc": "^0.0.13-preprod",
+    "@prestashopcorp/billing-cdc": "^0.0.19-preprod",
     "core-js": "3.19.1 ",
     "prestakit": "1.2.3",
     "prestashop_accounts_vue_components": "latest",

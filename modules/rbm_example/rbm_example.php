@@ -1,13 +1,19 @@
 <?php
-if (!defined('_PS_VERSION_'))
+
+if (!defined('_PS_VERSION_')) {
     exit;
+}
 
 require 'vendor/autoload.php';
 
 class Rbm_example extends Module
 {
-    private $container;
     private $emailSupport;
+
+    /**
+     * @var ServiceContainer
+     */
+    private $container;
 
     public function __construct()
     {
@@ -20,7 +26,7 @@ class Rbm_example extends Module
 
         $this->ps_versions_compliancy = [
             'min' => '1.6.1.0',
-            'max' => _PS_VERSION_
+            'max' => _PS_VERSION_,
         ];
         $this->bootstrap = true;
 
@@ -32,8 +38,8 @@ class Rbm_example extends Module
         $this->confirmUninstall = $this->l('Are you sure to uninstall this module?');
 
         $this->uri_path = Tools::substr($this->context->link->getBaseLink(null, null, true), 0, -1);
-        $this->images_dir = $this->uri_path.$this->getPathUri() . 'views/img/';
-        $this->template_dir = $this->getLocalPath(). 'views/templates/admin/';
+        $this->images_dir = $this->uri_path . $this->getPathUri() . 'views/img/';
+        $this->template_dir = $this->getLocalPath() . 'views/templates/admin/';
 
         if ($this->container === null) {
             $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer(
@@ -71,23 +77,12 @@ class Rbm_example extends Module
     }
 
     /**
-     * Get the isoCode from the context language, if null, send 'en' as default value
-     *
-     * @return string
-     */
-    public function getLanguageIsoCode()
-    {
-        return $this->context->language !== null ? $this->context->language->iso_code : 'en';
-    }
-
-    /**
      * Get the Tos URL from the context language, if null, send default link value
      *
      * @return string
      */
-    public function getTosLink()
+    public function getTosLink($iso_lang)
     {
-        $iso_lang = $this->getLanguageIsoCode();
         switch ($iso_lang) {
             case 'fr':
                 $url = 'https://www.prestashop.com/fr/prestashop-account-cgu';
@@ -119,38 +114,26 @@ class Rbm_example extends Module
             // Retrieve Account CDN
             $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
 
+            $billingFacade = $this->getService('ps_billings.facade');
+            $partnerLogo = $this->getLocalPath() . 'views/img/partnerLogo.png';
+
             // Billing
-            Media::addJsDef([
-                'psBillingContext' => [
-                    'context' => [
-                        'versionPs' => _PS_VERSION_,
-                        'versionModule' => $this->version,
-                        'moduleName' => $this->name,
-                        'displayName' => $this->displayName,
-                        'partnerLogo' => $this->images_dir.'partnerLogo.png',
-                        'moduleLogo' => $this->uri_path.$this->getPathUri().'logo.png',
-                        'refreshToken' => $accountsService->getRefreshToken(),
-                        'emailSupport' => $this->emailSupport,
-                        'shop' => [
-                            'uuid' => $accountsService->getShopUuid()
-                        ],
-                        'i18n' => [
-                            'isoCode' => $this->getLanguageIsoCode()
-                        ],
-                        'user' => [
-                            'createdFromIp' => Tools::getRemoteAddr(),
-                            'email' => $accountsService->getEmail()
-                        ],
-                        'moduleTosUrl' => $this->getTosLink()
-                    ]
-                ]
-            ]);
+            Media::addJsDef($billingFacade->present([
+                'sandbox' => true,
+                'billingEnv' => 'preprod',
+                'logo' => $partnerLogo,
+                'tosLink' => $this->getTosLink($this->context->language->iso_code),
+                'emailSupport' => $this->emailSupport,
+            ]));
+
             $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
             $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
         } catch (Exception $e) {
             $this->context->controller->errors[] = $e->getMessage();
+
             return '';
         }
+
         return $this->context->smarty->fetch($this->template_dir . 'rbm_example.tpl');
     }
 }
