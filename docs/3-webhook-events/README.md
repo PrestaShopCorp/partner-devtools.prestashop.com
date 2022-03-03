@@ -45,7 +45,19 @@ Here is an exhaustive list of event triggered.
 
 * `subscription.created` - Triggered when a subscription is created.
 * `subscription.updated` - Triggered when a subscription is updated. A plan upgrade will trigger this event.
-* `subscription.canceled` - Triggered when a subscription is cancelled. It's not triggered when a customer ask for a cancellation, but when the cancellation is effective.
+* `subscription.status-updated` - Triggered when a subscription's status is changed.
+
+#### Difference between `subscription.updated` and `subscription.status-updated`
+
+If a status is **officially** changed, the `subscription.status-updated` event will be sent
+
+If a subscription is changed, the `subscription.updated` event will be sent but in some cases, the status hasn't yet been changed. That's why the `subscription.status-updated` event comes in handy in these exceptional cases.
+
+:::warning
+
+In order to track the subscription status changes, use `subscription.status-updated` instead, do not use `subscription.updated`
+
+:::
 
 All the subscription event data follow this structure
 

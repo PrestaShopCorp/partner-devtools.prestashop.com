@@ -1026,7 +1026,7 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@prestashopcorp/billing-cdc@^0.0.19-preprod":
+"@prestashopcorp/billing-cdc@^0.0.19":
   version "0.0.19"
   resolved "https://registry.npmjs.org/@prestashopcorp/billing-cdc/-/billing-cdc-0.0.19.tgz"
   integrity sha512-JYavMnnZaafCkTRLJ4Qfse+r3YdQWr+lVcMUMlTN9AsxHtUxXXrbeD3KqntDBXTUa+3zfU9A9h5lp39UPHwReQ==

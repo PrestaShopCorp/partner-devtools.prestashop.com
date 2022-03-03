@@ -13,11 +13,13 @@ This page introduces the available routes in order to communicate directly with 
 
 ## Authorization
 
-An authorization token will be required to interact with the Billing API
+An API key (in header or query params) will be required to interact with the Billing API
 
-`Authorization: <token>`
+Header: `X-BILLING-API-KEY:apiKey`
 
-If this is not specified in the routes requiring Auth header, `403 Forbidden` will be returned
+Query param: `?api_key=apiKey`
+
+If this is not specified or not a correct api key, `403 Forbidden` will be returned
 
 </Block>
 

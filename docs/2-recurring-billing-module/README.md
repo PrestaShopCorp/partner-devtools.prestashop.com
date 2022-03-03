@@ -252,30 +252,59 @@ services:
 
 It is necessary to inject the `psBillingContext` into the global variable `window.psBillingContext` in order to initialize `PsBilling` related components
 
+
 This presenter will serve some context informations, you need to send some parameters:
 
 | Attribute          | Type       | Default       | Description                                       |
 | ------------------ | ---------- | ---------- | ------------------------------------------------- |
 | sandbox         | **bool** |  **false** | Allow to use Sandbox                      |
-| billingEnv         | **string** |  **production** | Allow to use differnt enviroment                      |
 | logo         | **string** |   | Set your logo can be a file or an Url                      |
 | tosLink         | **string** |   | Link to your terms & services                      |
 | emailSupport         | **string** |   | Email to your supporr                      |
+
+:::warning Sandbox mode
+During your development you should use the sandbox mode which allow you to use test card. You can use `4111 1111 1111 1111` as test card, or [see the official Chargebee documentation](https://www.chargebee.com/docs/2.0/chargebee-test-gateway.html#test-card-numbers)
+:::
 
 In PHP, you need to pass it as Array
 ```php
 // Load context for PsBilling
 $billingFacade = $this->getService('ps_billings.facade');
-$partnerLogo = $this->getLocalPath() . 'views/img/partnerLogo.png';
+$partnerLogo = $this->getLocalPath() . ' views/img/partnerLogo.png';
 
 // Billing
 Media::addJsDef($billingFacade->present([
     'sandbox' => true,
-    'billingEnv' => 'preprod',
     'logo' => $partnerLogo,
     'tosLink' => $this->getTosLink($this->context->language->iso_code),
     'emailSupport' => $this->emailSupport,
 ]));
+
+```php
+// Load context for PsBilling
+Media::addJsDef([
+    'psBillingContext' => [
+        'context' => [
+            'isSandbox' => true,
+            'versionPs' => _PS_VERSION_,
+            'versionModule' => $this->version,
+            'moduleName' => $this->name,
+            'refreshToken' => $psAccountsService->getRefreshToken(),
+            'emailSupport' => $this->emailSupport,
+            'shop' => [
+                'uuid' => $psAccountsService->getShopUuidV4()
+            ],
+            'i18n' => [
+                'isoCode' => $this->getLanguageIsoCode()
+            ],
+            'user' => [
+                'createdFromIp' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '',
+                'email' => $psAccountsService->getEmail()
+            ],
+            'moduleTosUrl' => $this->getTosLink()
+        ]
+    ]
+]);
 ```
 
 
@@ -390,7 +419,6 @@ class Rbm_example extends Module
 
     public function getContent()
     {
-        // TODO: allow to download module with preprod env
         // Allow to auto-install Account
         $accountsInstaller = $this->getService('ps_accounts.installer');
         $accountsInstaller->install();
@@ -413,7 +441,6 @@ class Rbm_example extends Module
             // Billing
             Media::addJsDef($billingFacade->present([
                 'sandbox' => true,
-                'billingEnv' => 'preprod',
                 'logo' => $partnerLogo,
                 'tosLink' => $this->getTosLink($this->context->language->iso_code),
                 'emailSupport' => $this->emailSupport,
@@ -559,10 +586,6 @@ Optional see [PsAccount component fallback](#psaccount-component-fallback)
 ```bash
 yarn add prestashop_accounts_vue_components
 ```
-
-::: danger Developpement version
-During developement you should install the preprod version of billing CDC : `yarn add @prestashopcorp/billing-cdc@preprod`. This is temporary as we will create a sandbox mode in production.
-:::
 
 </Block>
 
@@ -823,7 +846,7 @@ Below is the details of the attributes
 | moduleName         | **string** | Module's name (**required**)                      |
 | displayName        | **string** | Module's display name (**required**)              |
 | moduleLogo         | **string** | Module's logo (**required**)                      |
-| partnerLogo        | **string** | Your logo image  (**required**)                   |
+| partnerLogo        | **string** | Your logo image (**required**)                    |
 | moduleTosUrl       | **string** | Url to your term of service (**required**)        |
 | accountApi         | **string** | API to retrieve PrestaShop Account (**required**) |
 | emailSupport       | **string** | Email to contact support (**required**)           |
