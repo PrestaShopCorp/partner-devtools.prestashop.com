@@ -11,11 +11,11 @@ title: Webhook & Events
 <Block>
 
 
-When a change happens on Prestashop Billing API, you will be notify by a [webhook system](https://en.wikipedia.org/wiki/Webhook).
+When a change happens on PrestaShop Billing API, you will be notify by a [webhook system](https://en.wikipedia.org/wiki/Webhook).
 
 To start using these webhook you should:
 1. Create a POST endpoint which be called every time an event is triggered
-2. Configure the webhook in Prestashop Billing. **For the moment, we will handle this manually.**
+2. Configure the webhook in PrestaShop Billing. **For the moment, we will handle this manually.**
 
 During call API, your endpoint should return a 2xx HTTP status to indicates that you handle the call without trouble. **In case the HTTP status is not 2xx we retry the API call at exponential time intervals until we receive a 2xx HTTP response.**
 
@@ -356,7 +356,7 @@ All the payment event data follow this structure
 <Block>
 ### Customer
 
-* `customer.created`: Triggered when a customer is created, which happens only one time for a shop. You can't expect to receive this event for your RBM.
+* `customer.created`: Triggered when a customer is created, which happens only one time for a shop. You can't expect to receive this event for your SaaS App.
 * `customer.updated`: Triggered when a customer is updated
 
 All the customer event data follow this structure
@@ -568,6 +568,6 @@ An Authorization header will be sent to the merchant's API to ensure security.
   }
 }
 ```
-A common use case is that the merchant will verify this token for each incoming webhook request to make sure that they are from the Prestashop Webhook API.
+A common use case is that the merchant will verify this token for each incoming webhook request to make sure that they are from the PrestaShop Webhook API.
 
 Please send your token to the following email: squad-offre@prestashop.com

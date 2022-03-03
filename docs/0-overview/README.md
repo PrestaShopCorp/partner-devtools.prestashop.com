@@ -9,13 +9,13 @@ Recurring Billing Modules allow Tech Partners and Sellers to create SaaS modules
 
 Subscriptions are managed and billed by the PrestaShop Billing system which pays back the module creator through an automatic monthly payment.
 
-![RBM Schema](/assets/images/0-overview/schema.png)
+![SaaS App Schema](/assets/images/0-overview/schema.png)
 
-## Building a RBM
+## Building a SaaS App
 
 The creation of a Recurring Billing Module requires to interract with PsAccount and PsBilling.
 
-![RBM fully initialized](/assets/images/0-overview/rbm_fully_initialized.png)
+![SaaS App fully initialized](/assets/images/0-overview/rbm_fully_initialized.png)
 
 ### PsAccount
 
