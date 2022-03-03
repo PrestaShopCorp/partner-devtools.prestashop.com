@@ -148,7 +148,7 @@ Media::addJsDef([
 ]);
 
 // Retrieve Account CDN
-$this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
+$this->context->smarty->assign('urlAccountsCdn', $accountsService->getAccountsCdn());
 ```
 
 #### PsBilling
@@ -320,7 +320,7 @@ private $container;
             ]);
 
             // Retrieve Account CDN
-            $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
+            $this->context->smarty->assign('urlAccountsCdn', $accountsService->getAccountsCdn());
 
             // Billing
             Media::addJsDef([
@@ -377,19 +377,19 @@ return $this->context->smarty->fetch($this->template_dir . '<module_name>.tpl');
 
 This file will load the Vue app frontend and the chunk vendor js
 
-> The 3 variables `$urlAccountsVueCdn`, `$pathVendor` and `$pathApp` are prepared in the `getContent` hook.
+> The 3 variables `$urlAccountsCdn`, `$pathVendor` and `$pathApp` are prepared in the `getContent` hook.
 
 <Example>
 ```html
 <link href="{$pathVendor|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 <link href="{$pathApp|escape:'htmlall':'UTF-8'}" rel=preload as=script>
-<link href="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" rel=preload as=script>
+<link href="{$urlAccountsCdn|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 
 <div id="app"></div>
 
 <script src="{$pathVendor|escape:'htmlall':'UTF-8'}"></script>
 <script src="{$pathApp|escape:'htmlall':'UTF-8'}"></script>
-<script src="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" type="text/javascript"></script>
+<script src="{$urlAccountsCdn|escape:'htmlall':'UTF-8'}" type="text/javascript"></script>
 
 ````
 </Example>
