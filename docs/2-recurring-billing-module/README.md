@@ -276,35 +276,9 @@ $partnerLogo = $this->getLocalPath() . ' views/img/partnerLogo.png';
 Media::addJsDef($billingFacade->present([
     'sandbox' => true,
     'logo' => $partnerLogo,
-    'tosLink' => $this->getTosLink($this->context->language->iso_code),
-    'emailSupport' => $this->emailSupport,
+    'tosLink' => 'https://yoururl/',
+    'emailSupport' => 'you@email',
 ]));
-
-```php
-// Load context for PsBilling
-Media::addJsDef([
-    'psBillingContext' => [
-        'context' => [
-            'isSandbox' => true,
-            'versionPs' => _PS_VERSION_,
-            'versionModule' => $this->version,
-            'moduleName' => $this->name,
-            'refreshToken' => $psAccountsService->getRefreshToken(),
-            'emailSupport' => $this->emailSupport,
-            'shop' => [
-                'uuid' => $psAccountsService->getShopUuidV4()
-            ],
-            'i18n' => [
-                'isoCode' => $this->getLanguageIsoCode()
-            ],
-            'user' => [
-                'createdFromIp' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '',
-                'email' => $psAccountsService->getEmail()
-            ],
-            'moduleTosUrl' => $this->getTosLink()
-        ]
-    ]
-]);
 ```
 
 
