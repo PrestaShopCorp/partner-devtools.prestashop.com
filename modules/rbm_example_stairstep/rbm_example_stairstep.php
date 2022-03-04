@@ -130,6 +130,6 @@ class Rbm_example_stairstep extends Module
             return '';
         }
 
-        return $this->context->smarty->fetch($this->template_dir . 'rbm_example.tpl');
+        return $this->context->smarty->fetch($this->template_dir . 'rbm_example_stairstep.tpl');
     }
 }

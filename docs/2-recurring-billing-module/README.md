@@ -173,7 +173,7 @@ class Rbm_example extends Module {
 
 > You should follow the documentation from [prestashop-accounts-installer](https://github.com/PrestaShopCorp/prestashop-accounts-installer) to properly install the PS Account utility.
 
-Like your module, you need to register PsAccount as Service
+You need to register PsAccount as Service
 
 ```yaml
   # ...
