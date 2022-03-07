@@ -26,13 +26,13 @@ The "parent" customer is created based on the `ownerUuid` of the SSO user from t
 
 ![Relationship map](/assets/images/1-relationships/relationship_map.png)
 
-For every shop using RBM module, a parent customer and a child customer will be created once, so does their relationship.
+For every shop using SaaS App module, a parent customer and a child customer will be created once, so does their relationship.
 
 A merchant with the same `ownerUuid` (same SSO user, same parent customer) might have one or multiple shops with different `shopUuid` (different child customers).
 
 ![One customer to many shop](/assets/images/1-relationships/one_customer_multiple_shop.png)
 
-And for each shop, the merchant can subscribe to one or more RBM modules.
+And for each shop, the merchant can subscribe to one or more SaaS App modules.
 
 :::warning
 

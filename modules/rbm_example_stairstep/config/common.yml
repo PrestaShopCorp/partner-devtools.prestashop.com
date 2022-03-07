@@ -1,0 +1,46 @@
+services:
+  rbm_example_stairstep.module:
+    class: Rbm_example_stairstep
+    public: true
+    factory: ['Module', 'getInstanceByName']
+    arguments:
+      - 'rbm_example_stairstep'
+
+  rbm_example_stairstep.context:
+    class: Context
+    public: true
+    factory: [ 'Context', 'getContext' ]
+
+
+  #####################
+  # PS Account
+
+  ps_accounts.installer:
+    class: 'PrestaShop\PsAccountsInstaller\Installer\Installer'
+    public: true
+    arguments:
+      - "5.0"
+
+  ps_accounts.facade:
+    class: 'PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts'
+    public: true
+    arguments:
+      - "@ps_accounts.installer"
+
+
+  #####################
+  # PS Billing
+
+  ps_billings.facade:
+    class: 'PrestaShop\PsBilling\Presenter\BillingPresenter'
+    arguments:
+      - '@ps_accounts.facade'
+      - '@rbm_example_stairstep.module'
+      - '@rbm_example_stairstep.context'
+
+
+  ps_billings.api:
+    class: PrestaShop\PsBilling\Installer\Api\Client\ServicesBillingClient
+    public: true
+    arguments:
+      - '@ps_accounts.facade'

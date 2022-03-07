@@ -29,6 +29,7 @@ yarn-error.log
 
 # CS Fixer
 .php_cs.cache
+.php-cs-fixer.cache
 
 ### Vuejs ignore build files ###
 /views/js/*.js

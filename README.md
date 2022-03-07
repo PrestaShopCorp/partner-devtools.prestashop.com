@@ -1,6 +1,6 @@
-# Dev tools for RBM
+# Dev tools for SaaS App
 
-This repo help you to set up your development environement when you start to develop a PrestaShop RBM. You will find an exemple of a simple RBM Module within the folder `rbm_example`.
+This repo help you to set up your development environement when you start to develop a PrestaShop SaaS App. You will find an exemple of a simple SaaS App Module within the folder `rbm_example`.
 
 Once you launch the wholes services through docker-compose you will get an access to a PrestaShop instance configured with all needed module.
 
@@ -38,8 +38,8 @@ Got to https://prestashop-rbm-dev.loca.lt/admin-dev/
 
 ## Documentation
 
-Documentation about developping a RBM is available [here](https://billing-docs.netlify.app/).
+Documentation about developping a SaaS App is available [here](https://billing-docs.netlify.app/).
 
-## RBM example
+## SaaS App example
 
 See module [README.md](/modules/rbm_example/README.md)

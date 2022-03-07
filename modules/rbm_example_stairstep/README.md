@@ -1,4 +1,4 @@
-# RBM Example module
+# SAAS APP Example module
 
 ## Install
 

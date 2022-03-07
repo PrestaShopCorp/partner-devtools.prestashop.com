@@ -1,10 +1,2 @@
-services:
-  ps_accounts.installer:
-    class: 'PrestaShop\PsAccountsInstaller\Installer\Installer'
-    arguments:
-      - '4.0.0'
-
-  ps_accounts.facade:
-    class: 'PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts'
-    arguments:
-      - '@ps_accounts.installer'
+imports:
+  - { resource: ../config.yml }
