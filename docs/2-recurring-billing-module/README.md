@@ -64,14 +64,14 @@ services:
   rbm_example.module:
     class: Rbm_example
     public: true
-    factory: ['Module', 'getInstanceByName']
+    factory: ["Module", "getInstanceByName"]
     arguments:
-      - 'rbm_example'
+      - "rbm_example"
 
   rbm_example.context:
     class: Context
     public: true
-    factory: [ 'Context', 'getContext' ]
+    factory: ["Context", "getContext"]
 ```
 
 It will be useful for afterwards
@@ -104,7 +104,7 @@ It will be useful for afterwards
     "license": "MIT"
 }
 
-```
+````
 </Example>
 
 </Block>
@@ -169,30 +169,29 @@ class Rbm_example extends Module {
         return $this->container->getService($serviceName);
     }
 }
-```
+````
 
 > You should follow the documentation from [prestashop-accounts-installer](https://github.com/PrestaShopCorp/prestashop-accounts-installer) to properly install the PS Account utility.
 
 You need to register PsAccount as Service
 
 ```yaml
-  # ...
+# ...
 
-  #####################
-  # PS Account
+#####################
+# PS Account
 
-  ps_accounts.installer:
-    class: 'PrestaShop\PsAccountsInstaller\Installer\Installer'
-    public: true
-    arguments:
-      - "5.0"
+ps_accounts.installer:
+  class: 'PrestaShop\PsAccountsInstaller\Installer\Installer'
+  public: true
+  arguments:
+    - "5.0"
 
-  ps_accounts.facade:
-    class: 'PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts'
-    public: true
-    arguments:
-      - "@ps_accounts.installer"
-
+ps_accounts.facade:
+  class: 'PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts'
+  public: true
+  arguments:
+    - "@ps_accounts.installer"
 ```
 
 ##### Inject PsAccount library and context
@@ -236,37 +235,36 @@ services:
   ps_billings.facade:
     class: 'PrestaShop\PsBilling\Presenter\BillingPresenter'
     arguments:
-      - '@ps_accounts.facade'
-      - '@rbm_example.module'
-      - '@rbm_example.context'
-
+      - "@ps_accounts.facade"
+      - "@rbm_example.module"
+      - "@rbm_example.context"
 
   ps_billings.api:
     class: PrestaShop\PsBilling\Installer\Api\Client\ServicesBillingClient
     public: true
     arguments:
-      - '@ps_accounts.facade'
+      - "@ps_accounts.facade"
 ```
 
 ##### Inject PsBilling context
 
 It is necessary to inject the `psBillingContext` into the global variable `window.psBillingContext` in order to initialize `PsBilling` related components
 
-
 This presenter will serve some context informations, you need to send some parameters:
 
-| Attribute          | Type       | Default       | Description                                       |
-| ------------------ | ---------- | ---------- | ------------------------------------------------- |
-| sandbox         | **bool** |  **false** | Allow to use Sandbox                      |
-| logo         | **string** |   | Set your logo can be a file or an Url                      |
-| tosLink         | **string** |   | Link to your terms & services                      |
-| emailSupport         | **string** |   | Email to your supporr                      |
+| Attribute    | Type       | Default   | Description                           |
+| ------------ | ---------- | --------- | ------------------------------------- |
+| sandbox      | **bool**   | **false** | Allow to use Sandbox                  |
+| logo         | **string** |           | Set your logo can be a file or an Url |
+| tosLink      | **string** |           | Link to your terms & services         |
+| emailSupport | **string** |           | Email to your supporr                 |
 
 :::warning Sandbox mode
 During your development you should use the sandbox mode which allow you to use test card. You can use `4111 1111 1111 1111` as test card, or [see the official Chargebee documentation](https://www.chargebee.com/docs/2.0/chargebee-test-gateway.html#test-card-numbers)
 :::
 
 In PHP, you need to pass it as Array
+
 ```php
 // Load context for PsBilling
 $billingFacade = $this->getService('ps_billings.facade');
@@ -280,7 +278,6 @@ Media::addJsDef($billingFacade->present([
     'emailSupport' => 'you@email',
 ]));
 ```
-
 
 #### Load the front JS app
 
@@ -297,14 +294,14 @@ $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rb
 <?php
 
 if (!defined('_PS_VERSION_')) {
-    exit;
+exit;
 }
 
 require 'vendor/autoload.php';
 
 class Rbm_example extends Module
 {
-    private $emailSupport;
+private \$emailSupport;
 
     /**
      * @var ServiceContainer
@@ -430,7 +427,9 @@ class Rbm_example extends Module
 
         return $this->context->smarty->fetch($this->template_dir . 'rbm_example.tpl');
     }
+
 }
+
 ````
 </Example>
 
@@ -815,22 +814,25 @@ methods: {
 
 Below is the details of the attributes
 
-| Attribute          | Type       | Description                                       |
-| ------------------ | ---------- | ------------------------------------------------- |
-| moduleName         | **string** | Module's name (**required**)                      |
-| displayName        | **string** | Module's display name (**required**)              |
-| moduleLogo         | **string** | Module's logo (**required**)                      |
-| partnerLogo        | **string** | Your logo image (**required**)                    |
-| moduleTosUrl       | **string** | Url to your term of service (**required**)        |
-| accountApi         | **string** | API to retrieve PrestaShop Account (**required**) |
-| emailSupport       | **string** | Email to contact support (**required**)           |
-| i18n.isoCode       | **string** | ISO code (**required**)                           |
-| shop.uuid          | **string** | Merchant shop's uuid (**required**)               |
-| shop.domain        | **string** | Merchant site's domain name (**required**)        |
-| user.createdFromIp | **string** | Merchant site's ip address (**required**)         |
-| user.email         | **string** | Merchant's email (**required**)                   |
-| versionModule      | **string** | Module's version (**required**)                   |
-| versionPs          | **string** | Prestashop's version (**required**)               |
+| Attribute          | Type        | Description                                        |
+| ------------------ | ----------- | -------------------------------------------------- |
+| moduleName         | **string**  | Module's name (**required**)                       |
+| displayName        | **string**  | Module's display name (**required**)               |
+| moduleLogo         | **string**  | Module's logo (**required**)                       |
+| partnerLogo        | **string**  | Your logo image (**required**)                     |
+| moduleTosUrl       | **string**  | Url to your term of service (**required**)         |
+| accountApi         | **string**  | API to retrieve PrestaShop Account (**required**)  |
+| emailSupport       | **string**  | Email to contact support (**required**)            |
+| i18n.isoCode       | **string**  | ISO code (**required**)                            |
+| shop.uuid          | **string**  | Merchant shop's uuid (**required**)                |
+| shop.domain        | **string**  | Merchant site's domain name (**required**)         |
+| user.createdFromIp | **string**  | Merchant site's ip address (**required**)          |
+| user.email         | **string**  | Merchant's email (**required**)                    |
+| versionModule      | **string**  | Module's version (**required**)                    |
+| versionPs          | **string**  | Prestashop's version (**required**)                |
+| billingEnv         | **string**  | Prestashop's version (**required**)                |
+| isSandbox          | **boolean** | Activate the sandbox mode (default: `false`)       |
+| refreshToken       | **string**  | Refresh token provided by PsAccount (**required**) |
 
 </Block>
 
