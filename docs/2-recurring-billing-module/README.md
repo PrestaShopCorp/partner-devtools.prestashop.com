@@ -820,7 +820,7 @@ Below is the details of the attributes
 | moduleName         | **string** | Module's name (**required**)                      |
 | displayName        | **string** | Module's display name (**required**)              |
 | moduleLogo         | **string** | Module's logo (**required**)                      |
-| partnerLogo        | **string** | Your logo image (**required**)                    |
+| partnerLogo        | **string** | Your logo image                   |
 | moduleTosUrl       | **string** | Url to your term of service (**required**)        |
 | accountApi         | **string** | API to retrieve PrestaShop Account (**required**) |
 | emailSupport       | **string** | Email to contact support (**required**)           |
@@ -831,6 +831,8 @@ Below is the details of the attributes
 | user.email         | **string** | Merchant's email (**required**)                   |
 | versionModule      | **string** | Module's version (**required**)                   |
 | versionPs          | **string** | Prestashop's version (**required**)               |
+| isSandbox          | **boolean** | Activate the sandbox mode (default: `false`)       |
+| refreshToken       | **string**  | Refresh token provided by PsAccount (**required**) |
 
 </Block>
 
