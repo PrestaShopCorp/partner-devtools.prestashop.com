@@ -224,7 +224,13 @@ $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccount
 
 You should register as a service the composer Billing lib in your SaaS App container.
 
-We use `rbm_example.module` and `rbm_example.context` to allow Billing lib to use your Module Instance and also PretaShop Context
+We use `rbm_example.module` and `rbm_example.context` to allow Billing lib to use your Module Instance and also PretaShop Context.
+
+:::warning Sandbox mode
+During your development you should use the sandbox mode which allow you to use test card. You can use `4111 1111 1111 1111` as test card, or [see the official Chargebee documentation](https://www.chargebee.com/docs/2.0/chargebee-test-gateway.html#test-card-numbers).
+:::
+
+In order to activate the sandbox mode you shoudl specify a third arguments to `ps_billings.accounts_wrapper`. By default sandbox mode is turned off.
 
 ```yaml
 services:
@@ -232,20 +238,26 @@ services:
 
   #####################
   # PS Billing
+  ps_billings.accounts_wrapper:
+    class: 'PrestaShop\PsBilling\Wrappers\PsBillingAccountsWrapper'
+    arguments:
+      - '@ps_accounts.facade'
+      - '@rbm_example.context'
+      # if true you are in sandbox mode, if false or empty sandbox is disabled
+      - true 
 
   ps_billings.facade:
-    class: 'PrestaShop\PsBilling\Presenter\BillingPresenter'
+    class: 'PrestaShop\PsBilling\Presenter\PsBillingPresenter'
     arguments:
-      - '@ps_accounts.facade'
+      - '@ps_billings.accounts_wrapper'
       - '@rbm_example.module'
-      - '@rbm_example.context'
 
-
-  ps_billings.api:
-    class: PrestaShop\PsBilling\Installer\Api\Client\ServicesBillingClient
+  ps_billings.service:
+    class: PrestaShop\PsBilling\Services\PsBillingService
     public: true
     arguments:
-      - '@ps_accounts.facade'
+      - '@ps_billings.accounts_wrapper'
+      - '@rbm_example.module'
 ```
 
 ##### Inject PsBilling context
@@ -257,7 +269,6 @@ This presenter will serve some context informations, you need to send some param
 
 | Attribute          | Type       | Default       | Description                                       |
 | ------------------ | ---------- | ---------- | ------------------------------------------------- |
-| sandbox         | **bool** |  **false** | Allow to use Sandbox                      |
 | logo         | **string** |   | Set your logo can be a file or an Url                      |
 | tosLink         | **string** |   | Link to your terms & services                      |
 | emailSupport         | **string** |   | Email to your supporr                      |
@@ -274,11 +285,40 @@ $partnerLogo = $this->getLocalPath() . ' views/img/partnerLogo.png';
 
 // Billing
 Media::addJsDef($billingFacade->present([
-    'sandbox' => true,
     'logo' => $partnerLogo,
     'tosLink' => 'https://yoururl/',
     'emailSupport' => 'you@email',
 ]));
+```
+
+
+##### PsBillingService to retrieve billing data in PHP
+
+As seen in the PsBilling configuration, the PsBilling composer provide you a PsBillingService :
+
+```yaml
+  ps_billings.service:
+    class: PrestaShop\PsBilling\Services\PsBillingService
+    public: true
+    arguments:
+      - '@ps_billings.accounts_wrapper'
+      - '@rbm_example.module'
+```
+
+You can retrieve it the same way you retrieve the facade :
+
+```php
+// Load service for PsBilling
+$billingService = $this->getService('ps_billings.service');
+
+// Retrieve the customer
+$customer = $billingService->getCurrentCustomer();
+
+// Retrieve the subscritpion for this module
+$subscription = $billingService->getCurrentSubscription();
+
+// Retrieve the list and description for module plans
+$plans = $billingService->getModulePlans();
 ```
 
 
@@ -414,7 +454,6 @@ class Rbm_example extends Module
 
             // Billing
             Media::addJsDef($billingFacade->present([
-                'sandbox' => true,
                 'logo' => $partnerLogo,
                 'tosLink' => $this->getTosLink($this->context->language->iso_code),
                 'emailSupport' => $this->emailSupport,

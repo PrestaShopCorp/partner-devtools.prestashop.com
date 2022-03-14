@@ -118,7 +118,6 @@ class Rbm_example extends Module
 
             // Billing
             Media::addJsDef($billingFacade->present([
-                'sandbox' => true,
                 'logo' => $partnerLogo,
                 'tosLink' => $this->getTosLink($this->context->language->iso_code),
                 'emailSupport' => $this->emailSupport,
@@ -128,7 +127,6 @@ class Rbm_example extends Module
             $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
         } catch (Exception $e) {
             $this->context->controller->errors[] = $e->getMessage();
-
             return '';
         }
 
