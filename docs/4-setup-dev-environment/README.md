@@ -24,12 +24,12 @@ For more information about localhost.run, CF the [official doc](http://localhost
 
 Install the ps_account_integration.zip (contact the developers for more information about this zip) and link your account in the ps_account configurtion page
 
-## PrestaShop RBM module
+## PrestaShop SaaS App module
 
-**Step 1**: create a classic prestashop module, please CF the [official doc](https://devdocs.prestashop.com/1.7/modules/creation/tutorial/)
+**Step 1**: create a classic PrestaShop module, please CF the [official doc](https://devdocs.prestashop.com/1.7/modules/creation/tutorial/)
 
-**Step 2**: convert the module into [RBM module](../1-recurring-billing-module/README.md)
+**Step 2**: convert the module into [SaaS App module](../1-recurring-billing-module/README.md)
 
-An example of RBM module is also available for [reference](https://github.com/PrestaShopCorp/prestashop_rbm_example)
+An example of SaaS App module is also available for [reference](https://github.com/PrestaShopCorp/prestashop_rbm_example)
 
 **Step 3**: contact the developpers to create a customer and a subscription for the shop (this will be changed in the future)

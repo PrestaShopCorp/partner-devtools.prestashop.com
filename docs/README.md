@@ -1,12 +1,12 @@
 ---
 home: true
-title: Recurring Billing Module by Prestashop
-description: Not sure where to start? We’ve put together some handy guides and reference documentation you can use to start building a Recurring Billing Module for Prestashop.
+title: Recurring Billing Module by PrestaShop
+description: Not sure where to start? We’ve put together some handy guides and reference documentation you can use to start building a Recurring Billing Module for PrestaShop.
 actionText: Getting Started
 actionLink: /0-overview
-footer: Made by [@prestashop](https://addons.prestashop.com/), Power by [vuepress](https://github.com/vuejs/vuepress).
+footer: Made by [@PrestaShop](https://addons.prestashop.com/), Power by [vuepress](https://github.com/vuejs/vuepress).
 ---
 
 <div style="text-align: center;">
-  <img alt="Prestashop logo" src="/assets/images/common/logo.png" style="max-width: 300px;"></img>
+  <img alt="PrestaShop logo" src="/assets/images/common/logo.png" style="max-width: 300px;"></img>
 </div>

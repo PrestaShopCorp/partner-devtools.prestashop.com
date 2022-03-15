@@ -7,7 +7,7 @@
     <img src="https://www.prestashop.com/sites/all/themes/prestashop/images/logos/logo-fo-prestashop-colors.svg" alt="Logo" width="420" height="80">
   </a>
 
-  <h1 align="center">Dev tools for RBM</h1>
+  <h1 align="center">Dev tools for SaaS App</h1>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -45,8 +45,8 @@
     <li>
       <a href="#what-next">What next ?</a>
       <ul>
-        <li><a href="#rbm-documentation">RBM documentation</a></li>
-        <li><a href="#rbm-module-example">RBM module example</a></li>
+        <li><a href="#saas-app-documentation">SaaS App documentation</a></li>
+        <li><a href="#saas-app-module-example">SaaS App module example</a></li>
       </ul>
     </li>
   </ol>
@@ -56,9 +56,9 @@
 <!-- ABOUT THE PROJECT -->
 ## 🧐 About The Project
 
-This tools help you to set up your development environement when you start to develop a PrestaShop RBM.
+This tools help you to set up your development environement when you start to develop a PrestaShop SaaS App.
 
-You will find an exemple of a simple RBM Module within the folder `rbm_example`.
+You will find an exemple of a simple SaaS App Module within the folder `rbm_example`.
 
 Once you launch the wholes services through docker-compose you will get an access to a PrestaShop instance configured with all needed module.
 
@@ -238,11 +238,11 @@ FO Url: http://CHANGEME123.tunnel.prestashop.net
 
 ## 🚀 What next ?
 
-### RBM documentation
+### SaaS App documentation
 
-Documentation about developping a RBM is available [here](https://billing-docs.netlify.app/).
+Documentation about developping a SaaS App is available [here](https://billing-docs.netlify.app/).
 
-### RBM module example
+## SaaS App example
 
 See module [README.md](/modules/rbm_example/README.md)
 

@@ -9,20 +9,20 @@ title: Recurring Billing Module
 A recurring Billing Module is a composition of [PHP](https://www.php.net/) as backend and [Vue 2](https://vuejs.org/) as frontend.
 
 ::: tip
-In the future Vue 2 may not be required as the Prestashop Billing Component doesn't require it.
+In the future Vue 2 may not be required as the PrestaShop Billing Component doesn't require it.
 :::
 
-Here is the step to create a RBM :
+Here is the step to create a SaaS App :
 
-1. Create a Prestashop Module
+1. Create a PrestaShop Module
 2. Make the PHP part injecting the proper `context` in the `window` object, which is required for PsAccount and PsBilling.
 3. Create a JS app including PsAccount and PsBilling
 4. Inject the `context` in PsAccount and PsBilling
 
-**First of all, create a basic module following the Prestashop documentation: [https://devdocs.prestashop.com/1.7/modules/creation/](https://devdocs.prestashop.com/1.7/modules/creation/)**
+**First of all, create a basic module following the PrestaShop documentation: [https://devdocs.prestashop.com/1.7/modules/creation/](https://devdocs.prestashop.com/1.7/modules/creation/)**
 
 ::: warning Compatibility
-RBM is compatible from PrestaShop 1.6.1.x and PHP 5.6
+SaaS App is compatible from PrestaShop 1.6.1.x and PHP 5.6
 :::
 
 </Block>
@@ -32,7 +32,7 @@ RBM is compatible from PrestaShop 1.6.1.x and PHP 5.6
 ## Backend
 
 ::: warning PsAccount
-The PsAccount module is a pre-requisite for every RBM module, it provides an SSO allowing to link the addons market's accounts to the ones in the prestashop core
+The PsAccount module is a pre-requisite for every SaaS App module, it provides an SSO allowing to link the Addons market's accounts to the ones in the PrestaShop Core
 :::
 
 </Block>
@@ -41,47 +41,70 @@ The PsAccount module is a pre-requisite for every RBM module, it provides an SSO
 
 ### Composer
 
-You must add some dependencies in the [composer.json](https://getcomposer.org/) of your newly created module. The composer `prestashop/prestashop-accounts-installer` will help you to construct the `context` required to make RBM works.
+You must add some dependencies in the [composer.json](https://getcomposer.org/) of your newly created module.
 
-The 2 dependencies `php` and `symfony/http-foundation` are used for resolving compatibility issues
+The required dependencies are `prestashop/prestashop-accounts-installer`, `prestashop/module-lib-service-container` and `prestashopcorp/module-lib-billing`.
+It will help you to construct the `context` required to make SaaS App works.
 
 ```json
 "require": {
     "php": ">=5.6",
-    "symfony/http-foundation": "^3.4",
-    "prestashop/prestashop-accounts-installer": "^1.0.0",
-    "prestashop/module-lib-service-container": "^1.2"
+    "prestashop/prestashop-accounts-installer": "^1.0.1",
+    "prestashop/module-lib-service-container": "^1.4",
+    "prestashopcorp/module-lib-billing": "^1.0.0"
 },
 ```
+
+You should register your module as a service.
+
+> If you want to have more information about Services, you can check on [documentation](https://devdocs.prestashop.com/1.7/modules/concepts/services/)
+
+```yaml
+services:
+  rbm_example.module:
+    class: Rbm_example
+    public: true
+    factory: ['Module', 'getInstanceByName']
+    arguments:
+      - 'rbm_example'
+
+  rbm_example.context:
+    class: Context
+    public: true
+    factory: [ 'Context', 'getContext' ]
+```
+
+It will be useful for afterwards
 
 <Example>
 ```json{13,14}
 {
     "name": "prestashop/rbm_example",
-    "type": "library",
-    "authors": [
-        {
-            "name": "Prestashop",
-            "email": "support@prestashop.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.6",
-        "symfony/http-foundation": "^3.4",
-        "prestashop/prestashop-accounts-installer": "^1.0.0",
-        "prestashop/module-lib-service-container": "^1.2"
-    },
+    "description": "",
     "config": {
         "preferred-install": "dist",
         "optimize-autoloader": true,
-        "prepend-autoloader": false,
-        "platform": {
-            "php": "5.6"
-        }
-    }
+        "prepend-autoloader": false
+    },
+    "require-dev": {
+        "prestashop/php-dev-tools": "^4.2.1"
+    },
+    "require": {
+        "php": ">=5.6",
+        "prestashop/prestashop-accounts-installer": "^1.0.1",
+        "prestashop/module-lib-service-container": "^1.4",
+        "prestashopcorp/module-lib-billing": "^1.0.0"
+    },
+    "autoload": {
+        "classmap": [
+            "rbm_example.php"
+        ]
+    },
+    "author": "PrestaShop",
+    "license": "MIT"
 }
-```
 
+```
 </Example>
 
 </Block>
@@ -107,24 +130,70 @@ It will allow your module to automatically install PsAccount when not available,
 
 ```php
 class Rbm_example extends Module {
+    /**
+     * @var ServiceContainer
+     */
+    private $container;
+
+    public function __construct()
+    {
+        // ...
+
+        if ($this->container === null) {
+            $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer(
+                $this->name,
+                $this->getLocalPath()
+            );
+        }
+    }
+
     // ...
     public function install()
     {
         // Load PS Account utility
-        return parent::install() && $this->getService('ps_accounts.installer')->install();
+        return parent::install() &&
+            $this->getService('ps_accounts.installer')->install();
     }
 
     // ...
 
+    /**
+     * Retrieve service
+     *
+     * @param string $serviceName
+     *
+     * @return mixed
+     */
     public function getService($serviceName)
     {
         return $this->container->getService($serviceName);
     }
-
 }
 ```
 
 > You should follow the documentation from [prestashop-accounts-installer](https://github.com/PrestaShopCorp/prestashop-accounts-installer) to properly install the PS Account utility.
+
+You need to register PsAccount as Service
+
+```yaml
+  # ...
+
+  #####################
+  # PS Account
+
+  ps_accounts.installer:
+    class: 'PrestaShop\PsAccountsInstaller\Installer\Installer'
+    public: true
+    arguments:
+      - "5.0"
+
+  ps_accounts.facade:
+    class: 'PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts'
+    public: true
+    arguments:
+      - "@ps_accounts.installer"
+
+```
 
 ##### Inject PsAccount library and context
 
@@ -153,37 +222,114 @@ $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccount
 
 #### PsBilling
 
+You should register as a service the composer Billing lib in your SaaS App container.
+
+We use `rbm_example.module` and `rbm_example.context` to allow Billing lib to use your Module Instance and also PretaShop Context.
+
+:::warning Sandbox mode
+During your development you should use the sandbox mode which allow you to use test card. You can use `4111 1111 1111 1111` as test card, or [see the official Chargebee documentation](https://www.chargebee.com/docs/2.0/chargebee-test-gateway.html#test-card-numbers).
+:::
+
+In order to activate the sandbox mode you shoudl specify a third arguments to `ps_billings.accounts_wrapper`. By default sandbox mode is turned off.
+
+```yaml
+services:
+  #...
+
+  #####################
+  # PS Billing
+  ps_billings.context_wrapper:
+    class: 'PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
+    arguments:
+      - '@ps_accounts.facade'
+      - '@rbm_example.context'
+      - true # if true you are in sandbox mode, if false or empty not in sandbox
+
+  ps_billings.facade:
+    class: 'PrestaShopCorp\Billing\Presenter\BillingPresenter'
+    arguments:
+      - '@ps_billings.context_wrapper'
+      - '@rbm_example.module'
+
+  # Remove this if you don't need BillingService
+  ps_billings.service:
+    class: PrestaShopCorp\Billing\Services\BillingService
+    public: true
+    arguments:
+      - '@ps_billings.context_wrapper'
+      - '@rbm_example.module'
+```
+
 ##### Inject PsBilling context
 
 It is necessary to inject the `psBillingContext` into the global variable `window.psBillingContext` in order to initialize `PsBilling` related components
 
+
+This presenter will serve some context informations, you need to send some parameters:
+
+| Attribute          | Type       | Default       | Description                                       |
+| ------------------ | ---------- | ---------- | ------------------------------------------------- |
+| logo         | **string** |   | Set your logo can be a file or an Url                      |
+| tosLink         | **string** |   | Link to your terms & services                      |
+| emailSupport         | **string** |   | Email to your supporr                      |
+
+:::warning Sandbox mode
+During your development you should use the sandbox mode which allow you to use test card. You can use `4111 1111 1111 1111` as test card, or [see the official Chargebee documentation](https://www.chargebee.com/docs/2.0/chargebee-test-gateway.html#test-card-numbers)
+:::
+
+In PHP, you need to pass it as Array
 ```php
 // Load context for PsBilling
-Media::addJsDef([
-    'psBillingContext' => [
-        'context' => [
-            'versionPs' => _PS_VERSION_,
-            'versionModule' => $this->version,
-            'moduleName' => $this->name,
-            'refreshToken' => $psAccountsService->getRefreshToken(),
-            'emailSupport' => $this->emailSupport,
-            'shop' => [
-                'uuid' => $psAccountsService->getShopUuidV4()
-            ],
-            'i18n' => [
-                'isoCode' => $this->getLanguageIsoCode()
-            ],
-            'user' => [
-                'createdFromIp' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '',
-                'email' => $psAccountsService->getEmail()
-            ],
-            'moduleTosUrl' => $this->getTosLink()
-        ]
-    ]
-]);
+$billingFacade = $this->getService('ps_billings.facade');
+$partnerLogo = $this->getLocalPath() . ' views/img/partnerLogo.png';
+
+// Billing
+Media::addJsDef($billingFacade->present([
+    'logo' => $partnerLogo,
+    'tosLink' => 'https://yoururl/',
+    'emailSupport' => 'you@email',
+]));
 ```
 
-> In the future we will provide you a facade to automatically create the data required for the `psBillingContext`.
+
+##### PsBillingService to retrieve billing data in PHP
+
+As seen in the PsBilling configuration, the PsBilling composer provide you a PsBillingService :
+
+```yaml
+  ps_billings.service:
+    class: PrestaShopCorp\Billing\Services\BillingService
+    public: true
+    arguments:
+      - '@ps_billings.context_wrapper'
+      - '@rbm_example.module'
+```
+
+You can retrieve it the same way you retrieve the facade :
+
+```php
+// Load service for PsBilling
+$billingService = $this->getService('ps_billings.service');
+
+// Retrieve the customer
+$customer = $billingService->getCurrentCustomer();
+
+// Retrieve the subscritpion for this module
+$subscription = $billingService->getCurrentSubscription();
+
+// Retrieve the list and description for module plans
+$plans = $billingService->getModulePlans();
+```
+
+Each method return a PHP array  with this format :
+
+```
+[
+    'success' => true,    // return true if status is 2xx
+    'httpStatus' => 200,  // HTTP status normalized
+    'body' => [],         // The data to retrieve, the format is close to the format used in webhook system
+];
+```
 
 #### Load the front JS app
 
@@ -198,15 +344,21 @@ $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rb
 <Example>
 ```php
 <?php
-if (!defined('_PS_VERSION_'))
+
+if (!defined('_PS_VERSION_')) {
     exit;
+}
 
 require 'vendor/autoload.php';
 
 class Rbm_example extends Module
 {
-private $container;
     private $emailSupport;
+
+    /**
+     * @var ServiceContainer
+     */
+    private $container;
 
     public function __construct()
     {
@@ -219,7 +371,7 @@ private $container;
 
         $this->ps_versions_compliancy = [
             'min' => '1.6.1.0',
-            'max' => _PS_VERSION_
+            'max' => _PS_VERSION_,
         ];
         $this->bootstrap = true;
 
@@ -231,8 +383,8 @@ private $container;
         $this->confirmUninstall = $this->l('Are you sure to uninstall this module?');
 
         $this->uri_path = Tools::substr($this->context->link->getBaseLink(null, null, true), 0, -1);
-        $this->images_dir = $this->uri_path.$this->getPathUri() . 'views/img/';
-        $this->template_dir = $this->getLocalPath(). 'views/templates/admin/';
+        $this->images_dir = $this->uri_path . $this->getPathUri() . 'views/img/';
+        $this->template_dir = $this->getLocalPath() . 'views/templates/admin/';
 
         if ($this->container === null) {
             $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer(
@@ -270,23 +422,12 @@ private $container;
     }
 
     /**
-     * Get the isoCode from the context language, if null, send 'en' as default value
-     *
-     * @return string
-     */
-    public function getLanguageIsoCode()
-    {
-        return $this->context->language !== null ? $this->context->language->iso_code : 'en';
-    }
-
-    /**
      * Get the Tos URL from the context language, if null, send default link value
      *
      * @return string
      */
-    public function getTosLink()
+    public function getTosLink($iso_lang)
     {
-        $iso_lang = $this->getLanguageIsoCode();
         switch ($iso_lang) {
             case 'fr':
                 $url = 'https://www.prestashop.com/fr/prestashop-account-cgu';
@@ -301,7 +442,6 @@ private $container;
 
     public function getContent()
     {
-        // TODO: allow to download module with preprod env
         // Allow to auto-install Account
         $accountsInstaller = $this->getService('ps_accounts.installer');
         $accountsInstaller->install();
@@ -318,43 +458,27 @@ private $container;
             // Retrieve Account CDN
             $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
 
+            $billingFacade = $this->getService('ps_billings.facade');
+            $partnerLogo = $this->getLocalPath() . 'views/img/partnerLogo.png';
+
             // Billing
-            Media::addJsDef([
-                'psBillingContext' => [
-                    'context' => [
-                        'versionPs' => _PS_VERSION_,
-                        'versionModule' => $this->version,
-                        'moduleName' => $this->name,
-                        'displayName' => $this->displayName,
-                        'partnerLogo' => $this->images_dir.'partnerLogo.png',
-                        'moduleLogo' => $this->uri_path.$this->getPathUri().'logo.png',
-                        'refreshToken' => $accountsService->getRefreshToken(),
-                        'emailSupport' => $this->emailSupport,
-                        'shop' => [
-                            'uuid' => $accountsService->getShopUuid()
-                        ],
-                        'i18n' => [
-                            'isoCode' => $this->getLanguageIsoCode()
-                        ],
-                        'user' => [
-                            'createdFromIp' => Tools::getRemoteAddr(),
-                            'email' => $accountsService->getEmail()
-                        ],
-                        'moduleTosUrl' => $this->getTosLink()
-                    ]
-                ]
-            ]);
+            Media::addJsDef($billingFacade->present([
+                'logo' => $partnerLogo,
+                'tosLink' => $this->getTosLink($this->context->language->iso_code),
+                'emailSupport' => $this->emailSupport,
+            ]));
+
             $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rbm_example.' . $this->version . '.js');
             $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rbm_example.' . $this->version . '.js');
         } catch (Exception $e) {
             $this->context->controller->errors[] = $e->getMessage();
+
             return '';
         }
+
         return $this->context->smarty->fetch($this->template_dir . 'rbm_example.tpl');
     }
-
 }
-
 ````
 </Example>
 
@@ -396,7 +520,7 @@ This file will load the Vue app frontend and the chunk vendor js
 ## Frontend
 
 ::: tip About VueJS
-Javascript and Vue knowledge are prerequisite (cf [https://vuejs.org/v2/guide/](https://vuejs.org/v2/guide/)). This section only introduces the essentials, for more information, please take a look at the [example RBM module](https://github.com/PrestaShopCorp/prestashop_rbm_example) or to the [Using VueJS Prestashop documentation](https://devdocs.prestashop.com/1.7/modules/concepts/templating/vuejs/).
+Javascript and Vue knowledge are prerequisite (cf [https://vuejs.org/v2/guide/](https://vuejs.org/v2/guide/)). This section only introduces the essentials, for more information, please take a look at the [example SaaS App module](https://github.com/PrestaShopCorp/prestashop_rbm_example) or to the [Using VueJS PrestaShop documentation](https://devdocs.prestashop.com/1.7/modules/concepts/templating/vuejs/).
 :::
 
 
@@ -484,10 +608,6 @@ Optional see [PsAccount component fallback](#psaccount-component-fallback)
 ```bash
 yarn add prestashop_accounts_vue_components
 ```
-
-::: danger Developpement version
-During developement you should install the preprod version of billing CDC : `yarn add @prestashopcorp/billing-cdc@preprod`. This is temporary as we will create a sandbox mode in production.
-:::
 
 </Block>
 
@@ -748,9 +868,9 @@ Below is the details of the attributes
 | moduleName         | **string** | Module's name (**required**)                      |
 | displayName        | **string** | Module's display name (**required**)              |
 | moduleLogo         | **string** | Module's logo (**required**)                      |
-| partnerLogo        | **string** | Your logo image  (**required**)                   |
+| partnerLogo        | **string** | Your logo image                   |
 | moduleTosUrl       | **string** | Url to your term of service (**required**)        |
-| accountApi         | **string** | API to retrieve Prestashop Account (**required**) |
+| accountApi         | **string** | API to retrieve PrestaShop Account (**required**) |
 | emailSupport       | **string** | Email to contact support (**required**)           |
 | i18n.isoCode       | **string** | ISO code (**required**)                           |
 | shop.uuid          | **string** | Merchant shop's uuid (**required**)               |
@@ -759,6 +879,8 @@ Below is the details of the attributes
 | user.email         | **string** | Merchant's email (**required**)                   |
 | versionModule      | **string** | Module's version (**required**)                   |
 | versionPs          | **string** | Prestashop's version (**required**)               |
+| isSandbox          | **boolean** | Activate the sandbox mode (default: `false`)       |
+| refreshToken       | **string**  | Refresh token provided by PsAccount (**required**) |
 
 </Block>
 
