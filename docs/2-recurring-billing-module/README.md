@@ -251,6 +251,7 @@ services:
       - '@ps_billings.context_wrapper'
       - '@rbm_example.module'
 
+  # Remove this if you don't need BillingService
   ps_billings.service:
     class: PrestaShopCorp\Billing\Services\BillingService
     public: true
