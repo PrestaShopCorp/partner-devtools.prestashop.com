@@ -9,8 +9,7 @@ services:
   rbm_example_stairstep.context:
     class: Context
     public: true
-    factory: [ 'Context', 'getContext' ]
-
+    factory: ['Context', 'getContext']
 
   #####################
   # PS Account
@@ -19,28 +18,27 @@ services:
     class: 'PrestaShop\PsAccountsInstaller\Installer\Installer'
     public: true
     arguments:
-      - "5.0"
+      - '5.0'
 
   ps_accounts.facade:
     class: 'PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts'
     public: true
     arguments:
-      - "@ps_accounts.installer"
-
+      - '@ps_accounts.installer'
 
   #####################
   # PS Billing
 
-  ps_billings.facade:
-    class: 'PrestaShop\PsBilling\Presenter\BillingPresenter'
+  ps_billings.context_wrapper:
+    class: 'PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
     arguments:
       - '@ps_accounts.facade'
-      - '@rbm_example_stairstep.module'
-      - '@rbm_example_stairstep.context'
+      - '@rbm_example.context'
+      - true # if true you are in sandbox mode, if false or empty not in sandbox
 
-
-  ps_billings.api:
-    class: PrestaShop\PsBilling\Installer\Api\Client\ServicesBillingClient
+  ps_billings.facade:
+    class: 'PrestaShopCorp\Billing\Presenter\BillingPresenter'
     public: true
     arguments:
-      - '@ps_accounts.facade'
+      - '@ps_billings.context_wrapper'
+      - '@rbm_example.module'
