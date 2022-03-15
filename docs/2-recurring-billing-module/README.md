@@ -238,25 +238,24 @@ services:
 
   #####################
   # PS Billing
-  ps_billings.accounts_wrapper:
-    class: 'PrestaShop\PsBilling\Wrappers\PsBillingAccountsWrapper'
+  ps_billings.context_wrapper:
+    class: 'PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
     arguments:
       - '@ps_accounts.facade'
       - '@rbm_example.context'
-      # if true you are in sandbox mode, if false or empty sandbox is disabled
-      - true 
+      - true # if true you are in sandbox mode, if false or empty not in sandbox
 
   ps_billings.facade:
-    class: 'PrestaShop\PsBilling\Presenter\PsBillingPresenter'
+    class: 'PrestaShopCorp\Billing\Presenter\BillingPresenter'
     arguments:
-      - '@ps_billings.accounts_wrapper'
+      - '@ps_billings.context_wrapper'
       - '@rbm_example.module'
 
   ps_billings.service:
-    class: PrestaShop\PsBilling\Services\PsBillingService
+    class: PrestaShopCorp\Billing\Services\BillingService
     public: true
     arguments:
-      - '@ps_billings.accounts_wrapper'
+      - '@ps_billings.context_wrapper'
       - '@rbm_example.module'
 ```
 
@@ -298,10 +297,10 @@ As seen in the PsBilling configuration, the PsBilling composer provide you a PsB
 
 ```yaml
   ps_billings.service:
-    class: PrestaShop\PsBilling\Services\PsBillingService
+    class: PrestaShopCorp\Billing\Services\BillingService
     public: true
     arguments:
-      - '@ps_billings.accounts_wrapper'
+      - '@ps_billings.context_wrapper'
       - '@rbm_example.module'
 ```
 
@@ -321,6 +320,15 @@ $subscription = $billingService->getCurrentSubscription();
 $plans = $billingService->getModulePlans();
 ```
 
+Each method return a PHP array  with this format :
+
+```
+[
+    'success' => true,    // return true if status is 2xx
+    'httpStatus' => 200,  // HTTP status normalized
+    'body' => [],         // The data to retrieve, the format is close to the format used in webhook system
+];
+```
 
 #### Load the front JS app
 
