@@ -38,6 +38,7 @@ services:
 
   ps_billings.facade:
     class: 'PrestaShopCorp\Billing\Presenter\BillingPresenter'
+    public: true
     arguments:
       - '@ps_billings.context_wrapper'
       - '@rbm_example.module'
