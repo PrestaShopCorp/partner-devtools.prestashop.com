@@ -29,23 +29,22 @@ services:
   #####################
   # PS Billing
 
-  ps_billings.accounts_wrapper:
-    class: 'PrestaShop\PsBilling\Wrappers\PsBillingAccountsWrapper'
+  ps_billings.context_wrapper:
+    class: 'PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
     arguments:
       - '@ps_accounts.facade'
       - '@rbm_example.context'
       - true # if true you are in sandbox mode, if false or empty not in sandbox
 
   ps_billings.facade:
-    class: 'PrestaShop\PsBilling\Presenter\PsBillingPresenter'
+    class: 'PrestaShopCorp\Billing\Presenter\BillingPresenter'
     arguments:
-      - '@ps_billings.accounts_wrapper'
+      - '@ps_billings.context_wrapper'
       - '@rbm_example.module'
 
   ps_billings.service:
-    class: PrestaShop\PsBilling\Services\PsBillingService
+    class: PrestaShopCorp\Billing\Services\BillingService
     public: true
     arguments:
-      - '@ps_billings.accounts_wrapper'
+      - '@ps_billings.context_wrapper'
       - '@rbm_example.module'
-      - 'v1'
