@@ -21,6 +21,10 @@ Query param: `?api_key=apiKey`
 
 If this is not specified or not a correct api key, `403 Forbidden` will be returned
 
+## Rate limiting
+
+This API is protected by a rate limiter. Ask us for more information about the limit.
+
 </Block>
 
 <Block>
