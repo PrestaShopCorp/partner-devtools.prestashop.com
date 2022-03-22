@@ -23,6 +23,68 @@ During call API, your endpoint should return a 2xx HTTP status to indicates that
 
 <Block>
 
+## Subscription lifecycle
+
+Here the lifecycle of a subscription in different use case.
+
+<p style="text-align: center;">
+<img src="/assets/images/3-webhook-events/lifecycle_subscription_with_trial.jpg"
+     alt="Subscription with trial lifecycle"
+     style="max-width: 100%;max-height: 180px" />
+</br>
+<a href="/assets/images/3-webhook-events/lifecycle_subscription_with_trial.jpg" target="_blank">
+See image in full screen
+</a>
+</p>
+
+
+
+<p style="text-align: center;">
+<img src="/assets/images/3-webhook-events/lifecycle_subscription_without_trial.jpg"
+     alt="Subscription without trial lifecycle"
+     style="max-width: 100%;max-height: 180px" />
+</br>
+<a href="/assets/images/3-webhook-events/lifecycle_subscription_without_trial.jpg" target="_blank">
+See image in full screen
+</a>
+</p>
+
+
+
+<p style="text-align: center;">
+<img src="/assets/images/3-webhook-events/lifecycle_cancellation_during_trial.jpg"
+     alt="Subscription cancellation during trial lifecycle"
+     style="max-width: 100%;max-height: 180px" />
+</br>
+<a href="/assets/images/3-webhook-events/lifecycle_cancellation_during_trial.jpg" target="_blank">
+See image in full screen
+</a>
+</p>
+
+
+
+<p style="text-align: center;">
+<img src="/assets/images/3-webhook-events/lifecycle_plan_change.jpg"
+     alt="Subscription plan change lifecycle"
+     style="max-width: 100%;max-height: 180px" />
+</br>
+<a href="/assets/images/3-webhook-events/lifecycle_plan_change.jpg" target="_blank">
+See image in full screen
+</a>
+</p>
+
+
+
+
+
+
+
+
+
+</Block>
+
+<Block>
+
 ## Events
 
 ::: tip Timestamps
@@ -569,6 +631,8 @@ All the customer event data follow this structure
 
 </Block>
 
+<Block>
+
 ## Authorization
 
 An Authorization header will be sent to the merchant's API to ensure security.
@@ -583,3 +647,5 @@ An Authorization header will be sent to the merchant's API to ensure security.
 A common use case is that the merchant will verify this token for each incoming webhook request to make sure that they are from the PrestaShop Webhook API.
 
 Please send your token to the following email: squad-offre@prestashop.com
+
+</Block>
