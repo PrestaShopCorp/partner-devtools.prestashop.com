@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "63129c80bfa4f1414612d0a1d6932d34",
+    "content-hash": "e13a430d809a52029856f8601a91dfbc",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -416,7 +416,7 @@
         },
         {
             "name": "prestashopcorp/module-lib-billing",
-            "version": "v1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PrestaShopCorp/module-lib-billing.git",
@@ -451,7 +451,7 @@
             "description": "Utility package to retrieve SasS App module context and more",
             "support": {
                 "issues": "https://github.com/PrestaShopCorp/module-lib-billing/issues",
-                "source": "https://github.com/PrestaShopCorp/module-lib-billing/tree/v1.1.1"
+                "source": "https://github.com/PrestaShopCorp/module-lib-billing/tree/1.2.0"
             },
             "time": "2022-04-22T12:33:30+00:00"
         },
