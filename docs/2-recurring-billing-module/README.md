@@ -51,7 +51,7 @@ It will help you to construct the `context` required to make SaaS App works.
     "php": ">=5.6",
     "prestashop/prestashop-accounts-installer": "^1.0.1",
     "prestashop/module-lib-service-container": "^1.4",
-    "prestashopcorp/module-lib-billing": "^1.1.0"
+    "prestashopcorp/module-lib-billing": "^1.2.0"
 },
 ```
 
@@ -93,7 +93,7 @@ It will be useful for afterwards
         "php": ">=5.6",
         "prestashop/prestashop-accounts-installer": "^1.0.1",
         "prestashop/module-lib-service-container": "^1.4",
-        "prestashopcorp/module-lib-billing": "^1.0.0"
+        "prestashopcorp/module-lib-billing": "^1.2.0"
     },
     "autoload": {
         "classmap": [
