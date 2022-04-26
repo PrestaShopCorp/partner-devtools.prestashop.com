@@ -59,11 +59,7 @@ if [ ! -s "$TUNNEL_FILE" ]; then
   echo -e "Handle restart to avoid new subdomain\n"
   echo $SUBDOMAIN_NAME > $TUNNEL_FILE
 fi
-cat $TUNNEL_FILE
-docker logs ps-tunnel.local
-
 docker cp $TUNNEL_FILE ps-tunnel.local:/tmp/.config
-
 
 # Create MySQL and PrestaShop service
 echo -e "Create MySQL & PrestaShop service\n"

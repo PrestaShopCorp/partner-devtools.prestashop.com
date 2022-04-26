@@ -19,8 +19,6 @@ get_bo_url() {
 }
 
 get_urls() {
-  echo "env ${RBM_NAME} != dc ${SUBDOMAIN_NAME}"
-
   if [[ "$RBM_NAME" != "$SUBDOMAIN_NAME" ]]; then
     echo -e "You need to run ./update-domain.sh\n"
   else

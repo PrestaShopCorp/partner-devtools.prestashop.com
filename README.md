@@ -195,7 +195,7 @@ fi
 ### Environment variables
 
 * ``RBM_NAME`` - Define subdomain for tunnel http (default value: CHANGEME123)
-* ``TUNNEL_DOMAIN`` - Define tunnel domain (default value: tunnel.prestashop.net)
+* ``TUNNEL_DOMAIN`` - Define tunnel domain (default value: localtunnel.distribution.prestashop.net)
 * ``PS_LANGUAGE`` - Change the default language installed with PrestaShop (default value: en)
 * ``PS_COUNTRY`` - Change the default country installed with PrestaShop (default value: GB)
 * ``PS_ALL_LANGUAGES`` - Install all the existing languages for the current version. (default value: 0)
@@ -216,8 +216,8 @@ Get your shop URL
 ``` sh
 ./get-url.sh
 
-BO Url: http://CHANGEME123.tunnel.prestashop.net/admin-dev
-FO Url: http://CHANGEME123.tunnel.prestashop.net
+BO Url: http://CHANGEME123.localtunnel.distribution.prestashop.net/admin-dev
+FO Url: http://CHANGEME123.localtunnel.distribution.prestashop.net
 ```
 
 Update shop URL
@@ -225,8 +225,8 @@ Update shop URL
 ./update-domain.sh
 Updating PrestaShop domains ...
 
-BO Url: http://CHANGEME123.tunnel.prestashop.net/admin-dev
-FO Url: http://CHANGEME123.tunnel.prestashop.net
+BO Url: http://CHANGEME123.localtunnel.distribution.prestashop.net/admin-dev
+FO Url: http://CHANGEME123.localtunnel.distribution.prestashop.net
 ```
 
 

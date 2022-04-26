@@ -35,7 +35,7 @@ services:
       - PS_FOLDER_ADMIN=admin-dev
       - PS_FOLDER_INSTALL=install-dev
       - XDEBUG=yes
-      - PS_DOMAIN=${RBM_NAME}.${TUNNEL_DOMAIN:-tunnel.prestashop.net}
+      - PS_DOMAIN=${RBM_NAME}.${TUNNEL_DOMAIN:-localtunnel.distribution.prestashop.net}
       - ADMIN_MAIL=${ADMIN_MAIL:-admin@prestashop.com}
       - ADMIN_PASSWD=${ADMIN_PASSWD:-prestashop}
     depends_on:
@@ -51,7 +51,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - PORT=${PORT:-8080}
-      - TUNNEL_DOMAIN=${TUNNEL_DOMAIN:-tunnel.prestashop.net}
+      - TUNNEL_DOMAIN=${TUNNEL_DOMAIN:-localtunnel.distribution.prestashop.net}
     network_mode: host
 
 networks:
