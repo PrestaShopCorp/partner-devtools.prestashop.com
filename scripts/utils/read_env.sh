@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # allow to read file and use is content
 read_var() {
