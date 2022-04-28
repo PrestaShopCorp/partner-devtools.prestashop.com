@@ -51,7 +51,7 @@ It will help you to construct the `context` required to make SaaS App works.
     "php": ">=5.6",
     "prestashop/prestashop-accounts-installer": "^1.0.1",
     "prestashop/module-lib-service-container": "^1.4",
-    "prestashopcorp/module-lib-billing": "^1.2.0"
+    "prestashopcorp/module-lib-billing": "^1.3.0"
 },
 ```
 
@@ -93,7 +93,7 @@ It will be useful for afterwards
         "php": ">=5.6",
         "prestashop/prestashop-accounts-installer": "^1.0.1",
         "prestashop/module-lib-service-container": "^1.4",
-        "prestashopcorp/module-lib-billing": "^1.2.0"
+        "prestashopcorp/module-lib-billing": "^1.3.0"
     },
     "autoload": {
         "classmap": [
@@ -267,11 +267,12 @@ It is necessary to inject the `psBillingContext` into the global variable `windo
 
 This presenter will serve some context informations, you need to send some parameters:
 
-| Attribute          | Type       | Default       | Description                                       |
-| ------------------ | ---------- | ---------- | ------------------------------------------------- |
-| logo         | **string** |   | Set your logo can be a file or an Url                      |
-| tosLink         | **string** |   | Link to your terms & services                      |
-| emailSupport         | **string** |   | Email to your supporr                      |
+| Attribute           | Type       | Description                                        |
+| ------------------- | ---------- | -------------------------------------------------- |
+| logo                | **string** | Set your logo can be a file or an Url              |
+| tosLink             | **string** | Link to your terms & services (required)           |
+| privacyLink         | **string** | Link to your terms & services (required)           |
+| emailSupport        | **string** | Email to your support (required)                   |
 
 :::warning Sandbox mode
 During your development you should use the sandbox mode which allow you to use test card. You can use `4111 1111 1111 1111` as test card, or [see the official Chargebee documentation](https://www.chargebee.com/docs/2.0/chargebee-test-gateway.html#test-card-numbers)
@@ -287,6 +288,7 @@ $partnerLogo = $this->getLocalPath() . ' views/img/partnerLogo.png';
 Media::addJsDef($billingFacade->present([
     'logo' => $partnerLogo,
     'tosLink' => 'https://yoururl/',
+    'privacyLink' => 'https://yoururl/',
     'emailSupport' => 'you@email',
 ]));
 ```
@@ -440,6 +442,25 @@ class Rbm_example extends Module
         return $url;
     }
 
+    /**
+     * Get the Tos URL from the context language, if null, send default link value
+     *
+     * @return string
+     */
+    public function getPrivacyLink($iso_lang)
+    {
+        switch ($iso_lang) {
+            case 'fr':
+                $url = 'https://www.prestashop.com/fr/politique-confidentialite';
+                break;
+            default:
+                $url = 'https://www.prestashop.com/en/privacy-policy';
+                break;
+        }
+
+        return $url;
+    }
+
     public function getContent()
     {
         // Allow to auto-install Account
@@ -465,6 +486,7 @@ class Rbm_example extends Module
             Media::addJsDef($billingFacade->present([
                 'logo' => $partnerLogo,
                 'tosLink' => $this->getTosLink($this->context->language->iso_code),
+                'privacyLink' => $this->getPrivacyLink($this->context->language->iso_code),
                 'emailSupport' => $this->emailSupport,
             ]));
 

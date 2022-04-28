@@ -95,6 +95,25 @@ class Rbm_example extends Module
         return $url;
     }
 
+    /**
+     * Get the Tos URL from the context language, if null, send default link value
+     *
+     * @return string
+     */
+    public function getPrivacyLink($iso_lang)
+    {
+        switch ($iso_lang) {
+            case 'fr':
+                $url = 'https://www.prestashop.com/fr/politique-confidentialite';
+                break;
+            default:
+                $url = 'https://www.prestashop.com/en/privacy-policy';
+                break;
+        }
+
+        return $url;
+    }
+
     public function getContent()
     {
         // Allow to auto-install Account
@@ -120,6 +139,7 @@ class Rbm_example extends Module
             Media::addJsDef($billingFacade->present([
                 'logo' => $partnerLogo,
                 'tosLink' => $this->getTosLink($this->context->language->iso_code),
+                'privacyLink' => $this->getPrivacyLink($this->context->language->iso_code),
                 'emailSupport' => $this->emailSupport,
             ]));
 
