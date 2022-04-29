@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 # Load utilities
 source ./scripts/utils/index.sh
@@ -19,13 +18,12 @@ else
   echo -e "Network ${NETWORK_NAME} already exists, skipping\n"
 fi
 
-
 # Create http tunnel container
 echo -e "Create HTTP tunnel service\n"
 if [[ `uname -m` == 'arm64' ]]; then
-  docker-compose -f docker-compose.yml -f docker-compose.arm64.yml up -d --no-deps --force-recreate --build prestashop_tunnel
+  DOCKER_SCAN_SUGGEST=false docker-compose -f docker-compose.yml -f docker-compose.arm64.yml up -d --no-deps --force-recreate --build prestashop_tunnel
 else
-  docker-compose up -d --no-deps --force-recreate --build prestashop_tunnel
+  DOCKER_SCAN_SUGGEST=false docker-compose up -d --no-deps --force-recreate --build prestashop_tunnel
 fi
 
 echo -e "Checking if HTTP tunnel is available...\n"
@@ -64,11 +62,10 @@ docker cp $TUNNEL_FILE ps-tunnel.local:/tmp/.config
 
 # Create MySQL and PrestaShop service
 echo -e "Create MySQL & PrestaShop service\n"
-echo "${RBM_NAME} - ${SUBDOMAIN_NAME} ---- \n"
 if [[ `uname -m` == 'arm64' ]]; then
-  docker-compose -f docker-compose.yml -f docker-compose.arm64.yml up -d --no-deps --build prestashop_rbm_db prestashop_rbm_shop
+  DOCKER_SCAN_SUGGEST=false docker-compose -f docker-compose.yml -f docker-compose.arm64.yml up -d --no-deps --force-recreate --build prestashop_rbm_shop prestashop_rbm_db
 else
-  docker-compose up -d --no-deps --build prestashop_rbm_db prestashop_rbm_shop
+  DOCKER_SCAN_SUGGEST=false docker-compose up -d --no-deps --force-recreate --build prestashop_rbm_db prestashop_rbm_shop
 fi
 
 echo -e "\nChecking if PrestaShop is available...\n"

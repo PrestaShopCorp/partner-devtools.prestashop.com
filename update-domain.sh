@@ -1,6 +1,4 @@
 #!/bin/bash
-set -euo pipefail
-
 source ./scripts/utils/index.sh
 
 # Manage sed options on f*** on MacOS Darwin (M1)
@@ -22,7 +20,7 @@ if [[ "$RBM_NAME" != "$SUBDOMAIN_NAME" ]]; then
     rm -f "${ENV_FILE}${SED_OPTIONS}"
   fi
 
-  echo -e "Handle restart to avoid new subdomain\n"
+  # echo -e "Handle restart to avoid new subdomain\n"
   echo $SUBDOMAIN_NAME > tunnel/.config
   docker cp tunnel/.config ps-tunnel.local:/tmp/.config
 
