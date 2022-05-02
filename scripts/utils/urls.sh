@@ -7,7 +7,6 @@ TUNNEL_DOMAIN=$(read_var TUNNEL_DOMAIN $ENV_FILE)
 RBM_NAME=$(read_var RBM_NAME $ENV_FILE)
 SUBDOMAIN_NAME=`docker logs ps-tunnel.local 2>/dev/null | awk -F '/' '{print $3}' | awk -F"." '{print $1}' | awk 'END{print}' | tr -d "[:space:]"`
 
-
 get_fo_url() {
   local  retval="http://${SUBDOMAIN_NAME}.${TUNNEL_DOMAIN}"
   echo "$retval"
