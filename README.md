@@ -245,6 +245,16 @@ FO Url: http://CHANGEME123.localtunnel.distribution.prestashop.net
 ### Mac OS
 [Mac network_mode: "host" not working as expected](https://docs.docker.com/desktop/mac/networking/#known-limitations-use-cases-and-workarounds)
 
+### Database doesn't start
+
+If the database doesn't start because of this error :
+
+```
+[ERROR] Plugin 'InnoDB' init function returned error.
+[ERROR] Plugin 'InnoDB' registration as a STORAGE ENGINE failed.
+```
+
+You should delete the `./mysql/` folder and relaunch everything.
 
 ## 🚀 What next ?
 
