@@ -46,6 +46,15 @@ if [ ! -s "$ENV_FILE" ]; then
   cp .env.example $ENV_FILE
 fi
 
+# Wait for localtunnel availability to retrieve the domain
+until [ ! -z "$SUBDOMAIN_NAME" ]
+do
+  # avoid infinite loop...
+  SUBDOMAIN_NAME=`docker logs ps-tunnel.local 2>/dev/null | awk -F '/' '{print $3}' | awk -F"." '{print $1}' | awk 'END{print}' | tr -d "[:space:]"`
+  echo "Waiting for localtunnel subdomain retrieved (${SUBDOMAIN_NAME})"
+  sleep 5
+done;
+
 sed -i $SED_OPTIONS -E "s|(RBM_NAME=).*|RBM_NAME=${SUBDOMAIN_NAME}|g" $ENV_FILE
 if [[ "$OSTYPE" == "darwin"* ]]; then
   rm -f "${ENV_FILE}${SED_OPTIONS}"
