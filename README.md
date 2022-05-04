@@ -92,6 +92,16 @@ cp .env.example .env
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+#### Install RBM example
+
+1. Follow the instruction in [README.md](modules/rbm_example/README.md)
+
+2. Search RBM Example module within the Module Catalog
+
+3. Click on "Install" button
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 ### Configuration
 #### Environment variables
 

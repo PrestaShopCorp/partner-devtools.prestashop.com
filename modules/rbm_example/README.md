@@ -1,26 +1,31 @@
 # SaaS App Example module
 
-## Install
-
-### Requirement
+This is a Saas App example. You could use it to have a better understanding of the way you need to implement a Saas App.
+## Requirement
 
 * [Composer](https://getcomposer.org/doc/00-intro.md) installed
 * [Node](https://nodejs.org/en/) installed (14.x)
 * [Yarn 1](https://yarnpkg.com/getting-started/install) installed
 
 
-## Build module
+## Install
 
 ### First build
 
 ```sh
-$ composer install
-$ cd _dev
-$ yarn zip-module
+# Istall PHP dependencies
+composer install
+
+# Install JS dependencies
+cd _dev 
+npm install
+
+# Build JS App
+npm run build
 ```
 
-### Rebuild
+## Build module
 
 ```sh
-$ yarn zip-module
+npm run zip-module
 ```
