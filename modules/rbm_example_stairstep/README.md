@@ -1,4 +1,6 @@
-# SAAS APP Example module
+# SaaS App Stairstep Example module
+
+**This module is only for test purpose, you should prefer rbm_example as module example.**
 
 ## Install
 
