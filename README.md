@@ -264,6 +264,11 @@ If the database doesn't start because of this error :
 
 You should delete the `./mysql/` folder and relaunch everything.
 
+### Error within ps-tunnel.local (only on Windows)
+
+If you get an error on line 14 of /tmp/run.sh, you should convert the end of line to Unix format, then relaunch the `./install.sh` command.
+
+
 ## 🚀 What next ?
 
 ### SaaS App documentation
