@@ -5,7 +5,7 @@ source ./scripts/utils/read_env.sh
 ENV_FILE=.env
 TUNNEL_DOMAIN=$(read_var TUNNEL_DOMAIN $ENV_FILE)
 RBM_NAME=$(read_var RBM_NAME $ENV_FILE)
-RBM_NAME=$(read_var ADMIN_MAIL $ENV_FILE)
+ADMIN_MAIL=$(read_var ADMIN_MAIL $ENV_FILE)
 SUBDOMAIN_NAME=`docker logs ps-tunnel.local 2>/dev/null | awk -F '/' '{print $3}' | awk -F"." '{print $1}' | awk 'END{print}' | tr -d "[:space:]"`
 
 get_fo_url() {
