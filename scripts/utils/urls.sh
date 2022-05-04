@@ -5,6 +5,7 @@ source ./scripts/utils/read_env.sh
 ENV_FILE=.env
 TUNNEL_DOMAIN=$(read_var TUNNEL_DOMAIN $ENV_FILE)
 RBM_NAME=$(read_var RBM_NAME $ENV_FILE)
+RBM_NAME=$(read_var ADMIN_MAIL $ENV_FILE)
 SUBDOMAIN_NAME=`docker logs ps-tunnel.local 2>/dev/null | awk -F '/' '{print $3}' | awk -F"." '{print $1}' | awk 'END{print}' | tr -d "[:space:]"`
 
 get_fo_url() {
@@ -14,7 +15,7 @@ get_fo_url() {
 
 get_bo_url() {
   local  retval=$(get_fo_url)
-  echo "$retval/admin-dev"
+  echo "$retval/admin-dev?email=${ADMIN_MAIL:-admin@prestashop.com}"
 }
 
 get_urls() {
@@ -25,7 +26,7 @@ get_urls() {
     local BO_URL=$(get_bo_url)
 
     echo ""
-    echo -e "BO Url: ${BO_URL}"
+    echo -e "BO Url: ${BO_URL}?="
     echo -e "FO Url: ${FO_URL}"
   fi
 }
