@@ -245,6 +245,14 @@ FO Url: http://CHANGEME123.localtunnel.distribution.prestashop.net
 ### Mac OS
 [Mac network_mode: "host" not working as expected](https://docs.docker.com/desktop/mac/networking/#known-limitations-use-cases-and-workarounds)
 
+### Error on database port
+
+```
+ERROR: for prestashop_rbm_db  Cannot start service prestashop_rbm_db: Ports are not available: listen tcp 0.0.0.0:3307:
+```
+
+You should override the port `DB_PORT` in the [environement file](#environment-variables)
+
 ### Database doesn't start
 
 If the database doesn't start because of this error :
