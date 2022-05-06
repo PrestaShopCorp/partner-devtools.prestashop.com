@@ -51,7 +51,7 @@ It will help you to construct the `context` required to make SaaS App works.
     "php": ">=5.6",
     "prestashop/prestashop-accounts-installer": "^1.0.1",
     "prestashop/module-lib-service-container": "^1.4",
-    "prestashopcorp/module-lib-billing": "^1.0.0"
+    "prestashopcorp/module-lib-billing": "^1.3.1"
 },
 ```
 
@@ -93,7 +93,7 @@ It will be useful for afterwards
         "php": ">=5.6",
         "prestashop/prestashop-accounts-installer": "^1.0.1",
         "prestashop/module-lib-service-container": "^1.4",
-        "prestashopcorp/module-lib-billing": "^1.0.0"
+        "prestashopcorp/module-lib-billing": "^1.3.1"
     },
     "autoload": {
         "classmap": [
@@ -203,8 +203,8 @@ In order to inject the `context` you should update `getContent` hook. This will 
 
 Account service is also responsible to return the proper URL for the PsAccount front component, [which is loaded via CDN](#use-psaccount-with-a-cdn).
 
-::: warning PsAccount official doc
-We will add a link to the official PsAccount documentation in the near future.
+::: warning PsAccount component doc
+For a custom VueJS implementation, check [PsAccount vue component documentation](https://storybook-accounts.distribution.prestashop.net/)
 :::
 
 ```php
@@ -217,7 +217,7 @@ Media::addJsDef([
 ]);
 
 // Retrieve Account CDN
-$this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
+$this->context->smarty->assign('urlAccountsCdn', $accountsService->getAccountsCdn());
 ```
 
 #### PsBilling
@@ -267,11 +267,12 @@ It is necessary to inject the `psBillingContext` into the global variable `windo
 
 This presenter will serve some context informations, you need to send some parameters:
 
-| Attribute          | Type       | Default       | Description                                       |
-| ------------------ | ---------- | ---------- | ------------------------------------------------- |
-| logo         | **string** |   | Set your logo can be a file or an Url                      |
-| tosLink         | **string** |   | Link to your terms & services                      |
-| emailSupport         | **string** |   | Email to your supporr                      |
+| Attribute           | Type       | Description                                        |
+| ------------------- | ---------- | -------------------------------------------------- |
+| logo                | **string** | Set your logo can be a file or an Url              |
+| tosLink             | **string** | Link to your terms & services (required)           |
+| privacyLink         | **string** | Link to your terms & services (required)           |
+| emailSupport        | **string** | Email to your support (required)                   |
 
 :::warning Sandbox mode
 During your development you should use the sandbox mode which allow you to use test card. You can use `4111 1111 1111 1111` as test card, or [see the official Chargebee documentation](https://www.chargebee.com/docs/2.0/chargebee-test-gateway.html#test-card-numbers)
@@ -287,6 +288,7 @@ $partnerLogo = $this->getLocalPath() . ' views/img/partnerLogo.png';
 Media::addJsDef($billingFacade->present([
     'logo' => $partnerLogo,
     'tosLink' => 'https://yoururl/',
+    'privacyLink' => 'https://yoururl/',
     'emailSupport' => 'you@email',
 ]));
 ```
@@ -440,6 +442,25 @@ class Rbm_example extends Module
         return $url;
     }
 
+    /**
+     * Get the Tos URL from the context language, if null, send default link value
+     *
+     * @return string
+     */
+    public function getPrivacyLink($iso_lang)
+    {
+        switch ($iso_lang) {
+            case 'fr':
+                $url = 'https://www.prestashop.com/fr/politique-confidentialite';
+                break;
+            default:
+                $url = 'https://www.prestashop.com/en/privacy-policy';
+                break;
+        }
+
+        return $url;
+    }
+
     public function getContent()
     {
         // Allow to auto-install Account
@@ -456,7 +477,7 @@ class Rbm_example extends Module
             ]);
 
             // Retrieve Account CDN
-            $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
+            $this->context->smarty->assign('urlAccountsCdn', $accountsService->getAccountsCdn());
 
             $billingFacade = $this->getService('ps_billings.facade');
             $partnerLogo = $this->getLocalPath() . 'views/img/partnerLogo.png';
@@ -465,6 +486,7 @@ class Rbm_example extends Module
             Media::addJsDef($billingFacade->present([
                 'logo' => $partnerLogo,
                 'tosLink' => $this->getTosLink($this->context->language->iso_code),
+                'privacyLink' => $this->getPrivacyLink($this->context->language->iso_code),
                 'emailSupport' => $this->emailSupport,
             ]));
 
@@ -496,19 +518,19 @@ return $this->context->smarty->fetch($this->template_dir . '<module_name>.tpl');
 
 This file will load the Vue app frontend and the chunk vendor js
 
-> The 3 variables `$urlAccountsVueCdn`, `$pathVendor` and `$pathApp` are prepared in the `getContent` hook.
+> The 3 variables `$urlAccountsCdn`, `$pathVendor` and `$pathApp` are prepared in the `getContent` hook.
 
 <Example>
 ```html
 <link href="{$pathVendor|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 <link href="{$pathApp|escape:'htmlall':'UTF-8'}" rel=preload as=script>
-<link href="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" rel=preload as=script>
+<link href="{$urlAccountsCdn|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 
 <div id="app"></div>
 
 <script src="{$pathVendor|escape:'htmlall':'UTF-8'}"></script>
 <script src="{$pathApp|escape:'htmlall':'UTF-8'}"></script>
-<script src="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" type="text/javascript"></script>
+<script src="{$urlAccountsCdn|escape:'htmlall':'UTF-8'}" type="text/javascript"></script>
 
 ````
 </Example>
@@ -615,51 +637,23 @@ yarn add prestashop_accounts_vue_components
 
 ### Use PsAccount
 
-Create a component or use the App.vue component and add `PsAccount` inside the template.
-
-The `PsAccount` front component is loaded by the CDN in the stamry template.
+The `PsAccount` front component is loaded by the CDN in the smarty template.
 
 ::: warning Use the CDN
-CDN is the proper way to implement a recurring billing module, you should not use only the npm dependency
+CDN is the proper way to implement a recurring billing module, you should use only the npm dependency as a fallback in case the CDN doesn't work properly
 :::
 
 ```html
-# Minimalistic Vue template
-<template>
-  <div>
-    <PsAccounts> </PsAccounts>
-  </div>
-</template>
+<prestashop-accounts>
+    // your module template goes here
+</prestashop-accounts>
 ```
 
 ```js
 <script>
-export default {
-    components: {
-        PsAccounts: async () => {
-            // CDN will normally inject a psaccountsVue within the window object
-            let psAccounts = window?.psaccountsVue?.PsAccounts;
-
-            // This is a fallback if CDN isn't available
-            if (!psAccounts) {
-                psAccounts = require('prestashop_accounts_vue_components').PsAccounts;
-            }
-            return psAccounts;
-        },
-    },
-}
+    window?.psaccountsVue?.init() || require('prestashop_accounts_vue_components').init();
 </script>
 ```
-
-#### PsAccount component fallback
-
-```js
-if (!psAccounts) {
-  psAccounts = require("prestashop_accounts_vue_components").PsAccounts;
-}
-```
-
-This is a fallback in case the CDN doesn't work properly. If you want to do this, you should also add prestashop_accounts_vue_components in your dependencies: `npm install prestashop_accounts_vue_components` OR `yarn add prestashop_accounts_vue_components`.
 
 ### Use PsBilling
 
@@ -686,9 +680,9 @@ Use `PsBillingCustomer`, `PsBillingModal` in the template
 ```html
 <template>
   <div>
-    <PsAccounts>
+    <prestashop-accounts>
       ...
-    </PsAccounts>
+    </prestashop-accounts>
     <ps-billing-customer
       v-if="billingContext.user.email"
       ref="psBillingCustomerRef"
@@ -761,8 +755,8 @@ methods: {
 ```html
 <template>
   <div>
-    <PsAccounts>
-    </PsAccounts>
+    <prestashop-accounts>
+    </prestashop-accounts>
     <ps-billing-customer
         v-if="billingContext.user.email"
         ref="psBillingCustomerRef"
@@ -791,16 +785,6 @@ methods: {
 
   export default {
     components: {
-      PsAccounts: async () => {
-        // CDN will normally inject a psaccountsVue within the window object
-        let psAccounts = window?.psaccountsVue?.PsAccounts;
-
-        // This is a fallback if CDN isn't available
-        if (!psAccounts) {
-          psAccounts = require("prestashop_accounts_vue_components").PsAccounts;
-        }
-        return psAccounts;
-      },
       PsBillingCustomer: CustomerComponent.driver("vue", Vue),
       PsBillingModal: ModalContainerComponent.driver("vue", Vue),
     },
@@ -850,6 +834,9 @@ methods: {
         }
       },
     },
+    mounted() {
+      window?.psaccountsVue?.init() || require('prestashop_accounts_vue_components').init();
+    }
   };
 </script>
 ```

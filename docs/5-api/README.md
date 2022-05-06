@@ -21,6 +21,10 @@ Query param: `?api_key=apiKey`
 
 If this is not specified or not a correct api key, `403 Forbidden` will be returned
 
+## Rate limiting
+
+This API is protected by a rate limiter. Ask us for more information about the limit.
+
 </Block>
 
 <Block>
@@ -93,4 +97,4 @@ If this is not specified or not a correct api key, `403 Forbidden` will be retur
 | Param        | Type  | Description |
 | ------------ | ----- | ----------- |
 | action | **enumerated string** | `UPDATE`: add into or remove from the current quantity, `SET`: replace the current quantity by the new quantity (**required**) |
-| quantity | **number** | The quantity of the subscription (**required**) |
+| quantity | **number** | The quantity (minimum 1) of the subscription (**required**) |
