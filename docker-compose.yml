@@ -1,16 +1,47 @@
 version: "3.9"
 services:
+  # Tunnel Client
+  prestashop_tunnel:
+    container_name: ps-tunnel.local
+    # restart: always
+    stop_grace_period: 1s
+    image: prestashop-tunnel
+    build:
+      context: "tunnel"
+      dockerfile: Dockerfile
+    environment:
+      - PS_NAME=${PS_NAME:-}
+      - PORT=${PORT:-8080}
+      - TUNNEL_DOMAIN=${TUNNEL_DOMAIN:-localtunnel.distribution.prestashop.net}
+    network_mode: host
+
+  # MySQL
   prestashop_rbm_db:
     image: mysql:5.7
     container_name: ps-database.local
     ports:
-      - 3307:3306
+      - ${DB_PORT:-3307}:3306
     volumes: 
       - ./mysql:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_DATABASE=rbm-prestashop
 
+  # PMA
+  phpmyadmin:
+    restart: always
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin.local
+    ports:
+      - ${PMA_PORT:-8081}:80
+    environment:
+      PMA_HOST: 'ps-database.local'
+      PMA_USER: 'root'
+      PMA_PASSWORD: 'admin'
+    depends_on:
+      - prestashop_rbm_db
+
+  # PrestaShop
   prestashop_rbm_shop:
     container_name: ps-rbm.local
     image: prestashop-rbm
@@ -20,14 +51,19 @@ services:
     ports:
       - ${PORT:-8080}:80
     volumes:
-      - ./modules/rbm_example:/var/www/html/modules/rbm_example
+      - ./modules/rbm_example:/var/www/html/modules/rbm_example:rw
+      - ./modules/${MODULE_NAME}:/var/www/html/modules/${MODULE_NAME}:rw
     environment:
+      - APACHE_RUN_USER=#${APP_UID:-1000}
+      - APACHE_RUN_GROUP=#${APP_GID:-1000}
+      - COMPOSER_ALLOW_SUPERUSER=1
+      - COMPOSER_PROCESS_TIMEOUT=1000
       - DB_SERVER=ps-database.local
       - DB_USER=root
       - DB_PASSWD=admin
       - DB_NAME=rbm-prestashop
       - PS_HANDLE_DYNAMIC_DOMAIN=0
-      - PS_INSTALL_AUTO=1
+      - PS_INSTALL_AUTO=${PS_INSTALL_AUTO:-1}
       - PS_DEV_MODE=1
       - PS_LANGUAGE=${PS_LANGUAGE:-en}
       - PS_COUNTRY=${PS_COUNTRY:-US}
@@ -35,24 +71,12 @@ services:
       - PS_FOLDER_ADMIN=admin-dev
       - PS_FOLDER_INSTALL=install-dev
       - XDEBUG=yes
-      - PS_DOMAIN=${RBM_NAME}.${TUNNEL_DOMAIN:-localtunnel.distribution.prestashop.net}
+      - PS_DOMAIN=${PS_NAME}.${TUNNEL_DOMAIN:-localtunnel.distribution.prestashop.net}
       - ADMIN_MAIL=${ADMIN_MAIL:-admin@prestashop.com}
       - ADMIN_PASSWD=${ADMIN_PASSWD:-prestashop}
     depends_on:
       - prestashop_tunnel
       - prestashop_rbm_db
-
-  prestashop_tunnel:
-    container_name: ps-tunnel.local
-    restart: always
-    image: prestashop-tunnel
-    build:
-      context: "tunnel"
-      dockerfile: Dockerfile
-    environment:
-      - PORT=${PORT:-8080}
-      - TUNNEL_DOMAIN=${TUNNEL_DOMAIN:-localtunnel.distribution.prestashop.net}
-    network_mode: host
 
 networks:
   default:
