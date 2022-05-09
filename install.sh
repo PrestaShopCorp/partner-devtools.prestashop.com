@@ -25,7 +25,7 @@ fi
 # Manage rebuild image
 BUILD_OPTIONS=""
 if [[ "${TUNNEL_DEBUG}" == "true" ]]; then
-  BUILD_OPTIONS="-- build"
+  BUILD_OPTIONS="--build"
 fi
 
 # Manage MacOS
@@ -49,23 +49,37 @@ createNetwork() {
 createTunnel() {
   # Create http tunnel container
   echo -e "Create HTTP tunnel service\n"
+
+  if [ "$OSTYPE" == "msys" ] || [ "$OSTYPE" == "cygwin" ]; then
+    if [[ ! `command -v dos2unix` ]]; then
+        echo "dos2unix could not be found, you can install it https://waterlan.home.xs4all.nl/dos2unix.html"
+        exit 42
+    fi
+    dos2unix -q ./tunnel/scripts/run.sh
+  fi
+
+  # Force to rebuild image
+  if [[ "${TUNNEL_DEBUG}" == "true" ]]; then
+     docker-compose build --no-cache prestashop_tunnel
+  fi
+
   docker-compose ${DC_OPTIONS} up -d --no-deps ${BUILD_OPTIONS} prestashop_tunnel
 
   echo -e "Checking if HTTP tunnel is available...\n"
-  LOCAL_TUNNEL_READY=`docker inspect -f {{.State.Running}} ps-tunnel.local | tr -d "[:space:]"`
+  LOCAL_TUNNEL_READY=`docker inspect -f {{.State.Running}} ps-tunnel | tr -d "[:space:]"`
   until (( "$LOCAL_TUNNEL_READY"=="true" ))
   do
-    LOCAL_TUNNEL_READY=`docker inspect -f {{.State.Running}} ps-tunnel.local | tr -d "[:space:]"`
+    LOCAL_TUNNEL_READY=`docker inspect -f {{.State.Running}} ps-tunnel | tr -d "[:space:]"`
     echo -e "Waiting for confirmation of HTTP tunnel service startup\n"
     sleep 5
   done;
 
   # Wait for localtunnel availability to retrieve the domain
-  SUBDOMAIN_NAME=`docker logs ps-tunnel.local 2>/dev/null | awk -F '/' '{print $3}' | awk -F"." '{print $1}' | awk 'END{print}' | tr -d "[:space:]"`
+  SUBDOMAIN_NAME=`docker logs ps-tunnel 2>/dev/null | awk -F '/' '{print $3}' | awk -F"." '{print $1}' | awk 'END{print}' | tr -d "[:space:]"`
   until [[ ! -z "${SUBDOMAIN_NAME}" ]]
   do
     # avoid infinite loop...
-    SUBDOMAIN_NAME=`docker logs ps-tunnel.local 2>/dev/null | awk -F '/' '{print $3}' | awk -F"." '{print $1}' | awk 'END{print}' | tr -d "[:space:]"`
+    SUBDOMAIN_NAME=`docker logs ps-tunnel 2>/dev/null | awk -F '/' '{print $3}' | awk -F"." '{print $1}' | awk 'END{print}' | tr -d "[:space:]"`
     echo "Waiting for localtunnel subdomain retrieved (${SUBDOMAIN_NAME})"
     sleep 5
   done;
@@ -88,8 +102,12 @@ createPrestaShop() {
 
   # Create PrestaShop service
   echo -e "Create PrestaShop service\n"
-  # docker-compose build --no-cache prestashop_rbm_shop
-  docker-compose ${DC_OPTIONS} up -d --no-deps prestashop_rbm_shop
+
+  # Force to rebuild image
+  if [[ "${TUNNEL_DEBUG}" == "true" ]]; then
+     docker-compose build --no-cache prestashop_rbm_shop
+  fi
+  docker-compose ${DC_OPTIONS} up -d --no-deps ${BUILD_OPTIONS} prestashop_rbm_shop
 
   isReady
 
@@ -109,9 +127,9 @@ extraStep() {
   echo -e "Extra step\n"
 
   echo -e "Disable module welcome\n"
-  echo off docker exec ps-rbm.local php bin/console prestashop:module disable welcome
+  docker exec ps-rbm php bin/console prestashop:module disable welcome
   echo -e "Disable module gamification\n"
-  echo off docker exec ps-rbm.local php bin/console prestashop:module disable gamification
+  docker exec ps-rbm php bin/console prestashop:module disable gamification
 }
 
 timeElapsed() {
@@ -130,7 +148,7 @@ isReady() {
   echo -e "\nChecking if PrestaShop is available... (≃ 2 min)\n"
   LOCAL_PORT=$(readEnv PORT $ENV_FILE)
   if [[ -z ${LOCAL_PORT} ]] ; then
-    LOCAL_PORT=`docker port ps-rbm.local 80 | awk -F ':' '{print $2}' | tr -d "[:space:]"`
+    LOCAL_PORT=`docker port ps-rbm 80 | awk -F ':' '{print $2}' | tr -d "[:space:]"`
   fi
 
   PRESTASHOP_READY=`curl -s -o /dev/null -w "%{http_code}" localhost:$LOCAL_PORT | tr -d "[:space:]"`
@@ -158,3 +176,6 @@ timeElapsed createDatabase
 timeElapsed createPrestaShop
 
 getUrls
+
+# Clean UP
+unset TUNNEL_DEBUG

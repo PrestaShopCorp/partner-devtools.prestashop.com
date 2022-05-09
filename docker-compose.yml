@@ -2,8 +2,8 @@ version: "3.9"
 services:
   # Tunnel Client
   prestashop_tunnel:
-    container_name: ps-tunnel.local
-    # restart: always
+    container_name: ps-tunnel
+    hostname: ps-tunnel.local
     stop_grace_period: 1s
     image: prestashop-tunnel
     build:
@@ -18,7 +18,8 @@ services:
   # MySQL
   prestashop_rbm_db:
     image: mysql:5.7
-    container_name: ps-database.local
+    hostname: ps-database.local
+    container_name: ps-database
     ports:
       - ${DB_PORT:-3307}:3306
     volumes: 
@@ -29,9 +30,9 @@ services:
 
   # PMA
   phpmyadmin:
-    restart: always
     image: phpmyadmin/phpmyadmin:latest
-    container_name: phpmyadmin.local
+    container_name: phpmyadmin
+    hostname: phpmyadmin.local
     ports:
       - ${PMA_PORT:-8081}:80
     environment:
@@ -43,7 +44,8 @@ services:
 
   # PrestaShop
   prestashop_rbm_shop:
-    container_name: ps-rbm.local
+    container_name: ps-rbm
+    hostname: ps-rbm.local
     image: prestashop-rbm
     build:
       context: ""

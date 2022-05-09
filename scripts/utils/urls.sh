@@ -17,6 +17,11 @@ getBoUrl() {
   echo "$retval/admin-dev/index.php?controller=AdminLogin&email=${ADMIN_MAIL:-admin@prestashop.com}"
 }
 
+getPMAUrl() {
+  local PMA_PORT=$(readEnv PMA_PORT $ENV_FILE)
+  echo -e "PMA Url: http://phpmyadmin.local:${PMA_PORT}"
+}
+
 getUrls() {
   PS_NAME=$(readEnv PS_NAME $ENV_FILE)
 
@@ -26,8 +31,10 @@ getUrls() {
     local FO_URL=$(getFoUrl)
     local BO_URL=$(getBoUrl)
 
+    getPMAUrl
     echo ""
     echo -e "BO Url: ${BO_URL}"
     echo -e "FO Url: ${FO_URL}"
+
   fi
 }
