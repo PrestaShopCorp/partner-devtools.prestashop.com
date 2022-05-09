@@ -145,7 +145,7 @@ timeElapsed() {
 }
 
 isReady() {
-  echo -e "\nChecking if PrestaShop is available... (≃ 2 min)\n"
+  echo -e "\nChecking if PrestaShop is available... (approximately 2 min)\n"
   LOCAL_PORT=$(readEnv PORT $ENV_FILE)
   if [[ -z ${LOCAL_PORT} ]] ; then
     LOCAL_PORT=`docker port ps-rbm 80 | awk -F ':' '{print $2}' | tr -d "[:space:]"`
