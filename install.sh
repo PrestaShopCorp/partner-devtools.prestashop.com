@@ -11,8 +11,10 @@ ENV_FILE=.env
 export DOCKER_SCAN_SUGGEST=false
 
 # Get current user UID and GID
-export APP_UID="$(id -u)"
-export APP_GID="$(id -g)"
+if [[ `whoami` != "root" ]]; then
+  export APP_UID="$(id -u)"
+  export APP_GID="$(id -g)"
+fi
 
 # Manage sed options on f*** on MacOS Darwin (M1)
 SED_OPTIONS=""

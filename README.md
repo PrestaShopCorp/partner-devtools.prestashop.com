@@ -77,13 +77,13 @@ This is an example of how you may setup your project locally.
 ### Installation
 
 #### Quick install
-2. Configure git to ignore [core.fileMode](https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefileMode)
-```sh
-git config core.fileMode false
-```
-2. Clone the repo
+1. Clone the repo
 ```sh
 git clone https://github.com/PrestaShopCorp/rbm-devtools.prestashop.com.git
+```
+2. Configure git to ignore [core.fileMode](https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefileMode) (only for this repo)
+```sh
+git config core.fileMode false
 ```
 3. Create your dot env file
 ```sh
