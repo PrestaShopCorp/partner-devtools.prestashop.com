@@ -94,6 +94,14 @@ createDatabase() {
 }
 
 createPrestaShop() {
+  if [ "$OSTYPE" == "msys" ] || [ "$OSTYPE" == "cygwin" ]; then
+    if [[ ! `command -v dos2unix` ]]; then
+        echo "dos2unix could not be found, you can install it https://waterlan.home.xs4all.nl/dos2unix.html"
+        exit 42
+    fi
+    dos2unix -q ./scripts/update-domain.sh
+  fi
+
   sed -i $SED_OPTIONS -E "s|(PS_NAME=).*|PS_NAME=${SUBDOMAIN_NAME}|g" $ENV_FILE
   if [[ "$OSTYPE" == "darwin"* ]]; then
     rm -f "${ENV_FILE}${SED_OPTIONS}"

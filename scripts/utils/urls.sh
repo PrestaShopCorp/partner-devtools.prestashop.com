@@ -19,7 +19,7 @@ getBoUrl() {
 
 getPMAUrl() {
   local PMA_PORT=$(readEnv PMA_PORT $ENV_FILE)
-  echo -e "PMA Url: http://phpmyadmin.local:${PMA_PORT}"
+  echo -e "PMA Url: http://localhost:${PMA_PORT}"
 }
 
 getUrls() {
