@@ -81,15 +81,11 @@ This is an example of how you may setup your project locally.
 ```sh
 git clone https://github.com/PrestaShopCorp/rbm-devtools.prestashop.com.git
 ```
-2. Configure git to ignore [core.fileMode](https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefileMode) (only for this repo)
-```sh
-git config core.fileMode false
-```
-3. Create your dot env file
+2. Create your dot env file
 ```sh
 cp .env.example .env
 ```
-4. Customize your .env
+3. Customize your .env
 ```sh
 MODULE_NAME=CHANGEME123
 PORT=8080
@@ -97,6 +93,16 @@ PMA_PORT=8081
 DB_PORT=3307
 ```
 > 💡 more info in <a href="#environment-variables">Environment variables</a> section
+
+4. Copy your module
+You need to copy you module into modules directory
+```sh
+|-- modules
+|   |-- CHANGEME123
+|   |-- rbm_example
+|   `-- rbm_example_stairstep
+```
+> 💡 "CHANGEME123" have been change beforehand in .env file
 
 5. Run the project
 ```sh
@@ -300,7 +306,11 @@ You can use Debug mode to force docker to rebuild images
 ``` sh
 export TUNNEL_DEBUG=true && ./install.sh
 ```
-
+### Error: operand expected
+``` sh
+((: ==true : syntax error: operand expected (error token is "==true ")
+```
+You need to update your docker-compose version (>= 1.27.0)
 
 ## 🚀 What next ?
 

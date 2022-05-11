@@ -32,6 +32,10 @@ if [[ `uname -m` == 'arm64' ]]; then
   DC_OPTIONS="-f docker-compose.yml -f docker-compose.arm64.yml"
 fi
 
+version() {
+  echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }';
+}
+
 # Manage Port Linux / MacOs Or Windows
 checkPort() {
   TCP_CHECK="netstat -tunlp TCP"
@@ -47,6 +51,18 @@ checkPort() {
   return 0
 }
 
+checkDockerVesion() {
+  DC_VERSION_REF="1.27.0"
+  DC_VERSION=`docker-compose --version | awk -F ' ' '{print $3}'  | awk '{sub(/.$/,"")}1' | tr -d "[:space:]"`
+
+  if [ ! $(version $DC_VERSION) -ge $(version $DC_VERSION_REF) ]; then
+    echo "You need to upgrade docker-compose to ${DC_VERSION_REF} at least"
+    return 1
+  fi
+  return 0
+}
+
+
 checkAvailability() {
   local exitNeed=0
 
@@ -60,6 +76,9 @@ checkAvailability() {
 
   DB_PORT=$(readEnv DB_PORT $ENV_FILE)
   checkPort ${DB_PORT} DB_PORT
+  exitNeed=$((exitNeed + $?))
+
+  checkDockerVesion
   exitNeed=$((exitNeed + $?))
 
   if [[ $exitNeed -gt 0 ]]; then
@@ -164,9 +183,9 @@ createPrestaShop() {
 extraStep() {
   echo -e "Extra step\n"
 
-  echo -e "Disable module welcome\n"
+  echo -e "Disable module welcome"
   docker exec ps-rbm php bin/console prestashop:module disable welcome
-  echo -e "Disable module gamification\n"
+  echo -e "Disable module gamification"
   docker exec ps-rbm php bin/console prestashop:module disable gamification
 }
 
