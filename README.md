@@ -105,16 +105,6 @@ DB_PORT=3307
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-#### Install RBM example
-
-1. Follow the instruction in [README.md](modules/rbm_example/README.md)
-
-2. Search RBM Example module within the Module Catalog
-
-3. Click on "Install" button
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 ### Configuration
 #### Environment variables
 
@@ -291,9 +281,25 @@ If the database doesn't start because of this error :
 
 You should delete the `./mysql/` folder and relaunch everything.
 
-### Error within ps-tunnel.local (only on Windows)
+### Error within ps-tunnel.local
 
-If you get an error on line 14 of /tmp/run.sh, you should convert the end of line to Unix format, then relaunch the `./install.sh` command.
+```
+Bind for 0.0.0.0:8080 failed: port is already allocated
+```
+You should override the port `PORT` in the [environement file](#environment-variables)
+
+### Error within phpmyadmin.local
+
+```
+Bind for 0.0.0.0:8081 failed: port is already allocated
+```
+You should override the port `PMA_PORT` in the [environement file](#environment-variables)
+
+### Error docker env not changed
+You can use Debug mode to force docker to rebuild images
+``` sh
+export TUNNEL_DEBUG=true && ./install.sh
+```
 
 
 ## 🚀 What next ?
@@ -302,8 +308,14 @@ If you get an error on line 14 of /tmp/run.sh, you should convert the end of lin
 
 Documentation about developping a SaaS App is available [here](https://billing-docs.netlify.app/).
 
-## SaaS App example
+## Install SaaS App example
 
-See module [README.md](/modules/rbm_example/README.md)
+1. Follow the instruction in [README.md](modules/rbm_example/README.md)
+
+2. Search RBM Example module within the Module Catalog
+
+3. Click on "Install" button
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <p align="right">(<a href="#top">back to top</a>)</p>

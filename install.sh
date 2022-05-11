@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 # Load utilities
 source ./scripts/utils/index.sh
 
@@ -34,6 +32,49 @@ if [[ `uname -m` == 'arm64' ]]; then
   DC_OPTIONS="-f docker-compose.yml -f docker-compose.arm64.yml"
 fi
 
+# Manage Port Linux / MacOs Or Windows
+checkPort() {
+  TCP_CHECK="netstat -tunlp TCP"
+  if [ "$OSTYPE" == "msys" ] || [ "$OSTYPE" == "cygwin" ]; then
+    TCP_CHECK="netstat -anop TCP"
+  fi
+
+  local checkTCP=`${TCP_CHECK} | grep -w LISTENING | grep -w $1`
+  if [[ ${checkTCP} ]] ; then
+    echo "Your port $1 is already allocated, edit .env at $2"
+    return 1
+  fi
+  return 0
+}
+
+checkAvailability() {
+  local exitNeed=0
+
+  PORT=$(readEnv PORT $ENV_FILE)
+  checkPort ${PORT} PORT
+  exitNeed=$((exitNeed + $?))
+
+  PMA_PORT=$(readEnv PMA_PORT $ENV_FILE)
+  checkPort ${PMA_PORT} PMA_PORT
+  exitNeed=$((exitNeed + $?))
+
+  DB_PORT=$(readEnv DB_PORT $ENV_FILE)
+  checkPort ${DB_PORT} DB_PORT
+  exitNeed=$((exitNeed + $?))
+
+  if [[ $exitNeed -gt 0 ]]; then
+    exit $exitNeed
+  fi
+}
+
+createEnv() {
+  # Setting up env file
+  if [ ! -s "$ENV_FILE" ]; then
+    echo -e "Create env file\n"
+    cp .env.example $ENV_FILE
+  fi
+}
+
 createNetwork() {
   local NETWORK_NAME=prestashop_net
 
@@ -41,8 +82,6 @@ createNetwork() {
   if [ -z $(docker network ls --filter name=^${NETWORK_NAME}$ --format="{{ .Name }}") ] ; then
     echo -e "Create ${NETWORK_NAME} network for containers to communicate\n"
     docker network create ${NETWORK_NAME} ;
-  else
-    echo -e "Network ${NETWORK_NAME} already exists, skipping\n"
   fi
 }
 
@@ -122,15 +161,6 @@ createPrestaShop() {
   extraStep
 }
 
-createEnv() {
-  # Setting up env file
-  echo -e "Check env file\n"
-  if [ ! -s "$ENV_FILE" ]; then
-    echo -e "Create env file\n"
-    cp .env.example $ENV_FILE
-  fi
-}
-
 extraStep() {
   echo -e "Extra step\n"
 
@@ -173,9 +203,11 @@ isReady() {
 # RUN BUILDS                                 #
 ##############################################
 
-timeElapsed createEnv
+createNetwork
 
-timeElapsed createNetwork
+createEnv
+
+checkAvailability
 
 timeElapsed createTunnel
 

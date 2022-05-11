@@ -9,7 +9,6 @@ LT_CMD="-h http://${TUNNEL_DOMAIN} -p ${PORT}"
 if [[ "${PS_NAME}" != "CHANGEME123" ]]; then
   SUBDOMAIN_OPTION=`echo ${PS_NAME} | tr -d "[:space:]"`
   echo "Use config file: ${SUBDOMAIN_OPTION}"
-  echo "lt ${LT_CMD} -s ${SUBDOMAIN_OPTION}"
   lt $LT_CMD -s $SUBDOMAIN_OPTION
 else
   echo "Create new connection"
