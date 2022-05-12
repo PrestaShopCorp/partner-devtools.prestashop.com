@@ -181,12 +181,36 @@ createPrestaShop() {
 }
 
 extraStep() {
-  echo -e "Extra step\n"
+  echo -e "\n"
 
-  echo -e "Disable module welcome"
-  docker exec ps-rbm php bin/console prestashop:module disable welcome
-  echo -e "Disable module gamification"
-  docker exec ps-rbm php bin/console prestashop:module disable gamification
+  RED='\033[0;31m'
+  GREEN='\033[0;32m' # Green
+  NC='\033[0m' # No Color
+
+  DISABLE_MODULES=$(readEnv DISABLE_MODULES $ENV_FILE)
+  MODULES_LIST="welcome|gamification"
+  if [[ ! -z ${DISABLE_MODULES} ]] ; then
+    LAST="${MODULES_LIST:-1}"
+    if [[ "$LAST" != "," ]]; then
+      MODULES_LIST+="|"
+    fi
+  fi
+
+  MODULES_LIST+=$DISABLE_MODULES
+  MODULES_LIST=$(echo $MODULES_LIST | tr '|' '\n' | sort -u | tr '\n' '|' | tr  '[:upper:]' '[:lower:]' | awk '{sub(/.$/,"")}1' | tr -d "[:space:]")
+
+  IFS="|"
+  for module in $MODULES_LIST; do
+    echo -ne "Disable module $module"
+    docker exec ps-rbm sh -c "php bin/console prestashop:module disable $module" &> /dev/null
+    if [[ $? -gt 0 ]]; then
+      echo -ne "... ${RED}ko${NC}"
+      echo ""
+    else
+      echo -ne "... ${GREEN}done${NC}"
+      echo ""
+    fi
+  done
 }
 
 timeElapsed() {
@@ -202,19 +226,29 @@ timeElapsed() {
 }
 
 isReady() {
-  echo -e "\nChecking if PrestaShop is available... (approximately 2 min)\n"
+  echo -e "\nChecking if PrestaShop is available... (approximately 2 min)"
   LOCAL_PORT=$(readEnv PORT $ENV_FILE)
   if [[ -z ${LOCAL_PORT} ]] ; then
     LOCAL_PORT=`docker port ps-rbm 80 | awk -F ':' '{print $2}' | tr -d "[:space:]"`
   fi
 
-  PRESTASHOP_READY=`curl -s -o /dev/null -w "%{http_code}" localhost:$LOCAL_PORT | tr -d "[:space:]"`
+  i=0
+  tput sc
+  PRESTASHOP_READY=`curl --max-time 1 -s -o /dev/null -L -w "%{http_code}" localhost:$LOCAL_PORT | tr -d "[:space:]"`
   until (( "$PRESTASHOP_READY"=="302" ))
   do
-    # avoid infinite loop...
-    PRESTASHOP_READY=`curl -s -o /dev/null -w "%{http_code}" localhost:$LOCAL_PORT | tr -d "[:space:]"`
-    echo "Waiting for confirmation of PrestaShop is available (${PRESTASHOP_READY})"
-    sleep 5
+    # Avoid infinite loop...
+    PRESTASHOP_READY=`curl --max-time 1 -s -o /dev/null -L -w "%{http_code}" localhost:$LOCAL_PORT | tr -d "[:space:]"`
+    case $(($i % 4)) in
+        0 ) j="-" ;;
+        1 ) j="\\" ;;
+        2 ) j="|" ;;
+        3 ) j="/" ;;
+    esac
+    tput rc
+    echo -en "\r[$j] Waiting for confirmation of PrestaShop is available (${PRESTASHOP_READY})"
+    sleep 0.5
+    ((i=i+1))
   done;
 }
 
