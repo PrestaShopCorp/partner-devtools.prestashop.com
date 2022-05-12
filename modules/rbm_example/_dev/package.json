@@ -8,7 +8,9 @@
     "cross-env": "^7.0.3"
   },
   "scripts": {
+    "postinstall": "npm install --prefix ./apps",
     "update": "npm update --prefix ./apps",
+    "build": "npm run build-skip-eslint --prefix ./apps",
     "zip-module": "npm run build-skip-eslint --prefix ./apps && node zip-module"
   },
   "author": "support@prestashop.com",

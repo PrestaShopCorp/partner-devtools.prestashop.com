@@ -1,5 +1,11 @@
 # File system
 .DS_Store
+.env
+tunnel/.config
+*.backup
+
+# scripts
+test.sh
 
 # Database
 mysql/
@@ -8,3 +14,6 @@ mysql/
 docker-compose.local.yml
 
 .vscode/
+
+# Remove created .env.bak on macos
+.env.bak
