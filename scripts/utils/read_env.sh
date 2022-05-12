@@ -4,5 +4,8 @@
 readEnv() {
   VAR=$(grep -w $1 $2 | xargs)
   IFS="=" read -ra VAR <<< "$VAR"
-  echo ${VAR[1]}
+  FIRST=${VAR[0]:0:1}
+  if [[ "$FIRST" != "#" ]]; then
+    echo ${VAR[1]}
+  fi
 }
