@@ -27,7 +27,7 @@ PsAccount designate a tool suite to link a PrestaShop Module with the PrestaShop
 
 #### PsAccount component when your shop is not linked
 
-![PsAccount not linkd](/assets/images/0-overview/ps_account_not_linked.png)
+![PsAccount not linked](/assets/images/0-overview/ps_account_not_linked.png)
 
 #### PsAccount component when your shop is linked
 

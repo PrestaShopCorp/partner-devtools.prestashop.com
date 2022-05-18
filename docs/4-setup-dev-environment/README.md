@@ -20,10 +20,6 @@ For more information about localhost.run, CF the [official doc](http://localhost
 
 ![Change domain name](/assets/images/4-setup-dev-environment/change_domain_name.png)
 
-## Install the ps_account_integration module
-
-Install the ps_account_integration.zip (contact the developers for more information about this zip) and link your account in the ps_account configurtion page
-
 ## PrestaShop SaaS App module
 
 **Step 1**: create a classic PrestaShop module, please CF the [official doc](https://devdocs.prestashop.com/1.7/modules/creation/tutorial/)
