@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Recurring Billing Module by Prestashop',
+  title: 'SaaS App by Prestashop',
   description: '',
   theme: 'api',
   head: [

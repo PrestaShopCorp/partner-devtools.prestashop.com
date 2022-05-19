@@ -1,12 +1,12 @@
 ---
-title: Recurring Billing Module
+title: SaaS App
 ---
 
 <Block>
 
-# ![](/assets/images/common/logo-condensed-sm.png) Recurring Billing Module
+# ![](/assets/images/common/logo-condensed-sm.png) SaaS App
 
-A recurring Billing Module is a composition of [PHP](https://www.php.net/) as backend and [Vue 2](https://vuejs.org/) as frontend.
+A SaaS App is a composition of [PHP](https://www.php.net/) as backend and [Vue 2](https://vuejs.org/) as frontend.
 
 ::: tip
 In the future Vue 2 may not be required as the PrestaShop Billing Component doesn't require it.
@@ -14,7 +14,7 @@ In the future Vue 2 may not be required as the PrestaShop Billing Component does
 
 Here is the step to create a SaaS App :
 
-1. Create a PrestaShop Module
+1. [Create a PrestaShop Module](https://devdocs.prestashop.com/1.7/modules/)
 2. Make the PHP part injecting the proper `context` in the `window` object, which is required for PsAccount and PsBilling.
 3. Create a JS app including PsAccount and PsBilling
 4. Inject the `context` in PsAccount and PsBilling
@@ -119,7 +119,7 @@ It will be useful for afterwards
 #### PsAccount
 
 ::: warning Requirement
-Recurring Billing Modules require PsAccount to be installed on the shop in order to work.
+SaaS App require PsAccount to be installed on the shop in order to work.
 :::
 
 ##### Load PsAccount utility
@@ -640,7 +640,7 @@ yarn add prestashop_accounts_vue_components
 The `PsAccount` front component is loaded by the CDN in the smarty template.
 
 ::: warning Use the CDN
-CDN is the proper way to implement a recurring billing module, you should use only the npm dependency as a fallback in case the CDN doesn't work properly
+CDN is the proper way to implement a SaaS App, you should use only the npm dependency as a fallback in case the CDN doesn't work properly
 :::
 
 ```html

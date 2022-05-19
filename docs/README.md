@@ -1,7 +1,7 @@
 ---
 home: true
-title: Recurring Billing Module by PrestaShop
-description: Not sure where to start? We’ve put together some handy guides and reference documentation you can use to start building a Recurring Billing Module for PrestaShop.
+title: SaaS App by PrestaShop
+description: Not sure where to start? We’ve put together some handy guides and reference documentation you can use to start building a SaaS App Module for PrestaShop.
 actionText: Getting Started
 actionLink: /0-overview
 footer: Made by [@PrestaShop](https://addons.prestashop.com/), Power by [vuepress](https://github.com/vuejs/vuepress).

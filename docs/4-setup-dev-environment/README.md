@@ -24,7 +24,7 @@ For more information about localhost.run, CF the [official doc](http://localhost
 
 **Step 1**: create a classic PrestaShop module, please CF the [official doc](https://devdocs.prestashop.com/1.7/modules/creation/tutorial/)
 
-**Step 2**: convert the module into [SaaS App module](../1-recurring-billing-module/README.md)
+**Step 2**: convert the module into [SaaS App module](../2-saas-app/README.md)
 
 An example of SaaS App module is also available for [reference](https://github.com/PrestaShopCorp/prestashop_rbm_example)
 
