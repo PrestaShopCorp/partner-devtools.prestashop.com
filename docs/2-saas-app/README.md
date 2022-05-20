@@ -843,7 +843,7 @@ methods: {
 
 </Example>
 
-### Use PsInvoice
+### Use PsInvoiceList
 
 Import the component `InvoiceListComponent` into the vue component
 
