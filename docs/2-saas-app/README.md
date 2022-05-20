@@ -843,6 +843,57 @@ methods: {
 
 </Example>
 
+### Use PsInvoice
+
+Import the component `InvoiceListComponent` into the vue component
+
+```js
+import Vue from 'vue';
+import { InvoiceListComponent } from "@prestashopcorp/billing-cdc/dist/bundle.umd";
+
+//...
+
+export default {
+  components: {
+    // ...
+    PsInvoice: InvoiceListComponent.driver('vue', Vue),
+    // ...
+  },
+  // ...
+```
+
+Use PsInvoice in the template
+
+The `filterType` accepts one of these values: `subscription` or `customer` by which i is used to filter the invoices
+
+```html
+<template>
+  <div>
+    <ps-invoice-list :context="billingContext" :onOpenModal="openBillingModal" :filterType="<filterType>" />
+  </div>
+</template>
+```
+
+The context should be retrieved from `window.psBillingContext.context` and injected inside the template.
+
+```js
+data() {
+  return {
+      billingContext: { ...window.psBillingContext.context },
+  }
+},
+```
+
+To display the modal of the `InvoiceListComponent`
+
+```js
+methods: {
+  openBillingModal(type) {
+      this.modalType = type;
+  },
+}
+```
+
 </Block>
 
 <Block>
