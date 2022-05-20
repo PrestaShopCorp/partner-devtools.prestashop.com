@@ -856,13 +856,13 @@ import { InvoiceListComponent } from "@prestashopcorp/billing-cdc/dist/bundle.um
 export default {
   components: {
     // ...
-    PsInvoice: InvoiceListComponent.driver('vue', Vue),
+    PsInvoiceList: InvoiceListComponent.driver('vue', Vue),
     // ...
   },
   // ...
 ```
 
-Use PsInvoice in the template
+Use `PsInvoiceList` in the template
 
 The `filterType` accepts one of these values: `subscription` or `customer` by which i is used to filter the invoices
 
