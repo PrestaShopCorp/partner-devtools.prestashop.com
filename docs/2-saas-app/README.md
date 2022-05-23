@@ -677,6 +677,8 @@ export default {
 
 Use `PsBillingCustomer`, `PsBillingModal` in the template
 
+In the `PsBillingCustomer`, by default, the invoice list will be displayed. To hide it, pass `:hideInvoiceList="true"`
+
 ```html
 <template>
   <div>
@@ -688,6 +690,7 @@ Use `PsBillingCustomer`, `PsBillingModal` in the template
       ref="psBillingCustomerRef"
       :context="billingContext"
       :onOpenModal="openBillingModal"
+      :hideInvoiceList="true"
     />
     <ps-billing-modal
       v-if="modalType !== ''"
@@ -864,7 +867,7 @@ export default {
 
 Use `PsInvoiceList` in the template
 
-The `filterType` accepts one of these values: `subscription` or `customer` by which i is used to filter the invoices
+The `filterType` accepts one of these values: `subscription` or `customer` by which it is used to filter the invoices
 
 ```html
 <template>
