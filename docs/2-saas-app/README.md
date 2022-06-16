@@ -220,6 +220,17 @@ Media::addJsDef([
 $this->context->smarty->assign('urlAccountsCdn', $accountsService->getAccountsCdn());
 ```
 
+#### PS Account Usage
+
+You can know whether the shop has been successfully associated or not using `isAccountLinked` function from the `PsAccountsService` service.
+
+```php
+// Account
+$accountsService = $this->getService('ps_accounts.facade')->getPsAccountsService();
+
+$accountsService->isAccountLinked();
+```
+
 #### PsBilling
 
 You should register as a service the composer Billing lib in your SaaS App container.
