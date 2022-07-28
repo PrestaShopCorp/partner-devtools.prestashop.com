@@ -883,7 +883,7 @@ The `filterType` accepts one of these values: `subscription` or `customer` by wh
 ```html
 <template>
   <div>
-    <ps-invoice-list :context="billingContext" :onOpenModal="openBillingModal" :filterType="<filterType>" />
+    <ps-invoice-list :context="billingContext" :filterType="<filterType>" />
   </div>
 </template>
 ```
@@ -898,15 +898,38 @@ data() {
 },
 ```
 
-To display the modal of the `InvoiceListComponent`
+`PsInvoiceList` also accepts an additional **optional** `options` prop to further customize the display of the invoice list.
+
+```vue
+<template>
+  <div>
+    <ps-invoice-list 
+      :context="billingContext" 
+      :options="options" 
+      :filterType="<filterType>"
+    />
+  </div>
+</template>
+```
+
 
 ```js
-methods: {
-  openBillingModal(type) {
-      this.modalType = type;
+export default {
+  data() {
+    return {
+      options: { 
+        pageSize: 6 
+      }
+    }
   },
 }
 ```
+
+The `options` prop in detail:
+
+| Attribute          | Type        | Description                                             | Default value | 
+| ------------------ | ----------- | ------------------------------------------------------- | ------------- |
+| pageSize           | **number**  | Set the number of invoices per page                     | 6             |
 
 </Block>
 
