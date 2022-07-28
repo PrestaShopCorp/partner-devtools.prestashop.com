@@ -907,8 +907,6 @@ export default {
   data() {
     return {
       options: { 
-        showSort: false,
-        hideAccountUiLink: false,
         pageSize: 6 
       }
     }
@@ -920,8 +918,6 @@ The `options` prop in detail:
 
 | Attribute          | Type        | Description                                             | Default value | 
 | ------------------ | ----------- | ------------------------------------------------------- | ------------- |
-| showSort           | **boolean** | Show/hide the sort dropdown                             | false         |
-| hideAccountUiLink  | **boolean** | Show/hide the link to the global list of subscriptions  | false         |
 | pageSize           | **number**  | Set the number of invoices per page                     | 6             |
 
 </Block>
