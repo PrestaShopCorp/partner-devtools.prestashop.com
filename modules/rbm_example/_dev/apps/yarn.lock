@@ -1048,10 +1048,10 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@prestashopcorp/billing-cdc@^0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@prestashopcorp/billing-cdc/-/billing-cdc-0.0.21.tgz#af1aa945af22e4027d44872ae001d34a3e16e819"
-  integrity sha512-SEKFhyOdhoHMntJykwOSmMnzMeAI+HW93hfNfzscCBbr+zZunxccezgknxGJ1Xqp8IqBE0mwzfrMRbfzQq7K4Q==
+"@prestashopcorp/billing-cdc@0.0.25":
+  version "0.0.25"
+  resolved "https://registry.yarnpkg.com/@prestashopcorp/billing-cdc/-/billing-cdc-0.0.25.tgz#56d0d8cd7b17b763d165774c1760e2b4d223db79"
+  integrity sha512-QnNk3rz3YpyyFxwCu4liX6Wsucp4ej7+/jybcC+3Q6gSX6vc1UTfVvq9m0lkMv4BBalJTjUOQWO6u65X6bTu2g==
   dependencies:
     belter "^1.0.173"
     jsx-pragmatic "^2.0.20"
@@ -5770,7 +5770,7 @@ minimist-options@4.1.0:
     is-plain-obj "^1.1.0"
     kind-of "^6.0.3"
 
-minimist@^1.2.0, minimist@^1.2.5:
+minimist@^1.2.0, minimist@^1.2.5, minimist@^1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
   integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
