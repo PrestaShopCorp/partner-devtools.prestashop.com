@@ -54,8 +54,10 @@ checkPort() {
 checkDockerVesion() {
   DC_VERSION_REF="1.27.0"
   DC_VERSION=`docker-compose --version | awk -F ' ' '{print $3}'  | awk '{sub(/.$/,"")}1' | tr -d "[:space:]"`
+  # On my mac with docker-compose v2.6.1, docker-compose --version output "Docker Compose version v2.6.1"
+  DC_VERSION_2=`docker-compose --version | awk -F ' ' '{print $4}'  | awk '{sub(/v/,"")}1' | tr -d "[:space:]"`
 
-  if [ ! $(version $DC_VERSION) -ge $(version $DC_VERSION_REF) ]; then
+  if [ ! $(version $DC_VERSION) -ge $(version $DC_VERSION_REF) -a $(version $DC_VERSION_2) -ge $(version $DC_VERSION_REF) ]; then
     echo "You need to upgrade docker-compose to ${DC_VERSION_REF} at least"
     return 1
   fi
