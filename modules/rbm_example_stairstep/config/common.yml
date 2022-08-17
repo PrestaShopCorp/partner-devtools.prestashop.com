@@ -33,7 +33,7 @@ services:
     class: 'PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
     arguments:
       - '@ps_accounts.facade'
-      - '@rbm_example.context'
+      - '@rbm_example_stairstep.context'
       - true # if true you are in sandbox mode, if false or empty not in sandbox
 
   ps_billings.facade:
@@ -41,4 +41,4 @@ services:
     public: true
     arguments:
       - '@ps_billings.context_wrapper'
-      - '@rbm_example.module'
+      - '@rbm_example_stairstep.module'
