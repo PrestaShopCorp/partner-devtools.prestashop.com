@@ -29,6 +29,27 @@ This API is protected by a rate limiter. Ask us for more information about the l
 
 <Block>
 
+## Get subscription quantity
+
+**URL**:`v1/customers/<subscription_id>/subscriptions/<product_id>/quantity`
+
+**Method**:`GET`
+
+**Auth required**: yes
+
+**Permissions required**: None
+
+### Success response
+
+**Code response**: `200 OK`
+
+```json
+{
+   "currentQuantity": 11,
+}
+```
+
+
 ## Update subscription quantity
 
 **URL**:`v1/customers/<subscription_id>/subscriptions/<product_id>/quantity`
