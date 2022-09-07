@@ -45,9 +45,20 @@ This API is protected by a rate limiter. Ask us for more information about the l
 
 ```json
 {
-   "currentQuantity": 11,
+   "currentQuantity": 10,
 }
 ```
+
+**After using update quantity**
+**Code response**: `200 OK`
+
+```json
+{
+   "currentQuantity": 10,
+   "scheduledQuantity": 11,
+}
+```
+
 
 
 ## Update subscription quantity
