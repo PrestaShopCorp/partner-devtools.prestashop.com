@@ -553,7 +553,7 @@ This file will load the Vue app frontend and the chunk vendor js
 ## Frontend
 
 ::: tip About VueJS
-Javascript and Vue knowledge are prerequisite (cf [https://vuejs.org/v2/guide/](https://vuejs.org/v2/guide/)). This section only introduces the essentials, for more information, please take a look at the [example SaaS App module](https://github.com/PrestaShopCorp/prestashop_rbm_example) or to the [Using VueJS PrestaShop documentation](https://devdocs.prestashop.com/1.7/modules/concepts/templating/vuejs/).
+Javascript and Vue knowledge are prerequisite (cf [https://vuejs.org/v2/guide/](https://vuejs.org/v2/guide/)). This section only introduces the essentials, for more information, please take a look at the [example SaaS App module](https://github.com/PrestaShopCorp/partner-devtools.prestashop.com/tree/main/modules/rbm_example) or to the [Using VueJS PrestaShop documentation](https://devdocs.prestashop.com/1.7/modules/concepts/templating/vuejs/).
 :::
 
 

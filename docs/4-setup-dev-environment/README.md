@@ -26,6 +26,6 @@ For more information about localhost.run, CF the [official doc](http://localhost
 
 **Step 2**: convert the module into [SaaS App module](../2-saas-app/README.md)
 
-An example of SaaS App module is also available for [reference](https://github.com/PrestaShopCorp/prestashop_rbm_example)
+An example of SaaS App module is also available for [reference](https://github.com/PrestaShopCorp/partner-devtools.prestashop.com/tree/main/modules/rbm_example)
 
 **Step 3**: contact the developpers to create a customer and a subscription for the shop (this will be changed in the future)
