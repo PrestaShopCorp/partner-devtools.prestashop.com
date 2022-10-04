@@ -61,7 +61,7 @@
 
 This tool will help you set up your development environement to kickstart the creation of a PrestaShop SaaS App.
 
-You will find an exemple of a simple SaaS App Module within the `rbm_example` folder.
+You will find an exemple of a simple SaaS App Module within the `modules/rbm_example` folder.
 
 Once you launch the services through docker-compose, you will get access to a PrestaShop instance configured with all the needed modules.
 
