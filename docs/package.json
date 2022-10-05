@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vuepress dev .",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider vuepress dev .",
     "start": "npm run build && npm run serve",
-    "build": "vuepress build .",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build .",
     "serve": "serve .vuepress/dist"
   },
   "dependencies": {
