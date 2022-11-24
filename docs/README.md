@@ -1,7 +1,7 @@
 ---
 home: true
 title: PrestaShop Toolkit
-description: Not sure where to start? Read this documentation to learn how to build a module powered by PrestaShop Toolkit.
+description: Not sure where to start? Read this to learn how to build a module powered by PrestaShop Toolkit.
 actionText: Get Started
 actionLink: /0-introduction
 footer: Made by [@PrestaShop](https://addons.prestashop.com/), Powered by [vuepress](https://github.com/vuejs/vuepress).

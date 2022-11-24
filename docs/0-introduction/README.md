@@ -2,30 +2,43 @@
 title: introduction
 ---
 
-
 # Who is this documentation for?
 
-This documentation is intended for technology vendors: partners, developers, and agencies who create and sell modules and/or themes that will be added to the PrestaShop catalog, and possibly the PrestaShop Addons Marketplace.
+This documentation is intended for **technology vendors**: partners, developers, and agencies who **create and sell modules and/or themes** that will be added to the PrestaShop catalog, and possibly the PrestaShop Addons Marketplace.
 
-# Why read this documentation?
+# Why read this?
 
 PrestaShop is an extremely customizable e-commerce platform that was designed so that third-party modules could easily build upon its foundations.
 
-The goal of this documentation is to help you create modules integrated with the PrestaShop ecosystem using PrestaShop Toolkit, so that merchants can enjoy a simpler and more unified experience.
+The goal of this documentation is to help you **create modules integrated with the PrestaShop ecosystem** using PrestaShop Toolkit to optimize development and usability.
 
-# Why use PrestaShop Toolkit?
+# What is PrestaShop Toolkit?
 
-PrestaShop Toolkit is a set of software components provided by PrestaShop to improve  merchants' experience and streamline the development of commonly used features such as billing and data synchronization. They include:
+Previously known as "SaaS App", PrestaShop Toolkit is an integration framework provided by PrestaShop. Including several different services that you can select according to your needs, it improves merchant experience and streamlines the development of commonly used features such as billing and data synchronization.
 
-- PrestaShop Account: Mandatory to be able to use any other tool, PrestaShop Account allows merchant data collection. It establishes a permanent link between the merchant's PrestaShop account and their shop.
+## PrestaShop Toolkit services
 
-- PrestaShop Billing: This tool allows the PrestaShop billing system to deal with the management and invoicing of merchants' subscriptions, allowing merchants to enjoy an optimized payment experience and technology vendors to receive automatic monthly payments.
+### PrestaShop Account
 
-- PrestaShop CloudSync: This tool allows PrestaShop to take charge of the duplication and synchronization of merchants' data on PrestaShop servers so they can be accessed through easy-to-use APIs, reducing complexity and bugs.
+Required to use any other PrestaShop Toolkit service, PrestaShop Account establishes a link between the module and the PrestaShop accounts. It allows you and PrestaShop to identify the merchant in the PrestaShop system.
 
-# What do I need to get started?
+Once the module has been configured to establish a connection, merchants are automatically logged in, which helps them save time. PrestaShop Account also improves technology vendors visibility on merchant data, allowing them to gain insights on merchant conversions.
 
-## Compatibility Chart
+### PrestaShop Billing
+
+PrestaShop Billing allows the PrestaShop billing system to deal with the management and invoicing of merchant subscriptions, allowing merchants to enjoy an optimized payment experience and technology vendors to receive monthly payments automatically. It also improves GDPR compliance, as merchants are requested to consent to the processing of their data when proceeding to payment.
+
+### PrestaShop CloudSync
+
+PrestaShop CloudSync takes charge of the duplication and synchronization of merchant data on PrestaShop servers, thus reducing complexity and bugs. Its easy-to-use APIs allow technology vendors to access merchant data more easily so they can better analyze their behavior.
+
+### PrestaShop Design system
+
+PrestaShop Design system consists in module configuration page templates. It simplifies greatly the configuration process and allows existing merchants to adopt new modules easily.
+
+# Prerequisites
+
+## Compatibility chart
 
 The following configuration is required to integrate your module with PrestaShop Toolkit:
 
@@ -40,12 +53,11 @@ The following configuration is required to integrate your module with PrestaShop
 | 1.6.1.x             | 5.6 – 7.1    | 5.x                   | Yes                                | 1.x                                | 1.6.4 – 1.6.9                      |
 
 ## Supported languages
-
 To integrate your module with PrestaShop Toolkit, you need to use the following languages:
 
 - [PHP](https://www.php.net/) for the backend
 - [Vue.js 3](https://vuejs.org/), Vanilla JavaScript, or React for the frontend
 
-# Support
+# Getting help
 
 If you need any extra help, please get in touch with your solution engineer at PrestaShop.
