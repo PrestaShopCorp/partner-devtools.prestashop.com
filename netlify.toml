@@ -4,7 +4,7 @@
   command = "vuepress build ."
 
 [[redirects]]
-  from = "https://billing-docs.netlify.app"
+  from = "http://billing-docs.netlify.app"
   to = "https://docs.cloud.prestashop.com"
   status = 301
   force = true
