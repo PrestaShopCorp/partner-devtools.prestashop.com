@@ -1,9 +1,9 @@
 ---
 home: true
-title: SaaS App by PrestaShop
-description: Not sure where to start? We’ve put together some handy guides and reference documentation you can use to start building a SaaS App Module for PrestaShop.
-actionText: Getting Started
-actionLink: /0-overview
+title: PrestaShop Toolkit
+description: Not sure where to start? Read this to learn how to build a module powered by PrestaShop Toolkit.
+actionText: Get Started
+actionLink: /0-introduction
 footer: Made by [@PrestaShop](https://addons.prestashop.com/), Powered by [vuepress](https://github.com/vuejs/vuepress).
 ---
 
