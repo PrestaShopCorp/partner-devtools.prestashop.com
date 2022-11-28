@@ -4,7 +4,7 @@ title: introduction
 
 # Who is this documentation for?
 
-This documentation is intended for **technology vendors**: partners, developers, and agencies who **create and sell modules and/or themes** that will be added to the PrestaShop catalog, and possibly the PrestaShop Addons Marketplace.
+This documentation is intended for **technology vendors**: partners, sellers, developers, and agencies who **create and distribute modules and/or themes** that will be added to the PrestaShop Addons Marketplace.
 
 # Why read this?
 
@@ -32,7 +32,7 @@ PrestaShop Billing allows the PrestaShop billing system to deal with the managem
 
 PrestaShop CloudSync takes charge of the duplication and synchronization of merchant data on PrestaShop servers, thus reducing complexity and bugs. Its easy-to-use APIs allow technology vendors to access merchant data more easily so they can better analyze their behavior.
 
-### PrestaShop Design system
+### PrestaShop Design system (currently in development)
 
 PrestaShop Design system consists in module configuration page templates. It simplifies greatly the configuration process and allows existing merchants to adopt new modules easily.
 
