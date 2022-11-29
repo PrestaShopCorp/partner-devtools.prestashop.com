@@ -9,6 +9,8 @@
     "serve": "serve .vuepress/dist"
   },
   "dependencies": {
+    "@vuepress/theme-default": "^1.9.7",
+    "node": "^19.1.0",
     "serve": "^14.0.1",
     "vuepress": "^1.9.7",
     "vuepress-theme-api": "^1.0.1"
