@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@vuepress/theme-default": "^1.9.7",
-    "serve": "^14.0.1",
+    "serve": "^14.1.2",
     "vuepress": "^1.9.7",
     "vuepress-theme-api": "^1.0.1"
   }
