@@ -15,12 +15,12 @@ $textColor ?= $black
 
 $codeBlockBgColor ?= #282c34
 
-$border-color ?= #ece9e9
-$divider-color ?= #ece9e9
+$border-color ?= #DF0067
+$divider-color ?= #DF0067
 
-$link-color ?= #067df7
+$link-color ?= #DF0067
 $link-decoration ?= none
-$link-hover-color ?= #007bff
+$link-hover-color ?= #DF0067
 $link-hover-decoration ?= none
 
 // font
@@ -45,4 +45,29 @@ $container-max-widths = {
   md: 720px,
   lg: 960px,
   xl: 1140px
+}
+
+.nav-item > a:not(.external):hover, .nav-item > a:not(.external).router-link-active{
+  border-bottom: 2px solid #DF0067;
+}
+
+a.sidebar-link.active, a.sidebar-link:hover{
+  color: #DF0067;
+  border-left-color: #DF0067;
+}
+
+a {
+    font-weight: 500;
+    color: #DF0067;
+    text-decoration: none;
+}
+
+.home .hero .action-button{
+  background-color: #DF0067;
+  border-bottom: 1px solid #389d70;
+}
+
+.home .hero .action-button:hover{
+  background-color: #D01616;
+  border-bottom: 1px solid #D01616;
 }
