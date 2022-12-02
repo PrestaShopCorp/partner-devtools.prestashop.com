@@ -1,14 +1,14 @@
 ---
-title: Preparing your Environment for PrestaShop Cloud Services
+title: Preparing Your Environment for PrestaShop Cloud Services
 ---
 
-# Overview
+# Preparing Your Environment for PrestaShop Cloud Services
 
 To use PrestaShop Cloud Services, you need to **have a PrestaShop instance running and available online**. 
 
 You can either choose to install PrestaShop and configure it yourself, or use a Docker image containing a preconfigured PrestaShop environment.
 
-## Installing PrestaShop manually
+## Installing PrestaShop Manually
 
 You can install PrestaShop manually by following the [PrestaShop Open Source documentation](https://devdocs.prestashop-project.org/8/basics/installation/).
 
@@ -18,7 +18,7 @@ The most convenient solution is to use [ngrok](https://ngrok.com/docs), but the 
 
 ## Installing a Preconfigured PrestaShop
 
-If you're not familiar with PrestaShop development, you can follow this procedure to install PrestaShop through **Docker Compose**, which will allow you to download and launch a Docker image containing a PrestaShop instance with a preconfigured environment and SSH tunnel.
+If you're not familiar with PrestaShop development, you can follow this procedure to install PrestaShop through Docker Compose, which will allow you to download and launch a Docker image containing a PrestaShop instance with a **preconfigured environment and SSH tunnel**.
 
 ### Prerequisites
 
@@ -81,7 +81,7 @@ Run the project:
 
 #### .env file reference
 
-If needed, you can customize the .env file:
+If needed, you can customize the `.env` file:
 
 | Environment variable | Description                                                                                   | Default value                           |
 | -------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------- |
@@ -208,7 +208,7 @@ BO Url: http://CHANGEME123.localtunnel.distribution.prestashop.net/admin-dev
 FO Url: http://CHANGEME123.localtunnel.distribution.prestashop.net
 ```
 
-#### PrestaShop URL commands
+#### PrestaShop URL Commands
 
 Get your URLs:
 
@@ -290,4 +290,4 @@ export TUNNEL_DEBUG=true && ./install.sh
 ((: ==true : syntax error: operand expected (error token is "==true ")
 ```
 
-Update your docker-compose version (>= 1.27.0).
+Update your version of Docker Compose (>= 1.27.0).

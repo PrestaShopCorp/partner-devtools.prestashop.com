@@ -1,10 +1,10 @@
 ---
 home: true
 title: PrestaShop Cloud Services
-description: Not sure where to start? Read this to learn how to build a module powered by PrestaShop Cloud Services.
-actionText: Getting Started
+description: Not sure where to start? Read this to learn how to build a module powered by PrestaShop Cloud Services.
+actionText: Get Started
 actionLink: /0-overview/
-footer: Made by [PrestaShop](https://addons.prestashop.com/), Powered by [vuepress](https://github.com/vuejs/vuepress).
+footer: Made by PrestaShop, Powered by VuePress.
 ---
 
 <div style="text-align: center;">
