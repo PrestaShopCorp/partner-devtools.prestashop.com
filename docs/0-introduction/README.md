@@ -10,17 +10,17 @@ This documentation is intended for **technology vendors**: partners, sellers, de
 
 PrestaShop is an extremely customizable e-commerce platform that was designed so that third-party modules could easily build upon its foundations.
 
-The goal of this documentation is to help you **create modules integrated with the PrestaShop ecosystem** using PrestaShop Toolkit to optimize development and usability.
+The goal of this documentation is to help you **create modules integrated with the PrestaShop ecosystem** using PrestaShop Cloud Services to optimize development and usability.
 
-# What is PrestaShop Toolkit?
+# What is PrestaShop Cloud Services?
 
-Previously known as "SaaS App", PrestaShop Toolkit is an integration framework provided by PrestaShop. Including several different services that you can select according to your needs, it improves merchant experience and streamlines the development of commonly used features such as billing and data synchronization.
+Previously known as "SaaS App", PrestaShop Cloud Services is an integration framework provided by PrestaShop. Including several different services that you can select according to your needs, it improves merchant experience and streamlines the development of commonly used features such as billing and data synchronization.
 
-## PrestaShop Toolkit services
+## Available services
 
 ### PrestaShop Account
 
-Required to use any other PrestaShop Toolkit service, PrestaShop Account establishes a link between the module and the PrestaShop accounts. It allows you and PrestaShop to identify the merchant in the PrestaShop system.
+Required to use any other service, PrestaShop Account establishes a link between the module and the PrestaShop accounts. It allows you and PrestaShop to identify the merchant in the PrestaShop system.
 
 Once the module has been configured to establish a connection, merchants are automatically logged in, which helps them save time. PrestaShop Account also improves technology vendors visibility on merchant data, allowing them to gain insights on merchant conversions.
 
@@ -40,7 +40,7 @@ PrestaShop Design system consists in module configuration page templates. It sim
 
 ## Compatibility chart
 
-The following configuration is required to integrate your module with PrestaShop Toolkit:
+The following configuration is required to integrate your module with PrestaShop Cloud Services:
 
 | PrestaShop platform | PHP          | PrestaShop Account    | PrestaShop Billing (components)    | PrestaShop Billing (PHP helper)    | PrestaShop CloudSync (EventBus)    |
 | ------------------- | ------------ | --------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
@@ -53,7 +53,7 @@ The following configuration is required to integrate your module with PrestaShop
 | 1.6.1.x             | 5.6 – 7.1    | 5.x                   | Yes                                | 1.x                                | 1.6.4 – 1.6.9                      |
 
 ## Supported languages
-To integrate your module with PrestaShop Toolkit, you need to use the following languages:
+To integrate your module with PrestaShop Cloud Services, you need to use the following languages:
 
 - [PHP](https://www.php.net/) for the backend
 - [Vue.js 3](https://vuejs.org/), Vanilla JavaScript, or React for the frontend
