@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'SaaS App by Prestashop',
+  title: 'Prestashop Cloud Services',
   description: '',
   theme: '',
   head: [
