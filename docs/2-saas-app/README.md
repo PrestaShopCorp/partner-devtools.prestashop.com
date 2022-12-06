@@ -262,18 +262,15 @@ class Rmb_example extends Module
     {
         $accountsService = null;
         try {
-            /** @var PsAccounts $accounts */
-            $accounts = $this->module->getService('ps_accounts.facade');
-            $accountsService = $accounts->getPsAccountsService();
-        } catch (InstallerException $e) {
+            $accountsFacade = $this->getService('ps_accounts.facade');
+            $accountsService = $accountsFacade->getPsAccountsService();
+        } catch (\PrestaShop\PsAccountsInstaller\Installer\Exception\InstallerException $e) {
             // PsAccounts is not installed, we use accountsInstaller to automatically install it
 
-            /** @var Installer $accountsInstaller */
-            $accountsInstaller = $this->module->getService('ps_accounts.installer');
+            $accountsInstaller = $this->getService('ps_accounts.installer');
             $accountsInstaller->install();
-            /** @var PsAccounts $accounts */
-            $accounts = $this->module->getService('ps_accounts.facade');
-            $accountsService = $accounts->getPsAccountsService();
+            $accountsFacade = $this->getService('ps_accounts.facade');
+            $accountsService = $accountsFacade->getPsAccountsService();
         }
 
         try {

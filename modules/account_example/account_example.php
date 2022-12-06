@@ -114,21 +114,25 @@ class Account_example extends Module
 
     public function getContent()
     {
-        // Allow to auto-install Account
-        $accountsInstaller = $this->getService('ps_accounts.installer');
-        $accountsInstaller->install();
-
+        $accountsService = null;
         try {
-            // Account
             $accountsFacade = $this->getService('ps_accounts.facade');
             $accountsService = $accountsFacade->getPsAccountsService();
+        } catch (\PrestaShop\PsAccountsInstaller\Installer\Exception\InstallerException $e) {
+            $accountsInstaller = $this->getService('ps_accounts.installer');
+            $accountsInstaller->install();
+            $accountsFacade = $this->getService('ps_accounts.facade');
+            $accountsService = $accountsFacade->getPsAccountsService();
+        }
+
+        try {
             Media::addJsDef([
                 'contextPsAccounts' => $accountsFacade->getPsAccountsPresenter()
                     ->present($this->name),
             ]);
 
             // Retrieve Account CDN
-            $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsCdn());
+            $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
 
             $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-account_example.' . $this->version . '.js');
             $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-account_example.' . $this->version . '.js');
