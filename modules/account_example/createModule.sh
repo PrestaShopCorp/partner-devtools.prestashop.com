@@ -1,5 +1,6 @@
 #!/bin/sh
 
+yarn --cwd _dev/apps build-skip-eslint
 cd ..
 zip -r account_example.zip account_example -x '*.git*' \
           account_example/_dev/\* \
