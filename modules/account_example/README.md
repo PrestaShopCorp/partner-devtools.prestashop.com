@@ -15,12 +15,12 @@
 
 ```sh
 $ composer install
-$ cd _dev
-$ yarn zip-module
+$ yarn --cwd _dev/apps install --frozen-lockfile
+$ ./createModule.sh
 ```
 
 ### Rebuild
 
 ```sh
-$ yarn zip-module
+$ ./createModule.sh
 ```
