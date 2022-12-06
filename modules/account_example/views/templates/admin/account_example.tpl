@@ -17,14 +17,14 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 
+<link href="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 <link href="{$pathVendor|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 <link href="{$pathApp|escape:'htmlall':'UTF-8'}" rel=preload as=script>
-<link href="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" rel=preload as=script>
 
 <div id="app"></div>
-<script src="{$pathVendor|escape:'htmlall':'UTF-8'}"></script>
-<script src="{$pathApp|escape:'htmlall':'UTF-8'}"></script>
-<script src="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" type="text/javascript"></script>
+<script src="{$urlAccountsVueCdn|escape:'htmlall':'UTF-8'}" type="text/javascript" defer></script>
+<script src="{$pathVendor|escape:'htmlall':'UTF-8'}" defer></script>
+<script src="{$pathApp|escape:'htmlall':'UTF-8'}" defer></script>
 
 <style>
   /** Hide native multistore module activation panel, because of visual regressions on non-bootstrap content */

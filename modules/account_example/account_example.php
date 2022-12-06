@@ -128,7 +128,7 @@ class Account_example extends Module
             ]);
 
             // Retrieve Account CDN
-            $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsVueCdn());
+            $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsCdn());
 
             $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-account_example.' . $this->version . '.js');
             $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-account_example.' . $this->version . '.js');

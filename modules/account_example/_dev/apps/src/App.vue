@@ -11,9 +11,6 @@ export default {
   name: 'App',
   components: {
     AccountExample
-  },
-  setup() {
-    console.log('account example initialized');
   }
 }
 </script>

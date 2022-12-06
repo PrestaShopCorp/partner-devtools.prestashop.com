@@ -2,29 +2,23 @@
   <div class="pt-2">
     <section>
       <div class="p-0 m-auto tw-container">
-        <PsAccounts></PsAccounts>
+        <prestashop-accounts></prestashop-accounts>
       </div>
     </section>
-
-    <div v-if="sub && sub.id">
-      Display your configuration, only if customer is associated
-    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'AccountExample',
-  components: {
-    PsAccounts: async () => {
-      let psAccounts = window?.psaccountsVue?.PsAccounts;
-      if (!psAccounts) {
-        console.log('Fallback to Account Vue component');
-        psAccounts = require('prestashop_accounts_vue_components').PsAccounts;
-      }
-
-      return psAccounts;
-    },
+  mounted() {
+    if (window?.psaccountsVue) {
+      console.log('Accounts Vue Component is loaded via CDN');
+      return window?.psaccountsVue?.init();
+    }
+    const accountFallback = require('prestashop_accounts_vue_components');
+    console.log('Accounts Vue Component is loaded via fallback');
+    accountFallback.init();
   }
 }
 </script>
