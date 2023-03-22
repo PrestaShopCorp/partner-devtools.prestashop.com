@@ -1,8 +1,8 @@
 <div id="top"></div>
 
-<div style="background-color: #ffdfdf;color: #ff4136;padding: 1rem;border-radius: 0.25rem;border: 1px solid rgba(0,0,0,.1);">
+<div align="center">
 <h1>This repo is deprecated</h1>
-<p style="background: white;border: 1px solid rgba(0,0,0,.3);">See https://github.com/PrestaShopCorp/docs.cloud.prestashop.com</p>
+<p>See https://github.com/PrestaShopCorp/docs.cloud.prestashop.com</p>
 </div>
 
 
