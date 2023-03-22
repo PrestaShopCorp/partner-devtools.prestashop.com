@@ -1,5 +1,11 @@
 <div id="top"></div>
 
+<div align="center">
+<h1>This repo is deprecated</h1>
+<p>See https://github.com/PrestaShopCorp/docs.cloud.prestashop.com</p>
+</div>
+
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
