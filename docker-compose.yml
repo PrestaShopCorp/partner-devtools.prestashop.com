@@ -54,6 +54,7 @@ services:
       - ${PORT:-8080}:80
     volumes:
       - ./modules/rbm_example:/var/www/html/modules/rbm_example:rw
+      - ./modules/account_example:/var/www/html/modules/account_example:rw
       - ./modules/${MODULE_NAME}:/var/www/html/modules/${MODULE_NAME}:rw
     environment:
       - APACHE_RUN_USER=#${APP_UID:-1000}

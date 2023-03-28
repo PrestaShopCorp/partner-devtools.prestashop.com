@@ -59,8 +59,12 @@ You should register your module as a service.
 
 > If you want to have more information about Services, you can check on [documentation](https://devdocs.prestashop.com/1.7/modules/concepts/services/)
 
+Here is the common.yml in the config directory
 ```yaml
 services:
+  _defaults:
+    public: true
+
   rbm_example.module:
     class: Rbm_example
     public: true
@@ -70,8 +74,20 @@ services:
 
   rbm_example.context:
     class: Context
-    public: true
-    factory: [ 'Context', 'getContext' ]
+    factory: ['Context', 'getContext']
+
+  #####################
+  # PS Account
+
+  ps_accounts.installer:
+    class: 'PrestaShop\PsAccountsInstaller\Installer\Installer'
+    arguments:
+      - '5.0'
+
+  ps_accounts.facade:
+    class: 'PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts'
+    arguments:
+      - '@ps_accounts.installer'
 ```
 
 It will be useful for afterwards
@@ -124,12 +140,19 @@ SaaS App require PsAccount to be installed on the shop in order to work.
 
 ##### Load PsAccount utility
 
-First you need to register PsAccount within your module. You should add a `getService` method. Then update the `install()` hook.
-
-It will allow your module to automatically install PsAccount when not available, and let you use PsAccountService.
+Here is the Rbm_example.php
 
 ```php
-class Rbm_example extends Module {
+<?php
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+require 'vendor/autoload.php';
+
+class Rmb_example extends Module
+{
     /**
      * @var ServiceContainer
      */
@@ -137,7 +160,29 @@ class Rbm_example extends Module {
 
     public function __construct()
     {
-        // ...
+        $this->name = 'rmb_example';
+        $this->tab = 'advertising_marketing';
+        $this->version = '1.0.0';
+        $this->author = 'Prestashop';
+        $this->emailSupport = 'support@prestashop.com';
+        $this->need_instance = 0;
+
+        $this->ps_versions_compliancy = [
+            'min' => '1.6.1.0',
+            'max' => _PS_VERSION_,
+        ];
+        $this->bootstrap = true;
+
+        parent::__construct();
+
+        $this->displayName = $this->l('Account example');
+        $this->description = $this->l('This is an example for a module using Prestashop Accounts.');
+
+        $this->confirmUninstall = $this->l('Are you sure to uninstall this module?');
+
+        $this->uri_path = Tools::substr($this->context->link->getBaseLink(null, null, true), 0, -1);
+        $this->images_dir = $this->uri_path . $this->getPathUri() . 'views/img/';
+        $this->template_dir = $this->getLocalPath() . 'views/templates/admin/';
 
         if ($this->container === null) {
             $this->container = new \PrestaShop\ModuleLibServiceContainer\DependencyInjection\ServiceContainer(
@@ -146,16 +191,6 @@ class Rbm_example extends Module {
             );
         }
     }
-
-    // ...
-    public function install()
-    {
-        // Load PS Account utility
-        return parent::install() &&
-            $this->getService('ps_accounts.installer')->install();
-    }
-
-    // ...
 
     /**
      * Retrieve service
@@ -168,57 +203,100 @@ class Rbm_example extends Module {
     {
         return $this->container->getService($serviceName);
     }
+
+    // The following install psAccounts on your module installation
+    public function install()
+    {
+        return parent::install() &&
+            $this->getService('ps_accounts.installer')->install();
+    }
+
+    public function uninstall()
+    {
+        if (!parent::uninstall()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the Tos URL from the context language, if null, send default link value
+     *
+     * @return string
+     */
+    public function getTosLink($iso_lang)
+    {
+        switch ($iso_lang) {
+            case 'fr':
+                $url = 'https://www.prestashop.com/fr/prestashop-account-cgu';
+                break;
+            default:
+                $url = 'https://www.prestashop.com/en/prestashop-account-terms-conditions';
+                break;
+        }
+
+        return $url;
+    }
+
+    /**
+     * Get the Tos URL from the context language, if null, send default link value
+     *
+     * @return string
+     */
+    public function getPrivacyLink($iso_lang)
+    {
+        switch ($iso_lang) {
+            case 'fr':
+                $url = 'https://www.prestashop.com/fr/politique-confidentialite';
+                break;
+            default:
+                $url = 'https://www.prestashop.com/en/privacy-policy';
+                break;
+        }
+
+        return $url;
+    }
+
+    public function getContent()
+    {
+        $accountsService = null;
+        try {
+            $accountsFacade = $this->getService('ps_accounts.facade');
+            $accountsService = $accountsFacade->getPsAccountsService();
+        } catch (\PrestaShop\PsAccountsInstaller\Installer\Exception\InstallerException $e) {
+            // PsAccounts is not installed, we use accountsInstaller to automatically install it
+
+            $accountsInstaller = $this->getService('ps_accounts.installer');
+            $accountsInstaller->install();
+            $accountsFacade = $this->getService('ps_accounts.facade');
+            $accountsService = $accountsFacade->getPsAccountsService();
+        }
+
+        try {
+            // The context needed for psAccounts and psBilling to work
+            Media::addJsDef([
+                'contextPsAccounts' => $accountsFacade->getPsAccountsPresenter()
+                    ->present($this->name),
+            ]);
+
+            // Retrieve Account CDN
+            $this->context->smarty->assign('urlAccountsVueCdn', $accountsService->getAccountsCdn());
+
+            // The path of your js build (optionnal)
+            $this->context->smarty->assign('pathVendor', $this->getPathUri() . 'views/js/chunk-vendors-rmb_example.' . $this->version . '.js');
+            $this->context->smarty->assign('pathApp', $this->getPathUri() . 'views/js/app-rmb_example.' . $this->version . '.js');
+        } catch (Exception $e) {
+            $this->context->controller->errors[] = $e->getMessage();
+            return '';
+        }
+
+        return $this->context->smarty->fetch($this->template_dir . 'rmb_example.tpl');
+    }
 }
 ```
 
 > You should follow the documentation from [prestashop-accounts-installer](https://github.com/PrestaShopCorp/prestashop-accounts-installer) to properly install the PS Account utility.
-
-You need to register PsAccount as Service. The `5.0` specified argument is the minimum required `ps_account` module version. You should modify it if you need another version.
-
-```yaml
-  # ...
-
-  #####################
-  # PS Account
-
-  ps_accounts.installer:
-    class: 'PrestaShop\PsAccountsInstaller\Installer\Installer'
-    public: true
-    arguments:
-      - "5.0"
-
-  ps_accounts.facade:
-    class: 'PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts'
-    public: true
-    arguments:
-      - "@ps_accounts.installer"
-
-```
-
-##### Inject PsAccount library and context
-
-PsAccount needs to get some information to work. Theses information are provided by injecting a `context`.
-
-In order to inject the `context` you should update `getContent` hook. This will inject `contextPsAccounts` within the browser `window` object (`window.contextPsAccounts`).
-
-Account service is also responsible to return the proper URL for the PsAccount front component, [which is loaded via CDN](#use-psaccount-with-a-cdn).
-
-::: warning PsAccount component doc
-For a custom VueJS implementation, check [PsAccount vue component documentation](https://storybook-accounts.distribution.prestashop.net/)
-:::
-
-```php
-// Account
-$accountsFacade = $this->getService('ps_accounts.facade');
-$accountsService = $accountsFacade->getPsAccountsService();
-Media::addJsDef([
-    'contextPsAccounts' => $accountsFacade->getPsAccountsPresenter()
-        ->present($this->name),
-]);
-
-// Retrieve Account CDN
-$this->context->smarty->assign('urlAccountsCdn', $accountsService->getAccountsCdn());
-```
 
 #### PS Account Usage
 
@@ -662,6 +740,12 @@ CDN is the proper way to implement a SaaS App, you should use only the npm depen
 
 ```js
 <script>
+    /**
+      * The PsAccountsVueComponents can be used in any technology (reactjs, vuejs, native, ...)
+      * It is mounted via the <prestashop-accounts> tag
+      * If the cdn is loaded, then init via the cnd for automatic update
+      * Then cdn didn't work, load it from the installed npm repository
+    **/
     window?.psaccountsVue?.init() || require('prestashop_accounts_vue_components').init();
 </script>
 ```
@@ -1080,8 +1164,7 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
 ```html
 <template>
   <div>
-    <PsAccounts>
-    </PsAccounts>
+    <prestashop-accounts></prestashop-accounts>
     <ps-billing-customer
         v-if="billingContext.user.email"
         ref="psBillingCustomerRef"
@@ -1107,18 +1190,18 @@ import { EVENT_HOOK_TYPE } from '@prestashopcorp/billing-cdc/dist/bundle.umd';
 
   export default {
     components: {
-      PsAccounts: async () => {
-        // CDN will normally inject a psaccountsVue within the window object
-        let psAccounts = window?.psaccountsVue?.PsAccounts;
-
-        // This is a fallback if CDN isn't available
-        if (!psAccounts) {
-            psAccounts = require("prestashop_accounts_vue_components").PsAccounts;
-        }
-        return psAccounts;
-      },
       PsBillingCustomer: CustomerComponent.driver('vue', Vue),
       PsBillingModal: ModalContainerComponent.driver('vue', Vue),
+    },
+    mounted() {
+
+        if (window?.psaccountsVue) {
+            console.log('Accounts Vue Component is loaded via CDN');
+            return window?.psaccountsVue?.init();
+        }
+        const accountFallback = require('prestashop_accounts_vue_components');
+        console.log('Accounts Vue Component is loaded via fallback');
+        accountFallback.init();
     },
     data() {
       return {

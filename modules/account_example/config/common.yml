@@ -1,0 +1,26 @@
+services:
+  _defaults:
+    public: true
+
+  account_example.module:
+    class: account_example
+    factory: ['Module', 'getInstanceByName']
+    arguments:
+      - 'account_example'
+
+  account_example.context:
+    class: Context
+    factory: ['Context', 'getContext']
+
+  #####################
+  # PS Account
+
+  ps_accounts.installer:
+    class: 'PrestaShop\PsAccountsInstaller\Installer\Installer'
+    arguments:
+      - '5.0'
+
+  ps_accounts.facade:
+    class: 'PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts'
+    arguments:
+      - '@ps_accounts.installer'
