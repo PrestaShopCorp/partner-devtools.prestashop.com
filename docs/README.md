@@ -1,10 +1,10 @@
 ---
 home: true
-title: SaaS App by PrestaShop
-description: Not sure where to start? We’ve put together some handy guides and reference documentation you can use to start building a SaaS App Module for PrestaShop.
-actionText: Getting Started
+title: PrestaShop Cloud Services
+description: Not sure where to start? Read this to learn how to build a module powered by PrestaShop Cloud Services.
+actionText: Get Started
 actionLink: /0-overview/
-footer: Made by [@PrestaShop](https://addons.prestashop.com/), Powered by [vuepress](https://github.com/vuejs/vuepress).
+footer: Made by PrestaShop, Powered by VuePress.
 ---
 
 <div style="text-align: center;">

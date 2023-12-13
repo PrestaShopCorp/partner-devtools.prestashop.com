@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'SaaS App by Prestashop',
+  title: 'Prestashop Cloud Services',
   description: '',
   theme: '',
   head: [
@@ -18,21 +18,23 @@ module.exports = {
     sidebarDepth: 2,
     nav: [
       { text: 'Home', link: '/' },
+      { text: 'Introduction', link: '/0-introduction/' },
       { text: 'Overview', link: '/0-overview/' },
-      { text: 'Relationships', link: '/1-relationships/' },
+      { text: 'Preparing your Environment', link: '/1-preparing-your-environment/' },
       { text: 'SaaS app', link: '/2-saas-app/' },
       { text: 'Webhook Events', link: '/3-webhook-events/' },
-      { text: 'Setup dev environment', link: '/4-setup-dev-environment/' },
+      { text: 'Relationships', link: '/4-relationships/' },
       { text: 'API', link: '/5-api/' },
       { text: 'FAQ', link: '/6-faq/' }
     ],
     sidebar: [
       [ '/' ,'Home' ],
+      [ '/0-introduction/', 'Introduction' ],
       [ '/0-overview/', 'Overview' ],
-      [ '/1-relationships/', 'Relationships' ],
+      [ '/1-preparing-your-environment/', 'Preparing your Environment' ],
       [ '/2-saas-app/', 'SaaS app' ],
       [ '/3-webhook-events/', 'Webhook Events' ],
-      [ '/4-setup-dev-environment/', 'Setup dev environment'],
+      [ '/4-relationships/', 'Relationships' ],
       [ '/5-api/', 'API' ],
       [ '/6-faq/', 'FAQ' ]
     ]
